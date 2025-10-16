@@ -9,9 +9,9 @@ export default function Header() {
           Alex Angelov
         </Link>
       </div>
-      <nav className={styles.navbar}>
-        <input type={styles.checkbox} id={styles["menu-toggle"]} />
-        <label htmlFor="menu-toggle" className={styles["menu-icon"]}>
+      <nav>
+        <input type="checkbox" id={styles["menu-toggle"]} />
+        <label htmlFor={styles["menu-toggle"]} className={styles["menu-icon"]}>
           <span></span>
           <span></span>
           <span></span>
