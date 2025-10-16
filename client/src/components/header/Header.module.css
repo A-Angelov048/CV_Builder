@@ -52,16 +52,7 @@
   transition: all 0.3s ease;
 }
 
-.footer {
-  padding: 20px;
-  text-align: center;
-}
-
 @media (max-width: 768px) {
-  .footer {
-    padding: 20px 10px;
-  }
-
   .username {
     font-size: 18px;
   }
