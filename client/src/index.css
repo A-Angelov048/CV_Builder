@@ -1,0 +1,217 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+html {
+  font: 14px/1.6 Lato, sans-serif;
+  color: #333;
+}
+
+body,
+a,
+p,
+input,
+button {
+  font: inherit;
+}
+
+body {
+  background: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h5 {
+  font-size: 1.25rem;
+}
+
+h6 {
+  font-size: 1rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+a {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+p,
+span {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+label {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+input,
+textarea {
+  padding: 10px;
+  border: 1px solid #333;
+  font-size: 16px;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.heading-container {
+  width: 100%;
+  text-align: center;
+  letter-spacing: 2px;
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
+  background-color: #f1f1f1;
+}
+
+.title {
+  margin-bottom: 0;
+  padding: 20px;
+}
+
+.color {
+  background-color: #f1f1f1;
+}
+
+.main-button {
+  background-color: #333;
+  color: #fff;
+  padding: 6px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.main-button:hover {
+  background: #004aad;
+}
+
+.grid-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 30px;
+  padding: 20px;
+  text-align: left;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.grid-form button {
+  grid-column: 2;
+}
+
+.simple-form {
+  max-width: 450px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.m-t {
+  margin-top: 10px;
+}
+
+.max-width {
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 60px 10px;
+  }
+
+  .grid-form {
+    padding: 10px;
+  }
+
+  .simple-form {
+    padding: 10px;
+  }
+
+  .title {
+    padding: 15px;
+  }
+
+  .grid-form {
+    display: block;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  p,
+  span {
+    font-size: 14px;
+    line-height: 1.2;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  label {
+    font-size: 14px;
+  }
+
+  input,
+  textarea {
+    font-size: 14px;
+  }
+
+  .main-button {
+    font-size: 14px;
+  }
+}
