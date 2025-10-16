@@ -1,0 +1,101 @@
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  position: relative;
+}
+
+.timeline-item {
+  display: grid;
+  grid-template-columns: 1fr 20px 2fr;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.timeline-item:last-of-type .timeline-separator::before {
+  content: none;
+}
+
+.timeline-left {
+  text-align: right;
+  color: #0a0a2a;
+  opacity: 0;
+  transform: translateX(-50px);
+  animation: slideInLeft 1.6s ease forwards;
+}
+
+.timeline-left .year {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.timeline-left .role {
+  letter-spacing: 1px;
+}
+
+.timeline-separator {
+  position: relative;
+}
+
+.timeline-separator::before {
+  content: "";
+  position: absolute;
+  width: 2px;
+  height: 155px;
+  top: 9px;
+  left: 9px;
+  background: #f1f1f1;
+  z-index: -1;
+}
+
+.timeline-right {
+  text-align: left;
+  opacity: 0;
+  transform: translateX(80px);
+  animation: slideInRight 1.6s ease forwards;
+}
+
+.company-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+  margin-right: 16px;
+}
+
+.company {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #0a0a2a;
+}
+
+.company-container i {
+  font-size: 20px;
+  color: red;
+  cursor: pointer;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(80px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
