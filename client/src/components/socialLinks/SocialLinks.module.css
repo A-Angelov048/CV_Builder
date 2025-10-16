@@ -1,0 +1,57 @@
+.social-contacts {
+  width: 100%;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: slideInTop 1.6s ease forwards;
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  background: #f1f1f1;
+  padding: 15px;
+  margin: 0 10px;
+  border: solid 1px #333;
+  border-radius: 6px;
+}
+
+.social-links a {
+  margin: 0 10px;
+  font-size: 20px;
+}
+
+.social-links a:hover {
+  color: #004aad;
+}
+
+.about {
+  width: 82%;
+  margin: 0 auto;
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.about h2 {
+  margin-bottom: 20px;
+}
+
+.about p {
+  color: #777;
+}
+
+@keyframes slideInTop {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .about {
+    padding: 50px 10px;
+  }
+}
