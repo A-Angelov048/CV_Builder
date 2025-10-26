@@ -1,11 +1,33 @@
-import { Link } from "react-router-dom";
 import styles from "./Header.module.css";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
-export default function Header() {
+type Section =
+  | "about"
+  | "skills"
+  | "projects"
+  | "experience"
+  | "education"
+  | "contact";
+
+type HeaderProps = {
+  scrollFunc: (section: Section) => void;
+};
+
+export default function Header({ scrollFunc }: HeaderProps) {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+
+  const handleScroll = (ref: Section) => {
+    if (pathname !== "/") {
+      navigate("/", { state: { ref } });
+    } else {
+      scrollFunc(ref);
+    }
+  };
   return (
     <header className={styles.header}>
       <div>
-        <Link className={styles.username} to="#">
+        <Link className={styles.username} to={"/"}>
           Alex Angelov
         </Link>
       </div>
@@ -18,19 +40,22 @@ export default function Header() {
         </label>
         <ul className={styles["nav-links"]}>
           <li>
-            <Link to="#">Skills</Link>
+            <span onClick={() => handleScroll("about")}>About me</span>
           </li>
           <li>
-            <Link to="#">Projects</Link>
+            <span onClick={() => handleScroll("skills")}>Skills</span>
           </li>
           <li>
-            <Link to="#">Experience</Link>
+            <span onClick={() => handleScroll("projects")}>Projects</span>
           </li>
           <li>
-            <Link to="#">Education</Link>
+            <span onClick={() => handleScroll("experience")}>Experience</span>
           </li>
           <li>
-            <Link to="#">Contact</Link>
+            <span onClick={() => handleScroll("education")}>Education</span>
+          </li>
+          <li>
+            <span onClick={() => handleScroll("contact")}>Contact</span>
           </li>
         </ul>
       </nav>

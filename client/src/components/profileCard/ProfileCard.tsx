@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { forwardRef, useState } from "react";
 import styles from "./ProfileCard.module.css";
 
-export default function ProfileCard() {
+export default forwardRef<HTMLDivElement>(function ProfileCard(_, ref) {
   const [flagForm, setFlagForm] = useState(true);
 
   return (
-    <section className={styles.hero}>
+    <section ref={ref} className={styles.hero}>
       <div className={styles["profile-card"]}>
         {flagForm ? (
           <>
@@ -84,4 +84,4 @@ export default function ProfileCard() {
       </div>
     </section>
   );
-}
+});

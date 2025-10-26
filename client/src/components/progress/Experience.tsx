@@ -1,8 +1,9 @@
 import styles from "./Progress.module.css";
+import { forwardRef } from "react";
 
-export default function Experience() {
+export default forwardRef<HTMLDivElement>(function Experience(_, ref) {
   return (
-    <section>
+    <section ref={ref}>
       <div className="heading-container">
         <h2 className="title">EXPERIENCE</h2>
       </div>
@@ -102,4 +103,4 @@ export default function Experience() {
       </form>
     </section>
   );
-}
+});

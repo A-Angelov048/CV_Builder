@@ -1,9 +1,10 @@
 import styles from "./Projects.module.css";
+import { forwardRef } from "react";
 import { Link } from "react-router-dom";
 
-export default function Projects() {
+export default forwardRef<HTMLDivElement>(function Projects(_, ref) {
   return (
-    <section>
+    <section ref={ref}>
       <div className="heading-container">
         <h2 className="title">PROJECTS</h2>
       </div>
@@ -117,4 +118,4 @@ export default function Projects() {
       </form>
     </section>
   );
-}
+});

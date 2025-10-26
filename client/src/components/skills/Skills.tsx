@@ -1,8 +1,9 @@
 import styles from "./Skills.module.css";
+import { forwardRef } from "react";
 
-export default function Skills() {
+export default forwardRef<HTMLDivElement>(function Skills(_, ref) {
   return (
-    <section>
+    <section ref={ref}>
       <div className="heading-container">
         <h2 className="title">SKILLS</h2>
       </div>
@@ -43,4 +44,4 @@ export default function Skills() {
       </form>
     </section>
   );
-}
+});

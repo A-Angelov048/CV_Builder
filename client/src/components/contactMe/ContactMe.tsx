@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom";
 import styles from "./ContactMe.module.css";
+import { Link } from "react-router-dom";
+import { forwardRef } from "react";
 
-export default function ContactMe() {
+export default forwardRef<HTMLDivElement>(function ContactMe(_, ref) {
   return (
-    <section className="color">
+    <section ref={ref} className="color">
       <div className="heading-container">
         <h2 className="title">CONTACT ME</h2>
       </div>
@@ -67,4 +68,4 @@ export default function ContactMe() {
       </div>
     </section>
   );
-}
+});
