@@ -1,0 +1,38 @@
+.guest-page {
+  margin-top: 60px;
+}
+.wrapper-guest {
+  max-width: 540px;
+  background-color: #f1f1f1;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 30px 40px;
+  margin: 60px auto;
+}
+
+.button {
+  text-align: center;
+  margin: 15px 0;
+}
+
+.button button {
+  width: 100%;
+}
+
+.link {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.link a {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.link a:hover {
+  color: #004aad;
+  text-decoration: underline;
+}
