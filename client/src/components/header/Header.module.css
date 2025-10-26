@@ -23,12 +23,13 @@
   padding: 0;
 }
 
-.nav-links li a {
+.nav-links li span {
   font-size: 16px;
+  cursor: pointer;
   transition: color 0.3s ease;
 }
 
-.nav-links li a:hover,
+.nav-links li span:hover,
 .username:hover {
   color: #004aad;
 }

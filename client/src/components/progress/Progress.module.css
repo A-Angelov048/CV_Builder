@@ -18,7 +18,6 @@
 
 .timeline-left {
   text-align: right;
-  color: #0a0a2a;
   opacity: 0;
   transform: translateX(-50px);
   animation: slideInLeft 1.6s ease forwards;
@@ -69,7 +68,6 @@
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: #0a0a2a;
 }
 
 .company-container i {
