@@ -1,12 +1,21 @@
+import HeadingContainer from "../heading-container/HeadingContainer";
 import styles from "./Progress.module.css";
-import { forwardRef } from "react";
+import { forwardRef, useState } from "react";
 
 export default forwardRef<HTMLDivElement>(function Experience(_, ref) {
+  const [flagForm, setFlagForm] = useState(true);
+
+  const changeState = (value: boolean) => {
+    setFlagForm(value);
+  };
+
   return (
     <section ref={ref}>
-      <div className="heading-container">
-        <h2 className="title">EXPERIENCE</h2>
-      </div>
+      <HeadingContainer
+        header={"EXPERIENCE"}
+        status={flagForm}
+        changeStatus={changeState}
+      />
 
       <div className="container">
         <div className={styles.timeline}>
@@ -80,27 +89,30 @@ export default forwardRef<HTMLDivElement>(function Experience(_, ref) {
           </div>
         </div>
       </div>
-      <form className="grid-form max-width">
-        <div className="form-group m-t">
-          <label htmlFor="yearsExperience">Years experience *</label>
-          <input type="text" id="yearsExperience" name="yearsExperience" />
-        </div>
-        <div className="form-group m-t">
-          <label htmlFor="position">Position *</label>
-          <input type="text" id="position" name="position" />
-        </div>
-        <div className="form-group m-t">
-          <label htmlFor="companyName">Company Name *</label>
-          <input type="text" id="companyName" name="companyName" />
-        </div>
-        <div className="form-group m-t">
-          <label htmlFor="activity">Activity in the company *</label>
-          <input type="text" id="activity" name="activity" />
-        </div>
-        <button className="main-button m-t" type="submit">
-          Submit
-        </button>
-      </form>
+
+      {!flagForm && (
+        <form className="grid-form max-width">
+          <div className="form-group m-t">
+            <label htmlFor="yearsExperience">Years experience *</label>
+            <input type="text" id="yearsExperience" name="yearsExperience" />
+          </div>
+          <div className="form-group m-t">
+            <label htmlFor="position">Position *</label>
+            <input type="text" id="position" name="position" />
+          </div>
+          <div className="form-group m-t">
+            <label htmlFor="companyName">Company Name *</label>
+            <input type="text" id="companyName" name="companyName" />
+          </div>
+          <div className="form-group m-t">
+            <label htmlFor="activity">Activity in the company *</label>
+            <input type="text" id="activity" name="activity" />
+          </div>
+          <button className="main-button m-t" type="submit">
+            Submit
+          </button>
+        </form>
+      )}
     </section>
   );
 });

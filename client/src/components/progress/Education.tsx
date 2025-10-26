@@ -1,12 +1,21 @@
 import styles from "./Progress.module.css";
-import { forwardRef } from "react";
+import { forwardRef, useState } from "react";
+import HeadingContainer from "../heading-container/HeadingContainer";
 
 export default forwardRef<HTMLDivElement>(function Education(_, ref) {
+  const [flagForm, setFlagForm] = useState(true);
+
+  const changeState = (value: boolean) => {
+    setFlagForm(value);
+  };
+
   return (
     <section ref={ref}>
-      <div className="heading-container">
-        <h2 className="title">EDUCATION</h2>
-      </div>
+      <HeadingContainer
+        header={"EDUCATION"}
+        status={flagForm}
+        changeStatus={changeState}
+      />
 
       <div className="container">
         <div className={styles.timeline}>
@@ -81,27 +90,29 @@ export default forwardRef<HTMLDivElement>(function Education(_, ref) {
         </div>
       </div>
 
-      <form className="grid-form max-width">
-        <div className="form-group m-t">
-          <label htmlFor="yearsEducation">Years & Place education *</label>
-          <input type="text" id="yearsEducation" name="yearsEducation" />
-        </div>
-        <div className="form-group m-t">
-          <label htmlFor="education">Degree / Diploma & Specialty*</label>
-          <input type="text" id="education" name="education" />
-        </div>
-        <div className="form-group m-t">
-          <label htmlFor="nameSchool">Name of the school *</label>
-          <input type="text" id="nameSchool" name="nameSchool" />
-        </div>
-        <div className="form-group m-t">
-          <label htmlFor="infoSchool">Information of the school *</label>
-          <input type="text" id="infoSchool" name="infoSchool" />
-        </div>
-        <button className="main-button m-t" type="submit">
-          Submit
-        </button>
-      </form>
+      {!flagForm && (
+        <form className="grid-form max-width">
+          <div className="form-group m-t">
+            <label htmlFor="yearsEducation">Years & Place education *</label>
+            <input type="text" id="yearsEducation" name="yearsEducation" />
+          </div>
+          <div className="form-group m-t">
+            <label htmlFor="education">Degree / Diploma & Specialty*</label>
+            <input type="text" id="education" name="education" />
+          </div>
+          <div className="form-group m-t">
+            <label htmlFor="nameSchool">Name of the school *</label>
+            <input type="text" id="nameSchool" name="nameSchool" />
+          </div>
+          <div className="form-group m-t">
+            <label htmlFor="infoSchool">Information of the school *</label>
+            <input type="text" id="infoSchool" name="infoSchool" />
+          </div>
+          <button className="main-button m-t" type="submit">
+            Submit
+          </button>
+        </form>
+      )}
     </section>
   );
 });

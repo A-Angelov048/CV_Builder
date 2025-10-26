@@ -1,13 +1,23 @@
 import styles from "./Projects.module.css";
-import { forwardRef } from "react";
+import { forwardRef, useState } from "react";
 import { Link } from "react-router-dom";
+import HeadingContainer from "../heading-container/HeadingContainer";
 
 export default forwardRef<HTMLDivElement>(function Projects(_, ref) {
+  const [flagForm, setFlagForm] = useState(true);
+
+  const changeState = (value: boolean) => {
+    setFlagForm(value);
+  };
+
   return (
     <section ref={ref}>
-      <div className="heading-container">
-        <h2 className="title">PROJECTS</h2>
-      </div>
+      <HeadingContainer
+        header={"PROJECTS"}
+        status={flagForm}
+        changeStatus={changeState}
+      />
+
       <div className={styles["project-container"]}>
         <div className={styles["projects-grid"]}>
           <div className={styles["project-card"]}>
@@ -93,29 +103,36 @@ export default forwardRef<HTMLDivElement>(function Projects(_, ref) {
           </div>
         </div>
       </div>
-      <form className="grid-form max-width">
-        <div className="form-group m-t">
-          <label htmlFor="nameProject">Name of the project *</label>
-          <input type="text" id="nameProject" name="nameProject" />
-        </div>
-        <div className="form-group m-t">
-          <label htmlFor="urlProject">URL of the project *</label>
-          <input type="text" id="urlProject" name="urlProject" />
-        </div>
-        <div className="form-group m-t">
-          <label htmlFor="screenshotProject">
-            Screenshot (by URL) of the project *
-          </label>
-          <input type="text" id="screenshotProject" name="screenshotProject" />
-        </div>
-        <div className="form-group m-t">
-          <label htmlFor="brief">URL of brief project documentation</label>
-          <input type="text" id="brief" name="brief" />
-        </div>
-        <button className="main-button m-t" type="submit">
-          Submit
-        </button>
-      </form>
+
+      {!flagForm && (
+        <form className="grid-form max-width">
+          <div className="form-group m-t">
+            <label htmlFor="nameProject">Name of the project *</label>
+            <input type="text" id="nameProject" name="nameProject" />
+          </div>
+          <div className="form-group m-t">
+            <label htmlFor="urlProject">URL of the project *</label>
+            <input type="text" id="urlProject" name="urlProject" />
+          </div>
+          <div className="form-group m-t">
+            <label htmlFor="screenshotProject">
+              Screenshot (by URL) of the project *
+            </label>
+            <input
+              type="text"
+              id="screenshotProject"
+              name="screenshotProject"
+            />
+          </div>
+          <div className="form-group m-t">
+            <label htmlFor="brief">URL of brief project documentation</label>
+            <input type="text" id="brief" name="brief" />
+          </div>
+          <button className="main-button m-t" type="submit">
+            Submit
+          </button>
+        </form>
+      )}
     </section>
   );
 });
