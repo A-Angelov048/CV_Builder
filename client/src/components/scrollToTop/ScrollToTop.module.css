@@ -1,0 +1,38 @@
+.scroll-to-top {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  background-color: #333;
+  font-size: 24px;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.scroll-to-top.visible {
+  opacity: 1;
+}
+
+.scroll-to-top:hover {
+  background: #004aad;
+}
+
+.scroll-to-top:active {
+  transform: scale(1.2);
+}
+
+@media (max-width: 768px) {
+  .scroll-to-top {
+    bottom: 16px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+}
