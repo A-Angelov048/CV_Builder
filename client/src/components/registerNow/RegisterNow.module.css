@@ -1,0 +1,22 @@
+.register-now {
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
+  background-color: #f1f1f1;
+}
+
+.register-container {
+  padding: 40px 20px;
+}
+
+.register-now h3 {
+  font-size: 1.6rem;
+}
+
+.register-now strong {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.register-now strong:hover {
+  color: #004aad;
+}
