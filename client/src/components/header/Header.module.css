@@ -92,6 +92,10 @@
     transition: all 0.4s ease;
   }
 
+  .nav-links li span {
+    color: #f1f1f1;
+  }
+
   .nav-links li a {
     color: #f1f1f1;
     font-size: 28px;

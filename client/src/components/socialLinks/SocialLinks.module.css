@@ -9,15 +9,17 @@
   display: flex;
   justify-content: center;
   background: #f1f1f1;
-  padding: 15px;
+  padding: 20px;
   margin: 0 10px;
   border: solid 1px #333;
   border-radius: 6px;
 }
 
 .social-links a {
+  display: flex;
+  align-items: center;
   margin: 0 10px;
-  font-size: 20px;
+  font-size: 24px;
 }
 
 .social-links a:hover {

@@ -9,7 +9,7 @@
 }
 
 .register-now h3 {
-  font-size: 1.6rem;
+  font-size: 22px;
 }
 
 .register-now strong {
@@ -19,4 +19,13 @@
 
 .register-now strong:hover {
   color: #004aad;
+}
+
+@media (max-width: 768px) {
+  .register-container {
+    padding: 20px 10px;
+  }
+  .register-now h3 {
+    font-size: initial;
+  }
 }

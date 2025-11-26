@@ -49,19 +49,19 @@ export default forwardRef<HTMLDivElement>(function ContactMe(_, ref) {
 
           <div className={styles["social-icons"]}>
             <Link to="#">
-              <i className="bx bxl-linkedin-square bx-md"></i>
+              <i className="bx bxl-linkedin-square"></i>
             </Link>
             <Link to="#">
-              <i className="bx bxl-telegram bx-md"></i>
+              <i className="bx bxl-telegram"></i>
             </Link>
             <Link to="#">
-              <i className="bx bxl-github bx-md"></i>
+              <i className="bx bxl-github"></i>
             </Link>
             <Link to="#">
-              <i className="bx bxl-facebook bx-md"></i>
+              <i className="bx bxl-facebook"></i>
             </Link>
             <Link to="#">
-              <i className="bx bxl-instagram bx-md"></i>
+              <i className="bx bxl-instagram"></i>
             </Link>
           </div>
         </div>

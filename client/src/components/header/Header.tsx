@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import styles from "./Header.module.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
@@ -14,6 +15,7 @@ type HeaderProps = {
 };
 
 export default function Header({ scrollFunc }: HeaderProps) {
+  const checkboxRef = useRef<HTMLInputElement | null>(null);
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
@@ -22,6 +24,10 @@ export default function Header({ scrollFunc }: HeaderProps) {
       navigate("/", { state: { ref } });
     } else {
       scrollFunc(ref);
+    }
+
+    if (checkboxRef.current?.checked) {
+      checkboxRef.current.checked = false;
     }
   };
   return (
@@ -32,7 +38,7 @@ export default function Header({ scrollFunc }: HeaderProps) {
         </Link>
       </div>
       <nav>
-        <input type="checkbox" id={styles["menu-toggle"]} />
+        <input type="checkbox" id={styles["menu-toggle"]} ref={checkboxRef} />
         <label htmlFor={styles["menu-toggle"]} className={styles["menu-icon"]}>
           <span></span>
           <span></span>

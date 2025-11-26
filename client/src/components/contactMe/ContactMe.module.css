@@ -53,6 +53,10 @@
   gap: 20px;
 }
 
+.social-icons i {
+  font-size: 24px;
+}
+
 .social-icons i:hover {
   color: #004aad;
 }
@@ -60,7 +64,7 @@
 @media (max-width: 768px) {
   .contact-container {
     display: block;
-    padding: 40px 10px;
+    padding: 20px 10px;
   }
 
   .contact-form {
@@ -69,5 +73,13 @@
 
   .divider {
     display: none;
+  }
+
+  .contact-info h3 {
+    font-size: 16px;
+  }
+
+  .social-icons {
+    justify-content: center;
   }
 }
