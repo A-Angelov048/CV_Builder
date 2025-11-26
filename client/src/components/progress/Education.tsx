@@ -1,8 +1,12 @@
 import styles from "./Progress.module.css";
 import { forwardRef, useState } from "react";
 import HeadingContainer from "../heading-container/HeadingContainer";
+import { useInView } from "../../hooks/useInView";
 
 export default forwardRef<HTMLDivElement>(function Education(_, ref) {
+  const { refView, isInView } = useInView({
+    threshold: 0.2,
+  });
   const [flagForm, setFlagForm] = useState(true);
 
   const changeState = (value: boolean) => {
@@ -18,16 +22,24 @@ export default forwardRef<HTMLDivElement>(function Education(_, ref) {
       />
 
       <div className="container">
-        <div className={styles.timeline}>
+        <div ref={refView} className={styles.timeline}>
           <div className={styles["timeline-item"]}>
-            <div className={styles["timeline-left"]}>
+            <div
+              className={`${styles["timeline-left"]} ${
+                isInView ? styles.slideInLeftVisible : styles.slideInLeft
+              }`}
+            >
               <span className={styles.year}>2035-2035</span>
               <span className={styles.role}>Executive</span>
             </div>
             <div className={styles["timeline-separator"]}>
               <i className="bx bxs-circle"></i>
             </div>
-            <div className={styles["timeline-right"]}>
+            <div
+              className={`${styles["timeline-right"]} ${
+                isInView ? styles.slideInRightVisible : styles.slideInRight
+              }`}
+            >
               <div className={styles["company-container"]}>
                 <h3 className={styles.company}>Company Name</h3>
                 <i className="bx bx-trash"></i>
@@ -43,14 +55,22 @@ export default forwardRef<HTMLDivElement>(function Education(_, ref) {
           </div>
 
           <div className={styles["timeline-item"]}>
-            <div className={styles["timeline-left"]}>
+            <div
+              className={`${styles["timeline-left"]} ${
+                isInView ? styles.slideInLeftVisible : styles.slideInLeft
+              }`}
+            >
               <span className={styles.year}>2035-2035</span>
               <span className={styles.role}>Lawyer</span>
             </div>
             <div className={styles["timeline-separator"]}>
               <i className="bx bxs-circle"></i>
             </div>
-            <div className={styles["timeline-right"]}>
+            <div
+              className={`${styles["timeline-right"]} ${
+                isInView ? styles.slideInRightVisible : styles.slideInRight
+              }`}
+            >
               <div className={styles["company-container"]}>
                 <h3 className={styles.company}>Company Name</h3>
                 <i className="bx bx-trash"></i>
@@ -66,14 +86,22 @@ export default forwardRef<HTMLDivElement>(function Education(_, ref) {
           </div>
 
           <div className={styles["timeline-item"]}>
-            <div className={styles["timeline-left"]}>
+            <div
+              className={`${styles["timeline-left"]} ${
+                isInView ? styles.slideInLeftVisible : styles.slideInLeft
+              }`}
+            >
               <span className={styles.year}>2035-2035</span>
               <span className={styles.role}>Internship</span>
             </div>
             <div className={styles["timeline-separator"]}>
               <i className="bx bxs-circle"></i>
             </div>
-            <div className={styles["timeline-right"]}>
+            <div
+              className={`${styles["timeline-right"]} ${
+                isInView ? styles.slideInRightVisible : styles.slideInRight
+              }`}
+            >
               <div className={styles["company-container"]}>
                 <h3 className={styles.company}>Company Name</h3>
                 <i className="bx bx-trash"></i>

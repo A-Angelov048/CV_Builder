@@ -1,8 +1,12 @@
 import styles from "./Skills.module.css";
 import { forwardRef, useState } from "react";
 import HeadingContainer from "../heading-container/HeadingContainer";
+import { useInView } from "../../hooks/useInView";
 
 export default forwardRef<HTMLDivElement>(function Skills(_, ref) {
+  const { refView, isInView } = useInView({
+    threshold: 0.6,
+  });
   const [flagForm, setFlagForm] = useState(true);
 
   const changeState = (value: boolean) => {
@@ -17,28 +21,52 @@ export default forwardRef<HTMLDivElement>(function Skills(_, ref) {
         changeStatus={changeState}
       />
 
-      <div className={styles["skills-grid"]}>
-        <div className={styles["skill-box"]}>
+      <div ref={refView} className={styles["skills-grid"]}>
+        <div
+          className={`${styles["skill-box"]} ${
+            isInView ? styles.fadeInUp : styles.fadeOut
+          }`}
+        >
           <p>Microsoft Excel - Advanced</p>
           <i className="bx bx-trash"></i>
         </div>
-        <div className={styles["skill-box"]}>
+        <div
+          className={`${styles["skill-box"]} ${
+            isInView ? styles.fadeInUp : styles.fadeOut
+          }`}
+        >
           <p>Adobe - Proficient</p>
           <i className="bx bx-trash"></i>
         </div>
-        <div className={styles["skill-box"]}>
+        <div
+          className={`${styles["skill-box"]} ${
+            isInView ? styles.fadeInUp : styles.fadeOut
+          }`}
+        >
           <p>Microsoft Word - Advanced</p>
           <i className="bx bx-trash"></i>
         </div>
-        <div className={styles["skill-box"]}>
+        <div
+          className={`${styles["skill-box"]} ${
+            isInView ? styles.fadeInUp : styles.fadeOut
+          }`}
+        >
           <p>French - Mother Tongue</p>
           <i className="bx bx-trash"></i>
         </div>
-        <div className={styles["skill-box"]}>
+        <div
+          className={`${styles["skill-box"]} ${
+            isInView ? styles.fadeInUp : styles.fadeOut
+          }`}
+        >
           <p>Power Point - Proficient</p>
           <i className="bx bx-trash"></i>
         </div>
-        <div className={styles["skill-box"]}>
+        <div
+          className={`${styles["skill-box"]} ${
+            isInView ? styles.fadeInUp : styles.fadeOut
+          }`}
+        >
           <p>Spanish - Advanced</p>
           <i className="bx bx-trash"></i>
         </div>

@@ -22,7 +22,6 @@
 
   opacity: 0;
   transform: translateY(30px);
-  animation: fadeInUp 1.6s ease forwards;
 }
 
 .skill-box i {
@@ -33,15 +32,15 @@
   cursor: pointer;
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.fadeOut {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.fadeInUp {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 1.2s ease-out;
 }
 
 @media (max-width: 768px) {
