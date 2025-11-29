@@ -1,14 +1,11 @@
 import styles from "./Projects.module.css";
-import { forwardRef, useState } from "react";
+import { forwardRef } from "react";
 import { Link } from "react-router-dom";
 import HeadingContainer from "../heading-container/HeadingContainer";
+import useHandleForm from "../../hooks/useHandleForm";
 
 export default forwardRef<HTMLDivElement>(function Projects(_, ref) {
-  const [flagForm, setFlagForm] = useState(true);
-
-  const changeState = (value: boolean) => {
-    setFlagForm(value);
-  };
+  const { flagForm, changeState } = useHandleForm(true);
 
   return (
     <section ref={ref}>

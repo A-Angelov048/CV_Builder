@@ -1,17 +1,14 @@
+import useHandleForm from "../../hooks/useHandleForm";
 import { useInView } from "../../hooks/useInView";
 import HeadingContainer from "../heading-container/HeadingContainer";
 import styles from "./Progress.module.css";
-import { forwardRef, useState } from "react";
+import { forwardRef } from "react";
 
 export default forwardRef<HTMLDivElement>(function Experience(_, ref) {
   const { refView, isInView } = useInView({
     threshold: 0.2,
   });
-  const [flagForm, setFlagForm] = useState(true);
-
-  const changeState = (value: boolean) => {
-    setFlagForm(value);
-  };
+  const { flagForm, changeState } = useHandleForm(true);
 
   return (
     <section ref={ref}>
