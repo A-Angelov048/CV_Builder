@@ -1,14 +1,37 @@
 import styles from "./Progress.module.css";
 import { forwardRef } from "react";
+import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import HeadingContainer from "../heading-container/HeadingContainer";
+import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
 import { useInView } from "../../hooks/useInView";
 import useHandleForm from "../../hooks/useHandleForm";
+import {
+  educationSchema,
+  type EducationValues,
+} from "../../validation/formSchema";
+import { ErrorSnackbar } from "../errorModal/ErrorSnackbar";
 
 export default forwardRef<HTMLDivElement>(function Education(_, ref) {
   const { refView, isInView } = useInView({
     threshold: 0.2,
   });
   const { flagForm, changeState } = useHandleForm(true);
+
+  const { open, messages, close, handleErrors } = useFormErrorSnackbar();
+
+  const { register, handleSubmit } = useForm<EducationValues>({
+    resolver: zodResolver(educationSchema),
+  });
+
+  const onSubmit: SubmitHandler<EducationValues> = (data) => {
+    console.log("Form submitted:", data);
+  };
+
+  const onError = (formErrors: FieldErrors<EducationValues>) => {
+    handleErrors(formErrors);
+  };
 
   return (
     <section ref={ref}>
@@ -116,27 +139,37 @@ export default forwardRef<HTMLDivElement>(function Education(_, ref) {
       </div>
 
       {!flagForm && (
-        <form className="grid-form max-width">
-          <div className="form-group m-t">
-            <label htmlFor="yearsEducation">Years & Place education *</label>
-            <input type="text" id="yearsEducation" name="yearsEducation" />
-          </div>
-          <div className="form-group m-t">
-            <label htmlFor="education">Degree / Diploma & Specialty*</label>
-            <input type="text" id="education" name="education" />
-          </div>
-          <div className="form-group m-t">
-            <label htmlFor="nameSchool">Name of the school *</label>
-            <input type="text" id="nameSchool" name="nameSchool" />
-          </div>
-          <div className="form-group m-t">
-            <label htmlFor="infoSchool">Information of the school *</label>
-            <input type="text" id="infoSchool" name="infoSchool" />
-          </div>
-          <button className="main-button m-t" type="submit">
-            Submit
-          </button>
-        </form>
+        <>
+          <form
+            onSubmit={handleSubmit(onSubmit, onError)}
+            className="grid-form max-width"
+          >
+            <div className="form-group m-t">
+              <label htmlFor="yearsEducation">Years of education *</label>
+              <input
+                type="text"
+                id="yearsEducation"
+                {...register("yearsEducation")}
+              />
+            </div>
+            <div className="form-group m-t">
+              <label htmlFor="degree">Degree / Diploma & Specialty*</label>
+              <input type="text" id="degree" {...register("degree")} />
+            </div>
+            <div className="form-group m-t">
+              <label htmlFor="nameSchool">Name of the school *</label>
+              <input type="text" id="nameSchool" {...register("nameSchool")} />
+            </div>
+            <div className="form-group m-t">
+              <label htmlFor="infoSchool">Information of the school *</label>
+              <input type="text" id="infoSchool" {...register("infoSchool")} />
+            </div>
+            <button className="main-button m-t" type="submit">
+              Submit
+            </button>
+          </form>
+          <ErrorSnackbar open={open} messages={messages} onClose={close} />
+        </>
       )}
     </section>
   );
