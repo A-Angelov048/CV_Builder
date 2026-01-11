@@ -1,21 +1,43 @@
 import styles from "./guestPages.module.css";
 import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
 import { loginSchema, type LoginValues } from "../../validation/formSchema";
 import { ErrorSnackbar } from "../../components/errorModal/ErrorSnackbar";
+import { useAuth, type AccessTokenBE } from "../../hooks/useAuth";
+import { useAxiosPrivate } from "../../hooks/useAxiosPrivate";
+import { useEffect } from "react";
 
 export default function Login() {
+  const navigate = useNavigate();
+  const { state } = useLocation();
+
+  const api = useAxiosPrivate();
+  const { changeAuthState } = useAuth();
   const { open, messages, close, handleErrors } = useFormErrorSnackbar();
 
   const { register, handleSubmit } = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit: SubmitHandler<LoginValues> = (data) => {
-    console.log("Form submitted:", data);
+  useEffect(() => {
+    if (state && state.message) {
+      handleErrors({ err: { message: state.message } });
+    }
+  }, []);
+
+  const onSubmit: SubmitHandler<LoginValues> = async (data) => {
+    try {
+      const token: AccessTokenBE = await api.post("/auth/login", data);
+
+      changeAuthState(token.data);
+      sessionStorage.setItem("isLoggedIn", "true");
+      navigate(`/${token.data.username}`);
+    } catch (err: any) {
+      handleErrors({ err: err.response.data });
+    }
   };
 
   const onError = (formErrors: FieldErrors<LoginValues>) => {

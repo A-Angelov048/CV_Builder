@@ -1,6 +1,7 @@
-import { useRef } from "react";
 import styles from "./Header.module.css";
+import { useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
 
 type Section =
   | "about"
@@ -15,9 +16,10 @@ type HeaderProps = {
 };
 
 export default function Header({ scrollFunc }: HeaderProps) {
+  const navigate = useNavigate();
   const checkboxRef = useRef<HTMLInputElement | null>(null);
   const { pathname } = useLocation();
-  const navigate = useNavigate();
+  const { authData, logoutUser } = useAuth();
 
   const handleScroll = (ref: Section) => {
     if (pathname !== "/") {
@@ -63,6 +65,11 @@ export default function Header({ scrollFunc }: HeaderProps) {
           <li>
             <span onClick={() => handleScroll("contact")}>Contact</span>
           </li>
+          {authData.accessToken && (
+            <li>
+              <span onClick={logoutUser}>Logout</span>
+            </li>
+          )}
         </ul>
       </nav>
     </header>

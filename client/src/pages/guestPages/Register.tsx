@@ -1,7 +1,7 @@
 import styles from "./guestPages.module.css";
 import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
 import {
@@ -9,16 +9,29 @@ import {
   type RegisterValues,
 } from "../../validation/formSchema";
 import { ErrorSnackbar } from "../../components/errorModal/ErrorSnackbar";
+import { useAuth, type AccessTokenBE } from "../../hooks/useAuth";
+import { useAxiosPrivate } from "../../hooks/useAxiosPrivate";
 
 export default function Register() {
+  const navigate = useNavigate();
+  const api = useAxiosPrivate();
+  const { changeAuthState } = useAuth();
   const { open, messages, close, handleErrors } = useFormErrorSnackbar();
 
   const { register, handleSubmit } = useForm<RegisterValues>({
     resolver: zodResolver(registerSchema),
   });
 
-  const onSubmit: SubmitHandler<RegisterValues> = (data) => {
-    console.log("Form submitted:", data);
+  const onSubmit: SubmitHandler<RegisterValues> = async (data) => {
+    try {
+      const token: AccessTokenBE = await api.post("/auth/register", data);
+
+      changeAuthState(token.data);
+      sessionStorage.setItem("isLoggedIn", "true");
+      navigate(`/${token.data.username}`);
+    } catch (err: any) {
+      handleErrors({ err: err.response.data });
+    }
   };
 
   const onError = (formErrors: FieldErrors<RegisterValues>) => {

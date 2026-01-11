@@ -6,6 +6,9 @@ import Projects from "../components/projects/Projects";
 import Skills from "../components/skills/Skills";
 import SocialLinks from "../components/socialLinks/SocialLinks";
 import RegisterNow from "../components/registerNow/RegisterNow";
+import { useEffect } from "react";
+import { useAxiosPrivate } from "../hooks/useAxiosPrivate";
+import { useParams } from "react-router-dom";
 
 type Section =
   | "about"
@@ -20,6 +23,18 @@ type HomeCVProps = {
 };
 
 export default function HomeCV({ sectionRefs }: HomeCVProps) {
+  const { username } = useParams();
+  const api = useAxiosPrivate();
+
+  useEffect(() => {
+    (async () => {
+      try {
+        await api.get("/portfolio");
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
   return (
     <>
       <ProfileCard ref={(el) => void (sectionRefs.current.about = el)} />
