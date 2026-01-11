@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import path from "path";
 import userRouter from "./routes/userRoutes";
+import portfolioRouter from "./routes/portfolioRoutes";
 
 dotenv.config({
   path: path.resolve(__dirname, ".env"),
@@ -21,9 +22,6 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 app.use(userRouter);
-
-app.get("/", (req: any, res: any) => {
-  res.json({ message: "Hello BE!" });
-});
+app.use(portfolioRouter);
 
 export default app;
