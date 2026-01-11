@@ -1,7 +1,48 @@
-import util from "util";
-import jwt from "jsonwebtoken";
+import jwt, { SignOptions, VerifyOptions, Secret } from "jsonwebtoken";
 
-const sign = util.promisify(jwt.sign);
-const verify = util.promisify(jwt.verify);
+interface JwtSignData {
+  token: {
+    userId: string | object;
+  };
+  secret: Secret;
+  options?: SignOptions;
+}
 
-module.exports = { sign, verify };
+interface JwtVerifyData {
+  token: string;
+  secret: Secret;
+  options?: VerifyOptions;
+}
+
+function sign({ token, secret, options = {} }: JwtSignData): Promise<string> {
+  return new Promise((resolve, reject) => {
+    jwt.sign(token, secret, options, (err, encoded) => {
+      if (err) {
+        return reject(err);
+      }
+
+      resolve(encoded as string);
+    });
+  });
+}
+
+function verify({
+  token,
+  secret,
+  options = {},
+}: JwtVerifyData): Promise<object> {
+  return new Promise((resolve, reject) => {
+    jwt.verify(token, secret, options, (err, encoded) => {
+      if (err) {
+        return reject(err);
+      }
+
+      resolve(encoded as object);
+    });
+  });
+}
+
+export default {
+  sign,
+  verify,
+};

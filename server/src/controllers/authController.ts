@@ -1,11 +1,16 @@
 import { Request, Response } from "express";
-import { createUser, getUser, refreshService } from "../services/authService";
+import {
+  createUser,
+  getUser,
+  logoutService,
+  refreshService,
+} from "../services/authService";
 import { IUser } from "../models/user";
 
 export async function registerUser(req: Request<{}, {}, IUser>, res: Response) {
   try {
     const body = req.body;
-    const { accessToken, refreshToken } = await createUser(body);
+    const { username, accessToken, refreshToken } = await createUser(body);
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
@@ -15,7 +20,7 @@ export async function registerUser(req: Request<{}, {}, IUser>, res: Response) {
     });
 
     res.json({
-      message: "User registered",
+      username,
       accessToken,
     });
   } catch (err: any) {
@@ -27,7 +32,10 @@ export async function login(req: Request<{}, {}, IUser>, res: Response) {
   try {
     const { email, password } = req.body;
 
-    const { accessToken, refreshToken } = await getUser(email, password);
+    const { username, accessToken, refreshToken } = await getUser(
+      email,
+      password
+    );
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
@@ -37,7 +45,7 @@ export async function login(req: Request<{}, {}, IUser>, res: Response) {
     });
 
     res.json({
-      message: "Logged in",
+      username,
       accessToken,
     });
   } catch (err: any) {
@@ -46,12 +54,18 @@ export async function login(req: Request<{}, {}, IUser>, res: Response) {
 }
 
 export async function logout(req: Request, res: Response) {
-  try {
-    res.clearCookie("refreshToken");
-    res.json({ message: "Logged out" });
-  } catch {
-    res.status(500).json({ message: "Server error" });
+  const token: string = req.cookies.refreshToken;
+
+  if (token) {
+    await logoutService(token);
   }
+
+  res.clearCookie("refreshToken", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  });
+  res.json({ message: "Logged out" });
 }
 
 export const refresh = async (req: Request, res: Response) => {
@@ -59,10 +73,13 @@ export const refresh = async (req: Request, res: Response) => {
     const token: string = req.cookies.refreshToken;
     if (!token) return res.status(401).json({ message: "No refresh token" });
 
-    const accessToken = await refreshService(token);
+    const { username, accessToken } = await refreshService(token);
 
-    res.json({ accessToken });
+    res.json({
+      username,
+      accessToken,
+    });
   } catch (err: any) {
-    res.status(403).json({ message: err.message });
+    res.status(401).json({ message: err.message });
   }
 };

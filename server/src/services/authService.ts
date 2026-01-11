@@ -1,6 +1,7 @@
-import { sign, verify } from "jsonwebtoken";
-import { User, IUser } from "../models/user";
 import bcrypt from "bcrypt";
+import jwt from "../utils/jwt";
+import { User, IUser } from "../models/user";
+import { jwtData } from "../types/mainTypes";
 
 export const createUser = async (body: IUser) => {
   const [username, email] = await Promise.all([
@@ -22,13 +23,13 @@ export const createUser = async (body: IUser) => {
     password: hashed,
   });
 
-  const accessToken = createAccessToken(createdUser._id.toString());
-  const refreshToken = createRefreshToken(createdUser._id.toString());
+  const accessToken = await createAccessToken(createdUser._id.toString());
+  const refreshToken = await createRefreshToken(createdUser._id.toString());
 
-  createdUser.refreshToken = refreshToken;
+  createdUser.refreshToken?.push(refreshToken);
   await createdUser.save();
 
-  return { accessToken, refreshToken };
+  return { username: createdUser.username, accessToken, refreshToken };
 };
 
 export const getUser = async (email: string, password: string) => {
@@ -44,34 +45,50 @@ export const getUser = async (email: string, password: string) => {
     throw new Error("Email or Password invalid.");
   }
 
-  const accessToken = createAccessToken(user._id.toString());
-  const refreshToken = createRefreshToken(user._id.toString());
+  const accessToken = await createAccessToken(user._id.toString());
+  const refreshToken = await createRefreshToken(user._id.toString());
 
-  user.refreshToken = refreshToken;
+  user.refreshToken?.push(refreshToken);
   await user.save();
 
-  return { accessToken, refreshToken };
+  return { username: user.username, accessToken, refreshToken };
 };
 
 export const refreshService = async (token: string) => {
-  const decoded: any = verify(token, process.env.REFRESH_SECRET as string);
+  const decoded = (await jwt.verify({
+    token,
+    secret: process.env.REFRESH_SECRET as string,
+  })) as jwtData;
 
   const user = await User.findById(decoded.userId);
-  if (!user || user.refreshToken !== token) throw new Error("Unauthorized");
+  const isTokenValid = user?.refreshToken?.find((x) => x === token);
 
-  const accessToken = createAccessToken(user._id.toString());
+  if (!user || !isTokenValid) throw new Error("Unauthorized");
 
-  return accessToken;
+  const accessToken = await createAccessToken(user._id.toString());
+
+  return { username: user.username, accessToken };
 };
 
-const createAccessToken = (userId: string) => {
-  return sign({ userId }, process.env.JWT_SECRET as string, {
-    expiresIn: "15m",
+export const logoutService = async (token: string) => {
+  const test = await User.updateOne(
+    { refreshToken: token },
+    { $pull: { refreshToken: token } }
+  );
+};
+
+const createAccessToken = (id: string) => {
+  return jwt.sign({
+    token: { userId: id },
+    secret: process.env.JWT_SECRET as string,
+    options: { expiresIn: "15m" },
   });
 };
 
-const createRefreshToken = (userId: string) => {
-  return sign({ userId }, process.env.REFRESH_SECRET as string, {
-    expiresIn: "7d",
+const createRefreshToken = (id: string) => {
+  return jwt.sign({
+    token: { userId: id },
+    secret: process.env.REFRESH_SECRET as string,
+    options: { expiresIn: "7d" },
   });
 };

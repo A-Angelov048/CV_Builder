@@ -4,7 +4,7 @@ export interface IUser extends Document {
   username: string;
   email: string;
   password: string;
-  refreshToken?: string;
+  refreshToken?: string[];
 }
 
 const UserSchema = new Schema<IUser>(
@@ -13,11 +13,13 @@ const UserSchema = new Schema<IUser>(
       type: String,
       required: true,
       minLength: [5, "Username should be at least 5 characters long."],
+      unique: true,
     },
     email: {
       type: String,
       required: true,
       minLength: [10, "Email should be at least 10 characters long."],
+      unique: true,
     },
     password: {
       type: String,
@@ -25,7 +27,8 @@ const UserSchema = new Schema<IUser>(
       minLength: [6, "Password should be at least 6 characters long."],
     },
     refreshToken: {
-      type: String,
+      type: [String],
+      default: [],
     },
   },
   { timestamps: true }
