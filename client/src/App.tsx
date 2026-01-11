@@ -5,9 +5,10 @@ import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 import HomeCV from "./pages/HomeCV";
 import Register from "./pages/guestPages/Register";
+import Login from "./pages/guestPages/Login";
 
 import { useScroll } from "./hooks/useScroll";
-import Login from "./pages/guestPages/Login";
+import { ContextProvider } from "./context/authContext";
 
 type Section =
   | "about"
@@ -28,18 +29,22 @@ export default function App() {
   ]);
 
   return (
-    <>
+    <ContextProvider>
       <Header scrollFunc={scrollToSection} />
 
       <ScrollToTop scrollUp={scrollToUp}>
         <Routes>
           <Route path="/" element={<HomeCV sectionRefs={sectionRefs} />} />
+          <Route
+            path="/:username"
+            element={<HomeCV sectionRefs={sectionRefs} />}
+          />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
         </Routes>
       </ScrollToTop>
 
       <Footer />
-    </>
+    </ContextProvider>
   );
 }
