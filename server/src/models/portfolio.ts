@@ -1,22 +1,44 @@
 import { Schema, model, Types } from "mongoose";
+import { Portfolio } from "../types/portfolioTypes";
 
-const PortfolioSchema = new Schema(
+const PortfolioSchema = new Schema<Portfolio>(
   {
     owner: {
       type: Types.ObjectId,
-      required: true,
       ref: "User",
+      required: true,
+      unique: true,
+    },
+
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+      minLength: [5, "Username should be at least 5 characters long."],
     },
 
     about: {
-      name: { type: String, required: true },
-      career: { type: String, required: true },
-      phone: { type: String, required: true },
-      email: { type: String, required: true },
-      address: { type: String, required: true },
-      date: { type: String, required: true },
-      imageProfile: { type: String, required: true },
-      imageBackground: { type: String, required: true },
+      name: { type: String, required: true, minLength: 5 },
+      career: { type: String, required: true, minLength: 5 },
+      phone: {
+        type: String,
+        required: true,
+        match: [
+          /^\+359[- ]?\d{3}[- ]?\d{3}[- ]?\d{3}$/,
+          "Invalid phone number (example: +359 111 222 333)",
+        ],
+      },
+      email: { type: String, required: true, minLength: 10 },
+      address: { type: String, required: true, minLength: 5 },
+      date: { type: String, required: true, minLength: 5 },
+      imageProfile: {
+        image: { type: String, required: true },
+        public_id: { type: String, required: true },
+      },
+      imageBackground: {
+        image: { type: String, required: true },
+        public_id: { type: String, required: true },
+      },
     },
 
     links: {
@@ -80,7 +102,7 @@ const PortfolioSchema = new Schema(
       default: false,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-export const PortfolioModel = model("Portfolio", PortfolioSchema);
+export const PortfolioModel = model<Portfolio>("Portfolio", PortfolioSchema);

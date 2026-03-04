@@ -1,26 +1,19 @@
 import express from "express";
-import cors from "cors";
-import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import path from "path";
 import userRouter from "./routes/userRoutes";
 import portfolioRouter from "./routes/portfolioRoutes";
+import cloudinaryConfig from "./config/cloudinary";
+import expressConfig from "./config/expressConfig";
 
 dotenv.config({
   path: path.resolve(__dirname, ".env"),
 });
 
 const app = express();
+cloudinaryConfig();
+expressConfig(app);
 
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL,
-    credentials: true,
-  })
-);
-
-app.use(express.json());
-app.use(cookieParser());
 app.use(userRouter);
 app.use(portfolioRouter);
 

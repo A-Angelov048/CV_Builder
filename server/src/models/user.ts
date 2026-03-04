@@ -4,7 +4,7 @@ export interface IUser extends Document {
   username: string;
   email: string;
   password: string;
-  refreshToken?: string[];
+  refreshToken: string[];
 }
 
 const UserSchema = new Schema<IUser>(
@@ -12,8 +12,8 @@ const UserSchema = new Schema<IUser>(
     username: {
       type: String,
       required: true,
-      minLength: [5, "Username should be at least 5 characters long."],
       unique: true,
+      minLength: [5, "Username should be at least 5 characters long."],
     },
     email: {
       type: String,
@@ -31,7 +31,7 @@ const UserSchema = new Schema<IUser>(
       default: [],
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const User = mongoose.model<IUser>("User", UserSchema);

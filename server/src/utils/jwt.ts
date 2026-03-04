@@ -3,6 +3,7 @@ import jwt, { SignOptions, VerifyOptions, Secret } from "jsonwebtoken";
 interface JwtSignData {
   token: {
     userId: string | object;
+    username: string;
   };
   secret: Secret;
   options?: SignOptions;

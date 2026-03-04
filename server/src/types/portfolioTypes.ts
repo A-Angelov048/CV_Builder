@@ -1,3 +1,4 @@
+import { Document, Types } from "mongoose";
 export interface About {
   name: string;
   career: string;
@@ -5,8 +6,8 @@ export interface About {
   email: string;
   address: string;
   date: string;
-  imageProfile: string;
-  imageBackground: string;
+  imageProfile: { image: string; public_id: string };
+  imageBackground: { image: string; public_id: string };
 }
 
 export interface Links {
@@ -45,13 +46,16 @@ export interface Education {
   activity: string;
 }
 
-export interface Portfolio {
-  owner: string;
+export interface Portfolio extends Document {
+  owner: Types.ObjectId;
+  username: string;
+
   about: About;
   links: Links;
   skills: Skills[];
   projects: Project[];
   experience: Experience[];
   education: Education[];
+
   isPublished: boolean;
 }

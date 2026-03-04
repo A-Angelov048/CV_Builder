@@ -10,7 +10,8 @@ import { IUser } from "../models/user";
 export async function registerUser(req: Request<{}, {}, IUser>, res: Response) {
   try {
     const body = req.body;
-    const { username, accessToken, refreshToken } = await createUser(body);
+    const { userId, username, accessToken, refreshToken } =
+      await createUser(body);
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
@@ -20,6 +21,7 @@ export async function registerUser(req: Request<{}, {}, IUser>, res: Response) {
     });
 
     res.json({
+      userId,
       username,
       accessToken,
     });
@@ -32,9 +34,9 @@ export async function login(req: Request<{}, {}, IUser>, res: Response) {
   try {
     const { email, password } = req.body;
 
-    const { username, accessToken, refreshToken } = await getUser(
+    const { userId, username, accessToken, refreshToken } = await getUser(
       email,
-      password
+      password,
     );
 
     res.cookie("refreshToken", refreshToken, {
@@ -45,6 +47,7 @@ export async function login(req: Request<{}, {}, IUser>, res: Response) {
     });
 
     res.json({
+      userId,
       username,
       accessToken,
     });
@@ -71,11 +74,13 @@ export async function logout(req: Request, res: Response) {
 export const refresh = async (req: Request, res: Response) => {
   try {
     const token: string = req.cookies.refreshToken;
-    if (!token) return res.status(401).json({ message: "No refresh token" });
+    if (!token)
+      return res.status(401).json({ message: "Required a refresh token" });
 
-    const { username, accessToken } = await refreshService(token);
+    const { userId, username, accessToken } = await refreshService(token);
 
     res.json({
+      userId,
       username,
       accessToken,
     });

@@ -3,7 +3,8 @@ import jwt from "../utils/jwt";
 import { jwtData } from "../types/mainTypes";
 
 export interface AuthRequest extends Request {
-  userId?: string;
+  userId: string;
+  username: string;
 }
 
 export async function authMiddleware(
@@ -26,6 +27,7 @@ export async function authMiddleware(
     })) as jwtData;
 
     req.userId = decoded.userId;
+    req.username = decoded.username;
 
     next();
   } catch (err) {
