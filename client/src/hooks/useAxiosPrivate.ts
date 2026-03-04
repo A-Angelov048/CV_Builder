@@ -1,12 +1,10 @@
 import api from "../api/axios";
 import { useEffect } from "react";
 import { useAuth } from "./useAuth";
-import { useNavigate } from "react-router-dom";
 import type { AxiosError } from "axios";
 
 export const useAxiosPrivate = () => {
-  const navigate = useNavigate();
-  const { authData, refreshAccessToken, logoutUser } = useAuth();
+  const { authData, refreshAccessToken } = useAuth();
 
   useEffect(() => {
     const reqInterceptor = api.interceptors.request.use((config) => {
@@ -33,21 +31,18 @@ export const useAxiosPrivate = () => {
         ) {
           originalRequest._retry = true;
 
-          try {
-            const newToken = await refreshAccessToken();
+          const { newToken, isError } = await refreshAccessToken();
+
+          if (!isError) {
             originalRequest.headers.authorization = `Bearer ${newToken}`;
             return api(originalRequest);
-          } catch {
-            logoutUser();
-            navigate("/login", {
-              state: { message: "Session expired. Please log in again." },
-            });
+          } else {
             return Promise.reject(error);
           }
         }
 
         return Promise.reject(error);
-      }
+      },
     );
 
     return () => {

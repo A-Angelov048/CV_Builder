@@ -3,6 +3,7 @@ import { AuthContext } from "../context/authContext";
 
 export interface AccessTokenBE {
   data: {
+    userId: string;
     username: string;
     accessToken: string;
   };

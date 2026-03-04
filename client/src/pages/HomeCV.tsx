@@ -5,10 +5,13 @@ import Experience from "../components/progress/Experience";
 import Projects from "../components/projects/Projects";
 import Skills from "../components/skills/Skills";
 import SocialLinks from "../components/socialLinks/SocialLinks";
-import RegisterNow from "../components/registerNow/RegisterNow";
-import { useEffect } from "react";
-import { useAxiosPrivate } from "../hooks/useAxiosPrivate";
 import { useParams } from "react-router-dom";
+import {
+  useGetMyPortfolio,
+  useGetPublicPortfolio,
+} from "../hooks/usePortfolioResponse";
+import { useAuth } from "../hooks/useAuth";
+import RegisterNow from "../components/registerNow/RegisterNow";
 
 type Section =
   | "about"
@@ -23,18 +26,18 @@ type HomeCVProps = {
 };
 
 export default function HomeCV({ sectionRefs }: HomeCVProps) {
+  const { authData } = useAuth();
   const { username } = useParams();
-  const api = useAxiosPrivate();
 
-  useEffect(() => {
-    (async () => {
-      try {
-        await api.get("/portfolio");
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, []);
+  const isOwner =
+    authData.accessToken && username && authData.username === username;
+
+  const isPublicProfile =
+    username && (!authData.accessToken || authData.username !== username);
+
+  useGetMyPortfolio(isOwner);
+  useGetPublicPortfolio(username, isPublicProfile);
+
   return (
     <>
       <ProfileCard ref={(el) => void (sectionRefs.current.about = el)} />
@@ -44,7 +47,7 @@ export default function HomeCV({ sectionRefs }: HomeCVProps) {
       <Experience ref={(el) => void (sectionRefs.current.experience = el)} />
       <Education ref={(el) => void (sectionRefs.current.education = el)} />
       <ContactMe ref={(el) => void (sectionRefs.current.contact = el)} />
-      <RegisterNow />
+      {authData.accessToken === "" && <RegisterNow />}
     </>
   );
 }

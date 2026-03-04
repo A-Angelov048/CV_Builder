@@ -1,5 +1,5 @@
 .hero {
-  background-image: url(programming-background.jpg);
+  background-image: var(--bg-url);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;

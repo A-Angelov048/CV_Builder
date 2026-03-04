@@ -10,7 +10,9 @@
 }
 
 html {
-  font: 14px/1.6 Lato, sans-serif;
+  font:
+    14px/1.6 Lato,
+    sans-serif;
   color: #333;
 }
 
@@ -24,6 +26,10 @@ button {
 
 body {
   background: #fafafa;
+}
+
+body:has(.spinner-overlay) {
+  overflow: hidden;
 }
 
 #root {
@@ -168,6 +174,38 @@ button {
 .max-width {
   max-width: 850px;
   margin: 0 auto;
+}
+
+.spinner-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+}
+
+.spinner {
+  width: 64px;
+  aspect-ratio: 1 / 1;
+
+  border-style: solid;
+  border-color: rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  border-width: 6px;
+
+  animation: spinner-rotate 1s linear infinite;
+}
+
+@keyframes spinner-rotate {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (max-width: 768px) {

@@ -34,7 +34,7 @@ export default function Login() {
 
       changeAuthState(token.data);
       sessionStorage.setItem("isLoggedIn", "true");
-      navigate(`/${token.data.username}`);
+      navigate(`/${token.data.username}`, { replace: true });
     } catch (err: any) {
       handleErrors({ err: err.response.data });
     }

@@ -18,10 +18,16 @@ export function useFormErrorSnackbar() {
     setOpen(true);
   };
 
+  const handleCustomError = (message: string) => {
+    setMessages([message]);
+    setOpen(true);
+  };
+
   return {
     open,
     messages,
     close: () => setOpen(false),
     handleErrors,
+    handleCustomError,
   };
 }
