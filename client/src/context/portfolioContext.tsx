@@ -17,7 +17,14 @@ export interface Portfolio {
   username: string;
 
   about: AboutValues;
-  links?: {};
+  links?: {
+    linkedin: string;
+    telegram: string;
+    github: string;
+    facebook: string;
+    instagram: string;
+    shortInfo: string;
+  };
   skills?: [];
   projects?: [];
   experience?: [];
@@ -58,7 +65,9 @@ export function PortfolioProvider({ children }: ProfileProviderProps) {
   });
 
   const changePortfolioState = useCallback((state: Portfolio) => {
-    setPortfolio(state);
+    setPortfolio((oldState) => {
+      return { ...oldState, ...state };
+    });
   }, []);
 
   const changeLoadingState = useCallback((state: boolean) => {

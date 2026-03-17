@@ -51,7 +51,7 @@ export const updatePortfolioSection = async <T>(
     { owner: userId },
     { [operation]: { [section]: body } },
     { new: true, runValidators: true },
-  );
+  ).select(section === "about" ? "about username owner isPublished" : section);
 
   if (!portfolio) {
     throw new Error("Portfolio not found");

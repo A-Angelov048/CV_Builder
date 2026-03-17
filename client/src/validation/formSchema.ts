@@ -80,14 +80,15 @@ export type EducationValues = z.infer<typeof educationSchema>;
 
 export const loginSchema = z.object({
   email: z
-    .email("Please enter a valid email address.")
+    .string()
     .trim()
-    .min(5, "Email must be at least 5 characters long."),
+    .min(10, "Email must be at least 10 characters long.")
+    .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Please enter a valid email address."),
   password: z
     .string()
     .trim()
     .min(1, "Password is required.")
-    .min(5, "Password must be at least 5 characters long."),
+    .min(6, "Password must be at least 6 characters long."),
 });
 
 export type LoginValues = z.infer<typeof loginSchema>;
@@ -100,19 +101,23 @@ export const registerSchema = z
       .min(1, "Username is required.")
       .min(5, "Username must be at least 5 characters long."),
     email: z
-      .email("Please enter a valid email address.")
+      .string()
       .trim()
-      .min(5, "Email must be at least 5 characters long."),
+      .min(10, "Email must be at least 10 characters long.")
+      .regex(
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+        "Please enter a valid email address.",
+      ),
     password: z
       .string()
       .trim()
       .min(1, "password is required.")
-      .min(5, "password must be at least 5 characters long."),
+      .min(6, "password must be at least 6 characters long."),
     rePassword: z
       .string()
       .trim()
       .min(1, "rePassword is required.")
-      .min(5, "rePassword must be at least 5 characters long."),
+      .min(6, "rePassword must be at least 6 characters long."),
   })
   .refine((data) => data.password === data.rePassword, {
     message: "Passwords do not match",
@@ -125,17 +130,40 @@ export const socialLinkSchema = z.object({
   linkedin: z
     .string()
     .trim()
-    .min(1, "Linkedin profile is required.")
-    .min(5, "Linkedin profile must be at least 5 characters long."),
-  telegram: z.string().trim(),
-  github: z.string().trim(),
-  facebook: z.string().trim(),
-  instagram: z.string().trim(),
+    .regex(/^https?:\/\//, "URL should stars with http://... or https://..."),
+  telegram: z
+    .string()
+    .trim()
+    .regex(
+      /^(https?:\/\/.*)?$/,
+      "URL should stars with http://... or https://...",
+    ),
+  github: z
+    .string()
+    .trim()
+    .regex(
+      /^(https?:\/\/.*)?$/,
+      "URL should stars with http://... or https://...",
+    ),
+  facebook: z
+    .string()
+    .trim()
+    .regex(
+      /^(https?:\/\/.*)?$/,
+      "URL should stars with http://... or https://...",
+    ),
+  instagram: z
+    .string()
+    .trim()
+    .regex(
+      /^(https?:\/\/.*)?$/,
+      "URL should stars with http://... or https://...",
+    ),
   shortInfo: z
     .string()
     .trim()
     .min(1, "Short info is required.")
-    .min(5, "Short info must be at least 5 characters long."),
+    .min(10, "Short info must be at least 10 characters long."),
 });
 
 export type SocialLinkValues = z.infer<typeof socialLinkSchema>;
@@ -160,9 +188,10 @@ export const profileCardSchema = z.object({
     )
     .min(1, "Phone number is required."),
   email: z
-    .email("Please enter a valid email address.")
+    .string()
     .trim()
-    .min(10, "Email must be at least 10 characters long."),
+    .min(10, "Email must be at least 10 characters long.")
+    .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Please enter a valid email address."),
   address: z
     .string()
     .trim()

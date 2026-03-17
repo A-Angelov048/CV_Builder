@@ -4,7 +4,7 @@ import {
   createPortfolioController,
   getMyPortfolioController,
   getPublicPortfolioController,
-  updateLinksController,
+  createLinksController,
   updateSkillsController,
   updateExperienceController,
   updateProjectsController,
@@ -19,8 +19,8 @@ router.get("/portfolio/me", authMiddleware, getMyPortfolioController);
 router.get("/portfolio/public/:username", getPublicPortfolioController);
 
 router.post("/portfolio", authMiddleware, createPortfolioController);
+router.post("/portfolio/links", authMiddleware, createLinksController);
 
-router.put("/portfolio/links", authMiddleware, updateLinksController);
 router.put("/portfolio/skills", authMiddleware, updateSkillsController);
 router.put("/portfolio/experience", authMiddleware, updateExperienceController);
 router.put("/portfolio/projects", authMiddleware, updateProjectsController);
@@ -30,7 +30,7 @@ router.patch("/portfolio/publish", authMiddleware, publishPortfolioController);
 router.patch(
   "/portfolio/unpublish",
   authMiddleware,
-  unpublishPortfolioController,
+  unpublishPortfolioController
 );
 
 export default router;

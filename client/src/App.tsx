@@ -47,7 +47,6 @@ export default function App() {
           </Routes>
         </PortfolioProvider>
       </ScrollToTop>
-
       <Footer />
     </AuthProvider>
   );

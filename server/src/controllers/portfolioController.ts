@@ -44,7 +44,7 @@ export async function getMyPortfolioController(req: Request, res: Response) {
 
 export async function getPublicPortfolioController(
   req: Request,
-  res: Response,
+  res: Response
 ) {
   const username = req.params.username;
 
@@ -65,7 +65,7 @@ export async function getPublicPortfolioController(
   }
 }
 
-export async function updateLinksController(req: Request, res: Response) {
+export async function createLinksController(req: Request, res: Response) {
   const userId = req.userId;
   const body = req.body;
 
@@ -144,7 +144,7 @@ export async function publishPortfolioController(req: Request, res: Response) {
 
 export async function unpublishPortfolioController(
   req: Request,
-  res: Response,
+  res: Response
 ) {
   const userId = req.userId;
 

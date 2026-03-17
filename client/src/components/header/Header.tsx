@@ -22,8 +22,12 @@ export default function Header({ scrollFunc }: HeaderProps) {
   const { authData, logoutUser } = useAuth();
 
   const handleScroll = (ref: Section) => {
-    if (pathname !== "/") {
-      navigate("/", { state: { ref } });
+    if (pathname !== "/" || pathname !== `/${authData.username}`) {
+      if (authData.username) {
+        navigate(`/${authData.username}`, { state: { ref } });
+      } else {
+        navigate("/", { state: { ref } });
+      }
     } else {
       scrollFunc(ref);
     }
@@ -35,8 +39,11 @@ export default function Header({ scrollFunc }: HeaderProps) {
   return (
     <header className={styles.header}>
       <div>
-        <Link className={styles.username} to={"/"}>
-          Alex Angelov
+        <Link
+          className={styles.username}
+          to={authData.username !== "" ? `/${authData.username}` : "/"}
+        >
+          {authData.username !== "" ? authData.username : "Rachel Smith"}
         </Link>
       </div>
       <nav>

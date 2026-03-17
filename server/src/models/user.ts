@@ -18,8 +18,13 @@ const UserSchema = new Schema<IUser>(
     email: {
       type: String,
       required: true,
-      minLength: [10, "Email should be at least 10 characters long."],
       unique: true,
+      trim: true,
+      minLength: [10, "Email must be at least 10 characters long."],
+      match: [
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+        "Please enter a valid email address.",
+      ],
     },
     password: {
       type: String,

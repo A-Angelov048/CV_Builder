@@ -28,15 +28,39 @@ const PortfolioSchema = new Schema<Portfolio>(
           "Invalid phone number (example: +359 111 222 333)",
         ],
       },
-      email: { type: String, required: true, minLength: 10 },
+      email: {
+        type: String,
+        required: true,
+        unique: true,
+        trim: true,
+        minLength: [10, "Email must be at least 10 characters long."],
+        match: [
+          /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+          "Please enter a valid email address.",
+        ],
+      },
       address: { type: String, required: true, minLength: 5 },
       date: { type: String, required: true, minLength: 5 },
       imageProfile: {
-        image: { type: String, required: true },
+        image: {
+          type: String,
+          required: true,
+          match: [
+            /^https?:\/\//,
+            "URL should stars with http://... or https://...",
+          ],
+        },
         public_id: { type: String, required: true },
       },
       imageBackground: {
-        image: { type: String, required: true },
+        image: {
+          type: String,
+          required: true,
+          match: [
+            /^https?:\/\//,
+            "URL should stars with http://... or https://...",
+          ],
+        },
         public_id: { type: String, required: true },
       },
     },
@@ -44,23 +68,44 @@ const PortfolioSchema = new Schema<Portfolio>(
     links: {
       linkedin: {
         type: String,
+        match: [
+          /^https?:\/\//,
+          "Image URL should stars with http://... or https://...",
+        ],
         require: true,
       },
       telegram: {
         type: String,
+        match: [
+          /^(https?:\/\/.*)?$/,
+          "Image URL should stars with http://... or https://...",
+        ],
       },
       github: {
         type: String,
+        match: [
+          /^(https?:\/\/.*)?$/,
+          "Image URL should stars with http://... or https://...",
+        ],
       },
       facebook: {
         type: String,
+        match: [
+          /^(https?:\/\/.*)?$/,
+          "Image URL should stars with http://... or https://...",
+        ],
       },
       instagram: {
         type: String,
+        match: [
+          /^(https?:\/\/.*)?$/,
+          "Image URL should stars with http://... or https://...",
+        ],
       },
       shortInfo: {
         type: String,
         require: true,
+        minLength: [10, "Short info must be at least 10 characters long."],
       },
     },
 
