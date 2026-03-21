@@ -17,7 +17,7 @@ export default function SocialLinks() {
 
   return (
     <section className="max-width">
-      {(viewType.canView || viewType.isOwner || viewType.isUser) && username ? (
+      {viewType.canView && (viewType.isOwner || !!portfolio.links?.linkedin) && username ? (
         <SocialLinksDynamic portfolio={portfolio} viewType={viewType} />
       ) : (
         <SocialLinksStatic />
