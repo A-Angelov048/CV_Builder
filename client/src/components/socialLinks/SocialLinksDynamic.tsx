@@ -5,10 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
 
 import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
-import {
-  type SocialLinkValues,
-  socialLinkSchema,
-} from "../../validation/formSchema";
+import { type SocialLinkValues, socialLinkSchema } from "../../validation/formSchema";
 import { ErrorSnackbar } from "../errorModal/ErrorSnackbar";
 import useHandleForm from "../../hooks/useHandleForm";
 import type { Portfolio } from "../../context/portfolioContext";
@@ -20,7 +17,6 @@ export default function SocialLinksDynamic({
 }: {
   portfolio: Portfolio;
   viewType: {
-    isUser: boolean;
     isOwner: boolean;
     canView: boolean;
   };
@@ -91,10 +87,7 @@ export default function SocialLinksDynamic({
             <h2>Hello! I'm {portfolio.about.name}</h2>
             <p>{portfolio.links.shortInfo}</p>
             {viewType.isOwner && (
-              <button
-                onClick={() => changeState(false)}
-                className="main-button m-t"
-              >
+              <button onClick={() => changeState(false)} className="main-button m-t">
                 Edit
               </button>
             )}
@@ -102,10 +95,7 @@ export default function SocialLinksDynamic({
         </>
       ) : (
         <>
-          <form
-            onSubmit={handleSubmit(onSubmit, onError)}
-            className="grid-form"
-          >
+          <form onSubmit={handleSubmit(onSubmit, onError)} className="grid-form">
             <div className="form-group">
               <label htmlFor="linkedin">Linkedin contact *</label>
               <input type="text" id="linkedin" {...register("linkedin")} />
@@ -127,9 +117,7 @@ export default function SocialLinksDynamic({
               <input type="text" id="instagram" {...register("instagram")} />
             </div>
             <div className="form-group">
-              <label htmlFor="short-info">
-                Type here short Info about you *
-              </label>
+              <label htmlFor="short-info">Type here short Info about you *</label>
               <textarea id="short-info" {...register("shortInfo")}></textarea>
             </div>
             <button className="main-button" type="submit">

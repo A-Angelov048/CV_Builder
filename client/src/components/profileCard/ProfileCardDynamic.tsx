@@ -2,10 +2,7 @@ import styles from "./ProfileCard.module.css";
 
 import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  profileCardSchema,
-  type ProfileCardValues,
-} from "../../validation/formSchema";
+import { profileCardSchema, type ProfileCardValues } from "../../validation/formSchema";
 
 import useHandleForm from "../../hooks/useHandleForm";
 import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
@@ -21,15 +18,13 @@ export default function ProfileCardDynamic({
 }: {
   portfolio: Portfolio;
   viewType: {
-    isUser: boolean;
     isOwner: boolean;
     canView: boolean;
   };
 }) {
   const { createPortfolio } = useCreatePortfolio();
 
-  const { open, messages, close, handleErrors, handleCustomError } =
-    useFormErrorSnackbar();
+  const { open, messages, close, handleErrors, handleCustomError } = useFormErrorSnackbar();
 
   const { flagForm, changeState } = useHandleForm(true);
   const { register, handleSubmit } = useForm<ProfileCardValues>({
@@ -66,8 +61,7 @@ export default function ProfileCardDynamic({
           <div className={styles["profile-left"]}>
             <img
               src={
-                portfolio.about.imageProfile.image &&
-                portfolio.about.imageProfile.image !== ""
+                portfolio.about.imageProfile.image && portfolio.about.imageProfile.image !== ""
                   ? portfolio.about.imageProfile.image
                   : "image_600_600.jpg"
               }
@@ -108,10 +102,7 @@ export default function ProfileCardDynamic({
         </>
       ) : (
         <>
-          <form
-            onSubmit={handleSubmit(onSubmit, onError)}
-            className="grid-form"
-          >
+          <form onSubmit={handleSubmit(onSubmit, onError)} className="grid-form">
             <div className="form-group">
               <label htmlFor="name">Name *</label>
               <input type="text" id="name" {...register("name")} />

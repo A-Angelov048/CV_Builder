@@ -1,4 +1,4 @@
-import { createContext, useCallback, useState, type ReactNode } from "react";
+import { createContext, useCallback, useEffect, useState, type ReactNode } from "react";
 import Spinner from "../components/spinner/Spinner";
 
 export type AboutValues = {
@@ -25,7 +25,12 @@ export interface Portfolio {
     instagram: string;
     shortInfo: string;
   };
-  skills?: [];
+  skills?: [
+    {
+      skill: string;
+      _id: string;
+    },
+  ];
   projects?: [];
   experience?: [];
   education?: [];
@@ -39,14 +44,14 @@ interface CurrentPortfolioContextType {
   changeLoadingState: (state: boolean) => void;
 }
 
-export const PortfolioContext =
-  createContext<CurrentPortfolioContextType | null>(null);
+export const PortfolioContext = createContext<CurrentPortfolioContextType | null>(null);
 
 interface ProfileProviderProps {
   children: ReactNode;
 }
 
 export function PortfolioProvider({ children }: ProfileProviderProps) {
+  const isUserLogged = sessionStorage.getItem("isLoggedIn");
   const [isLoading, setIsLoading] = useState(false);
   const [portfolio, setPortfolio] = useState<Portfolio>({
     owner: "",
@@ -63,6 +68,26 @@ export function PortfolioProvider({ children }: ProfileProviderProps) {
     },
     isPublished: false,
   });
+
+  useEffect(() => {
+    if (!isUserLogged) {
+      setPortfolio({
+        owner: "",
+        username: "",
+        about: {
+          name: "",
+          career: "",
+          email: "",
+          phone: "",
+          address: "",
+          date: "",
+          imageProfile: { image: "", public_id: "" },
+          imageBackground: { image: "", public_id: "" },
+        },
+        isPublished: false,
+      });
+    }
+  }, [isUserLogged]);
 
   const changePortfolioState = useCallback((state: Portfolio) => {
     setPortfolio((oldState) => {

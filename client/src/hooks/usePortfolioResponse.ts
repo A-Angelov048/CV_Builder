@@ -3,10 +3,7 @@ import { useAxiosPrivate } from "./useAxiosPrivate";
 import { usePortfolio } from "./usePortfolio";
 import type { AboutValues } from "../context/portfolioContext";
 import { useCloudinaryUpload } from "./useCloudinary";
-import type {
-  ProfileCardValues,
-  SocialLinkValues,
-} from "../validation/formSchema";
+import type { ProfileCardValues, SocialLinkValues } from "../validation/formSchema";
 import { useNavigate } from "react-router-dom";
 
 export function useGetMyPortfolio(enabled: boolean | "" | undefined) {
@@ -39,7 +36,7 @@ export function useGetMyPortfolio(enabled: boolean | "" | undefined) {
 
 export function useGetPublicPortfolio(
   username: string | undefined,
-  enabled: boolean | "" | undefined,
+  enabled: boolean | "" | undefined
 ) {
   const navigate = useNavigate();
   const api = useAxiosPrivate();
@@ -125,4 +122,24 @@ export function useCreatePortfolioLinks() {
   };
 
   return { createPortfolioLinks };
+}
+
+export function useUpdatePortfolio(section: string) {
+  const api = useAxiosPrivate();
+  const { changePortfolioState, changeLoadingState } = usePortfolio();
+
+  const updatePortfolio = async <T>(data: T) => {
+    changeLoadingState(true);
+
+    try {
+      const portfolioResponse = await api.put(`/portfolio/${section}`, data);
+      changePortfolioState(portfolioResponse.data);
+    } catch (error: any) {
+      throw error;
+    } finally {
+      changeLoadingState(false);
+    }
+  };
+
+  return { updatePortfolio };
 }

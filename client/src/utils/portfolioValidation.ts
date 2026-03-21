@@ -8,10 +8,9 @@ export default function portfolioValidation({
   portfolio: Portfolio;
   userDB: AuthData;
 }) {
-  const isUser =
-    userDB.username !== "" && userDB.userId !== "" && userDB.accessToken !== "";
+  const isUser = userDB.username !== "" && userDB.userId !== "" && userDB.accessToken !== "";
   const isOwner = isUser && userDB.userId === portfolio.owner;
   const canView = portfolio.isPublished;
 
-  return { isUser, isOwner, canView };
+  return { isOwner, canView };
 }

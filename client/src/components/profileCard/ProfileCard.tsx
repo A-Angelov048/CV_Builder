@@ -26,14 +26,13 @@ export default forwardRef<HTMLDivElement>(function ProfileCard(_, ref) {
       style={
         {
           "--bg-url":
-            portfolio.about.imageBackground.image &&
-            portfolio.about.imageBackground.image !== ""
+            portfolio.about.imageBackground.image && portfolio.about.imageBackground.image !== ""
               ? `url(${portfolio.about.imageBackground.image})`
               : "url(programming-background.jpg)",
         } as React.CSSProperties
       }
     >
-      {(viewType.canView || viewType.isOwner || viewType.isUser) && username ? (
+      {viewType.canView && (viewType.isOwner || portfolio.about.name !== "") && username ? (
         <ProfileCardDynamic portfolio={portfolio} viewType={viewType} />
       ) : (
         <ProfileCardStatic />
