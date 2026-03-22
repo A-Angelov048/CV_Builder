@@ -1,5 +1,6 @@
 import { createContext, useCallback, useEffect, useState, type ReactNode } from "react";
 import Spinner from "../components/spinner/Spinner";
+import { useLocation } from "react-router-dom";
 
 export type AboutValues = {
   name: string;
@@ -31,7 +32,14 @@ export interface Portfolio {
       _id: string;
     },
   ];
-  projects?: [];
+  projects?: [
+    {
+      nameProject: string;
+      urlProject: string;
+      screenshotProject: string;
+      brief: string;
+    },
+  ];
   experience?: [];
   education?: [];
 
@@ -51,6 +59,7 @@ interface ProfileProviderProps {
 }
 
 export function PortfolioProvider({ children }: ProfileProviderProps) {
+  const { pathname } = useLocation();
   const isUserLogged = sessionStorage.getItem("isLoggedIn");
   const [isLoading, setIsLoading] = useState(false);
   const [portfolio, setPortfolio] = useState<Portfolio>({
@@ -68,9 +77,10 @@ export function PortfolioProvider({ children }: ProfileProviderProps) {
     },
     isPublished: false,
   });
+  console.log(pathname);
 
   useEffect(() => {
-    if (!isUserLogged) {
+    if (!isUserLogged && pathname === "/") {
       setPortfolio({
         owner: "",
         username: "",
@@ -87,7 +97,7 @@ export function PortfolioProvider({ children }: ProfileProviderProps) {
         isPublished: false,
       });
     }
-  }, [isUserLogged]);
+  }, [isUserLogged, pathname]);
 
   const changePortfolioState = useCallback((state: Portfolio) => {
     setPortfolio((oldState) => {

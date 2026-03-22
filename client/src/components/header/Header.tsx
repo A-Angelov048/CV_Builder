@@ -1,36 +1,20 @@
 import styles from "./Header.module.css";
 import { useRef } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 
-type Section =
-  | "about"
-  | "skills"
-  | "projects"
-  | "experience"
-  | "education"
-  | "contact";
+type Section = "about" | "skills" | "projects" | "experience" | "education" | "contact";
 
 type HeaderProps = {
   scrollFunc: (section: Section) => void;
 };
 
 export default function Header({ scrollFunc }: HeaderProps) {
-  const navigate = useNavigate();
   const checkboxRef = useRef<HTMLInputElement | null>(null);
-  const { pathname } = useLocation();
   const { authData, logoutUser } = useAuth();
 
   const handleScroll = (ref: Section) => {
-    if (pathname !== "/" || pathname !== `/${authData.username}`) {
-      if (authData.username) {
-        navigate(`/${authData.username}`, { state: { ref } });
-      } else {
-        navigate("/", { state: { ref } });
-      }
-    } else {
-      scrollFunc(ref);
-    }
+    scrollFunc(ref);
 
     if (checkboxRef.current?.checked) {
       checkboxRef.current.checked = false;

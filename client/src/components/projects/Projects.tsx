@@ -1,34 +1,28 @@
-import styles from "./Projects.module.css";
 import { forwardRef } from "react";
-import { Link } from "react-router-dom";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
+import { useParams } from "react-router-dom";
+
+import { useAuth } from "../../hooks/useAuth";
+import { usePortfolio } from "../../hooks/usePortfolio";
 
 import HeadingContainer from "../heading-container/HeadingContainer";
 import useHandleForm from "../../hooks/useHandleForm";
-import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
-import {
-  projectsSchema,
-  type ProjectsValues,
-} from "../../validation/formSchema";
-import { ErrorSnackbar } from "../errorModal/ErrorSnackbar";
+import portfolioValidation from "../../utils/portfolioValidation";
+import ProjectsDynamic from "./ProjectsDynamic";
+import ProjectsStatic from "./ProjectsStatic";
 
 export default forwardRef<HTMLDivElement>(function Projects(_, ref) {
   const { flagForm, changeState } = useHandleForm(true);
 
-  const { open, messages, close, handleErrors } = useFormErrorSnackbar();
+  const { username } = useParams();
+  const { authData } = useAuth();
+  const { portfolio } = usePortfolio();
 
-  const { register, handleSubmit } = useForm<ProjectsValues>({
-    resolver: zodResolver(projectsSchema),
+  const viewType = portfolioValidation({
+    portfolio,
+    userDB: authData,
   });
 
-  const onSubmit: SubmitHandler<ProjectsValues> = (data) => {
-    console.log("Form submitted:", data);
-  };
-
-  const onError = (formErrors: FieldErrors<ProjectsValues>) => {
-    handleErrors(formErrors);
-  };
+  const checkPortfolioProjects = portfolio.projects && portfolio.projects.length > 0;
 
   return (
     <section ref={ref}>
@@ -36,132 +30,19 @@ export default forwardRef<HTMLDivElement>(function Projects(_, ref) {
         header={"PROJECTS"}
         status={flagForm}
         changeStatus={changeState}
+        viewType={viewType}
+        buttonCondition={checkPortfolioProjects}
       />
 
-      <div className={styles["project-container"]}>
-        <div className={styles["projects-grid"]}>
-          <div className={styles["project-card"]}>
-            <Link
-              to="https://example.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles["project-link"]}
-            >
-              <div className={styles["preview-wrapper"]}>
-                <img
-                  src="https://iad.microlink.io/m_kg3kxB9nFmeOq9UPzLYy2hn-kXQaz5q1HXL1_owL5W1F7YCeqzFfu6rN9JcXR_vNKlici_9HockDX81pj0-w.png"
-                  alt="Project 1 Preview"
-                />
-              </div>
-              <p className={styles["project-name"]}>Project 1</p>
-            </Link>
-            <Link
-              to="https://example.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`${styles["project-name"]} ${styles.brief}`}
-            >
-              Brief documentation of the project
-            </Link>
-            <p className={`${styles["project-name"]} ${styles.remove}`}>
-              Remove Project
-            </p>
-          </div>
-          <div className={styles["project-card"]}>
-            <Link
-              to="https://example.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles["project-link"]}
-            >
-              <div className={styles["preview-wrapper"]}>
-                <img
-                  src="https://iad.microlink.io/m_kg3kxB9nFmeOq9UPzLYy2hn-kXQaz5q1HXL1_owL5W1F7YCeqzFfu6rN9JcXR_vNKlici_9HockDX81pj0-w.png"
-                  alt="Project 1 Preview"
-                />
-              </div>
-              <p className="project-name">Project 1</p>
-            </Link>
-            <Link
-              to="https://example.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`${styles["project-name"]} ${styles.brief}`}
-            >
-              Brief documentation of the project
-            </Link>
-            <p className={`${styles["project-name"]} ${styles.remove}`}>
-              Remove Project
-            </p>
-          </div>
-          <div className={styles["project-card"]}>
-            <Link
-              to="https://example.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles["project-link"]}
-            >
-              <div className={styles["preview-wrapper"]}>
-                <img
-                  src="https://iad.microlink.io/m_kg3kxB9nFmeOq9UPzLYy2hn-kXQaz5q1HXL1_owL5W1F7YCeqzFfu6rN9JcXR_vNKlici_9HockDX81pj0-w.png"
-                  alt="Project 1 Preview"
-                />
-              </div>
-              <p className="project-name">Project 1</p>
-            </Link>
-            <Link
-              to="https://example.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`${styles["project-name"]} ${styles.brief}`}
-            >
-              Brief documentation of the project
-            </Link>
-            <p className={`${styles["project-name"]} ${styles.remove}`}>
-              Remove Project
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {!flagForm && (
-        <>
-          <form
-            onSubmit={handleSubmit(onSubmit, onError)}
-            className="grid-form max-width"
-          >
-            <div className="form-group m-t">
-              <label htmlFor="nameProject">Name of the project *</label>
-              <input
-                type="text"
-                id="nameProject"
-                {...register("nameProject")}
-              />
-            </div>
-            <div className="form-group m-t">
-              <label htmlFor="urlProject">URL of the project *</label>
-              <input type="text" id="urlProject" {...register("urlProject")} />
-            </div>
-            <div className="form-group m-t">
-              <label htmlFor="screenshotProject">
-                Screenshot (by URL) of the project *
-              </label>
-              <input
-                type="text"
-                id="screenshotProject"
-                {...register("screenshotProject")}
-              />
-            </div>
-            <div className="form-group m-t">
-              <label htmlFor="brief">URL of brief project documentation</label>
-              <input type="text" id="brief" {...register("brief")} />
-            </div>
-            <button className="main-button m-t" type="submit">
-              Submit
-            </button>
-          </form>
-          <ErrorSnackbar open={open} messages={messages} onClose={close} />
-        </>
+      {viewType.canView && (viewType.isOwner || checkPortfolioProjects) && username ? (
+        <ProjectsDynamic
+          portfolio={portfolio}
+          flagForm={flagForm}
+          viewType={viewType}
+          changeStatus={changeState}
+        />
+      ) : (
+        <ProjectsStatic />
       )}
     </section>
   );

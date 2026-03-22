@@ -111,16 +111,36 @@ const PortfolioSchema = new Schema<Portfolio>(
 
     skills: [
       {
-        skill: { type: String, required: true },
+        skill: { type: String, required: true, minLength: 5 },
       },
     ],
 
     projects: [
       {
-        nameProject: { type: String, required: true },
-        urlProject: { type: String, required: true },
-        screenshotProject: { type: String, required: true },
-        brief: { type: String },
+        nameProject: { type: String, required: true, minLength: 5 },
+        urlProject: {
+          type: String,
+          required: true,
+          match: [
+            /^https?:\/\//,
+            "Image URL should stars with http://... or https://...",
+          ],
+        },
+        screenshotProject: {
+          type: String,
+          required: true,
+          match: [
+            /^https?:\/\//,
+            "Image URL should stars with http://... or https://...",
+          ],
+        },
+        brief: {
+          type: String,
+          match: [
+            /^(https?:\/\/.*)?$/,
+            "Image URL should stars with http://... or https://...",
+          ],
+        },
       },
     ],
 
