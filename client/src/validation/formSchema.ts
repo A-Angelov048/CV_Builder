@@ -17,13 +17,18 @@ export const projectsSchema = z.object({
     .trim()
     .min(1, "Name of the project is required.")
     .min(5, "Name of the project must be at least 5 characters long."),
-  urlProject: z.string().trim().min(1, "Url to project is required."),
+  urlProject: z
+    .string()
+    .trim()
+    .regex(/^https?:\/\//, "URL should stars with http://... or https://..."),
   screenshotProject: z
     .string()
     .trim()
-    .min(1, "Screenshot of the project is required.")
-    .min(5, "Screenshot of the project must be at least 5 characters long."),
-  brief: z.string().trim(),
+    .regex(/^https?:\/\//, "URL should stars with http://... or https://..."),
+  brief: z
+    .string()
+    .trim()
+    .regex(/^(https?:\/\/.*)?$/, "URL should stars with http://... or https://..."),
 });
 
 export type ProjectsValues = z.infer<typeof projectsSchema>;
@@ -104,10 +109,7 @@ export const registerSchema = z
       .string()
       .trim()
       .min(10, "Email must be at least 10 characters long.")
-      .regex(
-        /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-        "Please enter a valid email address.",
-      ),
+      .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Please enter a valid email address."),
     password: z
       .string()
       .trim()
@@ -134,31 +136,19 @@ export const socialLinkSchema = z.object({
   telegram: z
     .string()
     .trim()
-    .regex(
-      /^(https?:\/\/.*)?$/,
-      "URL should stars with http://... or https://...",
-    ),
+    .regex(/^(https?:\/\/.*)?$/, "URL should stars with http://... or https://..."),
   github: z
     .string()
     .trim()
-    .regex(
-      /^(https?:\/\/.*)?$/,
-      "URL should stars with http://... or https://...",
-    ),
+    .regex(/^(https?:\/\/.*)?$/, "URL should stars with http://... or https://..."),
   facebook: z
     .string()
     .trim()
-    .regex(
-      /^(https?:\/\/.*)?$/,
-      "URL should stars with http://... or https://...",
-    ),
+    .regex(/^(https?:\/\/.*)?$/, "URL should stars with http://... or https://..."),
   instagram: z
     .string()
     .trim()
-    .regex(
-      /^(https?:\/\/.*)?$/,
-      "URL should stars with http://... or https://...",
-    ),
+    .regex(/^(https?:\/\/.*)?$/, "URL should stars with http://... or https://..."),
   shortInfo: z
     .string()
     .trim()
@@ -184,7 +174,7 @@ export const profileCardSchema = z.object({
     .trim()
     .regex(
       /^\+359[- ]?\d{3}[- ]?\d{3}[- ]?\d{3}$/,
-      "Invalid phone number (example: +359 111 222 333)",
+      "Invalid phone number (example: +359 111 222 333)"
     )
     .min(1, "Phone number is required."),
   email: z
