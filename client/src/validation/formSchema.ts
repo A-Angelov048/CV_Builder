@@ -37,8 +37,7 @@ export const experienceSchema = z.object({
   yearsExperience: z
     .string()
     .trim()
-    .min(1, "Years of the company is required.")
-    .min(5, "Years must be at least 5 characters long."),
+    .regex(/^\d{4}-\d{4}$/, "Enter a year range in the format YYYY-YYYY (e.g., 2016-2020)"),
   position: z
     .string()
     .trim()
@@ -53,7 +52,7 @@ export const experienceSchema = z.object({
     .string()
     .trim()
     .min(1, "Activity in the company is required.")
-    .min(5, "Activity in the company must be at least 5 characters long."),
+    .min(240, "Activity in the company must be at least 240 characters long."),
 });
 
 export type ExperienceValues = z.infer<typeof experienceSchema>;

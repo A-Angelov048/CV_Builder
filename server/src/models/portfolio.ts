@@ -146,10 +146,17 @@ const PortfolioSchema = new Schema<Portfolio>(
 
     experience: [
       {
-        yearsExperience: { type: String, required: true },
-        position: { type: String, required: true },
-        companyName: { type: String, required: true },
-        activity: { type: String, required: true },
+        yearsExperience: {
+          type: String,
+          required: true,
+          match: [
+            /^\d{4}-\d{4}$/,
+            "Enter a year range in the format YYYY-YYYY (e.g., 2016-2020)",
+          ],
+        },
+        position: { type: String, required: true, minLength: 5 },
+        companyName: { type: String, required: true, minLength: 5 },
+        activity: { type: String, required: true, minLength: 240 },
       },
     ],
 

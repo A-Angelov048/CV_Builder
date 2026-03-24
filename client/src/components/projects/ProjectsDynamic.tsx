@@ -57,8 +57,8 @@ export default function ProjectsDynamic({
       {flagForm && checkPortfolioProjects ? (
         <div className={styles["project-container"]}>
           <div className={styles["projects-grid"]}>
-            {portfolio.projects?.map((project, index) => (
-              <div key={index} className={styles["project-card"]}>
+            {portfolio.projects?.map((project) => (
+              <div key={project._id} className={styles["project-card"]}>
                 <Link
                   to={project.urlProject}
                   target="_blank"

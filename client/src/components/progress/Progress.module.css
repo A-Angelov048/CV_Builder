@@ -12,10 +12,6 @@
   gap: 20px;
 }
 
-.timeline-item:last-of-type .timeline-separator::before {
-  content: none;
-}
-
 .timeline-left {
   text-align: right;
 }
@@ -32,17 +28,22 @@
 
 .timeline-separator {
   position: relative;
+  height: 100%;
 }
 
 .timeline-separator::before {
   content: "";
   position: absolute;
   width: 2px;
-  height: 156px;
-  top: 9px;
-  left: 9px;
-  background: #f1f1f1;
+  left: 8px;
+  top: 10px;
+  bottom: -55px;
+  background: #ccc;
   z-index: -1;
+}
+
+.timeline-item:last-of-type .timeline-separator::before {
+  content: none;
 }
 
 .timeline-right {

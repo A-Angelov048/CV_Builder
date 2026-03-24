@@ -27,10 +27,9 @@ export default function SocialLinksStatic() {
       <div className={styles.about}>
         <h2>Hello! I'm Rachel</h2>
         <p>
-          I'm a paragraph. Click here to add your own text and edit me. It’s
-          easy. Just click “Edit Text” or double click me to add your own
-          content and make changes to the font. I’m a great place for you to
-          tell a story and let your users know a little more about you.
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae facere odit ratione
+          placeat et. Reiciendis velit dolores, magni pariatur repellat dolore, molestias quod
+          maxime labore nulla laboriosam incidunt neque nihil.
         </p>
       </div>
     </>

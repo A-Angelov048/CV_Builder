@@ -38,9 +38,18 @@ export interface Portfolio {
       urlProject: string;
       screenshotProject: string;
       brief: string;
+      _id: string;
     },
   ];
-  experience?: [];
+  experience?: [
+    {
+      yearsExperience: string;
+      position: string;
+      companyName: string;
+      activity: string;
+      _id: string;
+    },
+  ];
   education?: [];
 
   isPublished: boolean;
@@ -77,7 +86,6 @@ export function PortfolioProvider({ children }: ProfileProviderProps) {
     },
     isPublished: false,
   });
-  console.log(pathname);
 
   useEffect(() => {
     if (!isUserLogged && pathname === "/") {

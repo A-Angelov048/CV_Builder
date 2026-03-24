@@ -61,9 +61,9 @@ export default function SkillsDynamic({
     <>
       {flagForm && checkPortfolioSkills ? (
         <div ref={refView} className={styles["skills-grid"]}>
-          {portfolio.skills?.map((curSkill, index) => (
+          {portfolio.skills?.map((curSkill) => (
             <div
-              key={index}
+              key={curSkill._id}
               className={`${styles["skill-box"]} ${isInView ? styles.fadeInUp : styles.fadeOut}`}
             >
               <p>{curSkill.skill}</p>
