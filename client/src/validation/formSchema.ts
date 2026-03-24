@@ -52,7 +52,8 @@ export const experienceSchema = z.object({
     .string()
     .trim()
     .min(1, "Activity in the company is required.")
-    .min(240, "Activity in the company must be at least 240 characters long."),
+    .min(10, "Activity in the company must be at least 10 characters long.")
+    .max(240, "Activity in the company must be at most 240 characters long."),
 });
 
 export type ExperienceValues = z.infer<typeof experienceSchema>;
@@ -61,8 +62,7 @@ export const educationSchema = z.object({
   yearsEducation: z
     .string()
     .trim()
-    .min(1, "Years of the education is required.")
-    .min(5, "Years of the education must be at least 5 characters long."),
+    .regex(/^\d{4}-\d{4}$/, "Enter a year range in the format YYYY-YYYY (e.g., 2016-2020)"),
   degree: z
     .string()
     .trim()
@@ -77,7 +77,8 @@ export const educationSchema = z.object({
     .string()
     .trim()
     .min(1, "Info of the school is required.")
-    .min(5, "Info of the school must be at least 5 characters long."),
+    .min(10, "Info of the school must be at least 10 characters long.")
+    .max(240, "Info of the school must be at most 240 characters long."),
 });
 
 export type EducationValues = z.infer<typeof educationSchema>;

@@ -1,6 +1,6 @@
 import ContactMe from "../components/contactMe/ContactMe";
 import ProfileCard from "../components/profileCard/ProfileCard";
-import Education from "../components/progress/Education";
+import Education from "../components/progress/education/Education";
 import Experience from "../components/progress/experience/Experience";
 import Projects from "../components/projects/Projects";
 import Skills from "../components/skills/Skills";

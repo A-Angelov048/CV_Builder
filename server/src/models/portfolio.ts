@@ -156,16 +156,33 @@ const PortfolioSchema = new Schema<Portfolio>(
         },
         position: { type: String, required: true, minLength: 5 },
         companyName: { type: String, required: true, minLength: 5 },
-        activity: { type: String, required: true, minLength: 240 },
+        activity: {
+          type: String,
+          required: true,
+          minLength: 10,
+          maxLength: 240,
+        },
       },
     ],
 
     education: [
       {
-        yearsEducation: { type: String, required: true },
-        degree: { type: String, required: true },
-        nameSchool: { type: String, required: true },
-        infoSchool: { type: String, required: true },
+        yearsEducation: {
+          type: String,
+          required: true,
+          match: [
+            /^\d{4}-\d{4}$/,
+            "Enter a year range in the format YYYY-YYYY (e.g., 2016-2020)",
+          ],
+        },
+        degree: { type: String, required: true, minLength: 5 },
+        nameSchool: { type: String, required: true, minLength: 5 },
+        infoSchool: {
+          type: String,
+          required: true,
+          minLength: 10,
+          maxLength: 240,
+        },
       },
     ],
 

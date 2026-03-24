@@ -50,7 +50,9 @@ export interface Portfolio {
       _id: string;
     },
   ];
-  education?: [];
+  education?: [
+    { yearsEducation: string; degree: string; nameSchool: string; infoSchool: string; _id: string },
+  ];
 
   isPublished: boolean;
 }
