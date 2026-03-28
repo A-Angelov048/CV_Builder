@@ -98,7 +98,7 @@ export default function SocialLinksDynamic({
           <form onSubmit={handleSubmit(onSubmit, onError)} className="grid-form">
             <div className="form-group">
               <label htmlFor="linkedin">Linkedin contact *</label>
-              <input type="text" id="linkedin" {...register("linkedin")} />
+              <input type="text" id="linkedin" {...register("linkedin")} autoFocus />
             </div>
             <div className="form-group">
               <label htmlFor="telegram">Telegram contact</label>

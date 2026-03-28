@@ -96,7 +96,7 @@ export default function ProjectsDynamic({
           <form onSubmit={handleSubmit(onSubmit, onError)} className="grid-form max-width">
             <div className="form-group m-t">
               <label htmlFor="nameProject">Name of the project *</label>
-              <input type="text" id="nameProject" {...register("nameProject")} />
+              <input type="text" id="nameProject" {...register("nameProject")} autoFocus />
             </div>
             <div className="form-group m-t">
               <label htmlFor="urlProject">URL of the project *</label>

@@ -105,7 +105,7 @@ export default function ProfileCardDynamic({
           <form onSubmit={handleSubmit(onSubmit, onError)} className="grid-form">
             <div className="form-group">
               <label htmlFor="name">Name *</label>
-              <input type="text" id="name" {...register("name")} />
+              <input type="text" id="name" {...register("name")} autoFocus />
             </div>
             <div className="form-group">
               <label htmlFor="career">Career *</label>
