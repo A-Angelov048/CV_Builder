@@ -8,7 +8,7 @@ import { useInView } from "../../../hooks/useInView";
 import { experienceSchema, type ExperienceValues } from "../../../validation/formSchema";
 import { ErrorSnackbar } from "../../errorModal/ErrorSnackbar";
 import type { Portfolio } from "../../../context/portfolioContext";
-import { useUpdatePortfolio } from "../../../hooks/usePortfolioResponse";
+import { useDeletePortfolioInfo, useUpdatePortfolio } from "../../../hooks/usePortfolioResponse";
 
 type ExperienceDynamicProps = {
   portfolio: Portfolio;
@@ -29,6 +29,7 @@ export default function ExperienceDynamic({
   const checkPortfolioExperience = portfolio.experience && portfolio.experience.length > 0;
 
   const { updatePortfolio } = useUpdatePortfolio("experience");
+  const { deletePortfolioInfo } = useDeletePortfolioInfo();
 
   const { refView, isInView } = useInView({
     threshold: 0.2,
@@ -82,7 +83,12 @@ export default function ExperienceDynamic({
                 >
                   <div className={styles["company-container"]}>
                     <h3 className={styles.company}>{curExperience.companyName}</h3>
-                    {viewType.isOwner && <i className="bx bx-trash"></i>}
+                    {viewType.isOwner && (
+                      <i
+                        onClick={() => deletePortfolioInfo(curExperience._id, "experience")}
+                        className="bx bx-trash"
+                      ></i>
+                    )}
                   </div>
                   <p>{curExperience.activity}</p>
                 </div>

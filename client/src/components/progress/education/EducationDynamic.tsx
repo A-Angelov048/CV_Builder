@@ -3,7 +3,7 @@ import styles from "../Progress.module.css";
 import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { useUpdatePortfolio } from "../../../hooks/usePortfolioResponse";
+import { useDeletePortfolioInfo, useUpdatePortfolio } from "../../../hooks/usePortfolioResponse";
 import { useInView } from "../../../hooks/useInView";
 import { useFormErrorSnackbar } from "../../../hooks/useFormErrorSnackbar";
 
@@ -30,6 +30,7 @@ export default function EducationDynamic({
   const checkPortfolioEducation = portfolio.education && portfolio.education.length > 0;
 
   const { updatePortfolio } = useUpdatePortfolio("education");
+  const { deletePortfolioInfo } = useDeletePortfolioInfo();
 
   const { refView, isInView } = useInView({
     threshold: 0.2,
@@ -83,7 +84,12 @@ export default function EducationDynamic({
                 >
                   <div className={styles["company-container"]}>
                     <h3 className={styles.company}>{curEducation.nameSchool}</h3>
-                    {viewType.isOwner && <i className="bx bx-trash"></i>}
+                    {viewType.isOwner && (
+                      <i
+                        onClick={() => deletePortfolioInfo(curEducation._id, "education")}
+                        className="bx bx-trash"
+                      ></i>
+                    )}
                   </div>
                   <p>{curEducation.infoSchool}</p>
                 </div>

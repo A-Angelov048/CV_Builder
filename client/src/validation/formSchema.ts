@@ -153,7 +153,8 @@ export const socialLinkSchema = z.object({
     .string()
     .trim()
     .min(1, "Short info is required.")
-    .min(10, "Short info must be at least 10 characters long."),
+    .min(10, "Short info must be at least 10 characters long.")
+    .max(240, "Short info must be at most 240 characters long."),
 });
 
 export type SocialLinkValues = z.infer<typeof socialLinkSchema>;

@@ -8,7 +8,7 @@ import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
 import { skillSchema, type SkillValues } from "../../validation/formSchema";
 import { ErrorSnackbar } from "../errorModal/ErrorSnackbar";
 import type { Portfolio } from "../../context/portfolioContext";
-import { useUpdatePortfolio } from "../../hooks/usePortfolioResponse";
+import { useDeletePortfolioInfo, useUpdatePortfolio } from "../../hooks/usePortfolioResponse";
 
 type SkillsDynamicProps = {
   portfolio: Portfolio;
@@ -29,6 +29,7 @@ export default function SkillsDynamic({
   const checkPortfolioSkills = portfolio.skills && portfolio.skills.length > 0;
 
   const { updatePortfolio } = useUpdatePortfolio("skills");
+  const { deletePortfolioInfo } = useDeletePortfolioInfo();
 
   const { refView, isInView } = useInView({
     threshold: 0.6,
@@ -67,7 +68,12 @@ export default function SkillsDynamic({
               className={`${styles["skill-box"]} ${isInView ? styles.fadeInUp : styles.fadeOut}`}
             >
               <p>{curSkill.skill}</p>
-              {viewType.isOwner && <i className="bx bx-trash"></i>}
+              {viewType.isOwner && (
+                <i
+                  onClick={() => deletePortfolioInfo(curSkill._id, "skills")}
+                  className="bx bx-trash"
+                ></i>
+              )}
             </div>
           ))}
         </div>

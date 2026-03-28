@@ -7,7 +7,7 @@ import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
 import { projectsSchema, type ProjectsValues } from "../../validation/formSchema";
 import { ErrorSnackbar } from "../errorModal/ErrorSnackbar";
 import type { Portfolio } from "../../context/portfolioContext";
-import { useUpdatePortfolio } from "../../hooks/usePortfolioResponse";
+import { useDeletePortfolioInfo, useUpdatePortfolio } from "../../hooks/usePortfolioResponse";
 
 type ProjectsDynamicProps = {
   portfolio: Portfolio;
@@ -28,6 +28,7 @@ export default function ProjectsDynamic({
   const checkPortfolioProjects = portfolio.projects && portfolio.projects.length > 0;
 
   const { updatePortfolio } = useUpdatePortfolio("projects");
+  const { deletePortfolioInfo } = useDeletePortfolioInfo();
 
   const { open, messages, close, handleErrors } = useFormErrorSnackbar();
 
@@ -57,21 +58,21 @@ export default function ProjectsDynamic({
       {flagForm && checkPortfolioProjects ? (
         <div className={styles["project-container"]}>
           <div className={styles["projects-grid"]}>
-            {portfolio.projects?.map((project) => (
-              <div key={project._id} className={styles["project-card"]}>
+            {portfolio.projects?.map((curProject) => (
+              <div key={curProject._id} className={styles["project-card"]}>
                 <Link
-                  to={project.urlProject}
+                  to={curProject.urlProject}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={styles["project-link"]}
                 >
                   <div className={styles["preview-wrapper"]}>
-                    <img src={project.screenshotProject} alt={project.nameProject} />
+                    <img src={curProject.screenshotProject} alt={curProject.nameProject} />
                   </div>
-                  <p className={styles["project-name"]}>{project.nameProject}</p>
+                  <p className={styles["project-name"]}>{curProject.nameProject}</p>
                 </Link>
                 <Link
-                  to={project.brief}
+                  to={curProject.brief}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`${styles["project-name"]} ${styles.brief}`}
@@ -79,7 +80,12 @@ export default function ProjectsDynamic({
                   Brief documentation of the project
                 </Link>
                 {viewType.isOwner && (
-                  <p className={`${styles["project-name"]} ${styles.remove}`}>Remove Project</p>
+                  <p
+                    onClick={() => deletePortfolioInfo(curProject._id, "projects")}
+                    className={`${styles["project-name"]} ${styles.remove}`}
+                  >
+                    Remove Project
+                  </p>
                 )}
               </div>
             ))}

@@ -106,18 +106,14 @@ export function useCreatePortfolio() {
 
 export function useCreatePortfolioLinks() {
   const api = useAxiosPrivate();
-  const { changePortfolioState, changeLoadingState } = usePortfolio();
+  const { changePortfolioState } = usePortfolio();
 
   const createPortfolioLinks = async (data: SocialLinkValues) => {
-    changeLoadingState(true);
-
     try {
       const portfolioResponse = await api.post("/portfolio/links", data);
       changePortfolioState(portfolioResponse.data);
     } catch (error: any) {
       throw error;
-    } finally {
-      changeLoadingState(false);
     }
   };
 
@@ -126,20 +122,32 @@ export function useCreatePortfolioLinks() {
 
 export function useUpdatePortfolio(section: string) {
   const api = useAxiosPrivate();
-  const { changePortfolioState, changeLoadingState } = usePortfolio();
+  const { changePortfolioState } = usePortfolio();
 
   const updatePortfolio = async <T>(data: T) => {
-    changeLoadingState(true);
-
     try {
       const portfolioResponse = await api.put(`/portfolio/${section}`, data);
       changePortfolioState(portfolioResponse.data);
     } catch (error: any) {
       throw error;
-    } finally {
-      changeLoadingState(false);
     }
   };
 
   return { updatePortfolio };
+}
+
+export function useDeletePortfolioInfo() {
+  const api = useAxiosPrivate();
+  const { changePortfolioState } = usePortfolio();
+
+  const deletePortfolioInfo = async (infoId: string, section: string) => {
+    try {
+      const portfolioResponse = await api.delete(`/portfolio/remove/${section}/${infoId}`);
+      changePortfolioState(portfolioResponse.data);
+    } catch (error: any) {
+      console.error(error.response.data.message);
+    }
+  };
+
+  return { deletePortfolioInfo };
 }
