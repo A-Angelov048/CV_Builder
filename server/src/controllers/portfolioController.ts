@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import imageDelete from "../utils/cloudinaryImageDelete";
 import {
   createPortfolio,
+  deletePortfolioSection,
   getMyPortfolio,
   getPublicPortfolio,
   togglePublish,
@@ -44,7 +45,7 @@ export async function getMyPortfolioController(req: Request, res: Response) {
 
 export async function getPublicPortfolioController(
   req: Request,
-  res: Response
+  res: Response,
 ) {
   const username = req.params.username;
 
@@ -144,12 +145,92 @@ export async function publishPortfolioController(req: Request, res: Response) {
 
 export async function unpublishPortfolioController(
   req: Request,
-  res: Response
+  res: Response,
 ) {
   const userId = req.userId;
 
   try {
     const portfolio = await togglePublish(userId, false);
+
+    res.json(portfolio);
+  } catch (err: any) {
+    res.status(400).json({ message: err.message });
+  }
+}
+
+export async function deleteSkillsController(req: Request, res: Response) {
+  const userId = req.userId;
+  const skillId = req.params.deleteId;
+
+  try {
+    if (!skillId) {
+      throw new Error("Skill ID is required");
+    }
+
+    const portfolio = await deletePortfolioSection(userId, "skills", skillId);
+
+    res.json(portfolio);
+  } catch (err: any) {
+    res.status(400).json({ message: err.message });
+  }
+}
+
+export async function deleteProjectsController(req: Request, res: Response) {
+  const userId = req.userId;
+  const projectId = req.params.deleteId;
+
+  try {
+    if (!projectId) {
+      throw new Error("Project ID is required");
+    }
+
+    const portfolio = await deletePortfolioSection(
+      userId,
+      "projects",
+      projectId,
+    );
+
+    res.json(portfolio);
+  } catch (err: any) {
+    res.status(400).json({ message: err.message });
+  }
+}
+
+export async function deleteExperienceController(req: Request, res: Response) {
+  const userId = req.userId;
+  const experienceId = req.params.deleteId;
+
+  try {
+    if (!experienceId) {
+      throw new Error("Experience ID is required");
+    }
+
+    const portfolio = await deletePortfolioSection(
+      userId,
+      "experience",
+      experienceId,
+    );
+
+    res.json(portfolio);
+  } catch (err: any) {
+    res.status(400).json({ message: err.message });
+  }
+}
+
+export async function deleteEducationController(req: Request, res: Response) {
+  const userId = req.userId;
+  const educationId = req.params.deleteId;
+
+  try {
+    if (!educationId) {
+      throw new Error("Education ID is required");
+    }
+
+    const portfolio = await deletePortfolioSection(
+      userId,
+      "education",
+      educationId,
+    );
 
     res.json(portfolio);
   } catch (err: any) {

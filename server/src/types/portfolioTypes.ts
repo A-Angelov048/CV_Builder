@@ -20,10 +20,12 @@ export interface Links {
 }
 
 export interface Skills {
+  _id: Types.ObjectId;
   skill: string;
 }
 
 export interface Experience {
+  _id: Types.ObjectId;
   company: string;
   position: string;
   startDate: Date;
@@ -33,6 +35,7 @@ export interface Experience {
 }
 
 export interface Project {
+  _id: Types.ObjectId;
   nameProject: string;
   urlProject: string;
   screenshotProject: string;
@@ -40,6 +43,7 @@ export interface Project {
 }
 
 export interface Education {
+  _id: Types.ObjectId;
   yearsExperience: string;
   position: string;
   companyName: string;
@@ -52,10 +56,12 @@ export interface Portfolio extends Document {
 
   about: About;
   links: Links;
-  skills: Skills[];
-  projects: Project[];
-  experience: Experience[];
-  education: Education[];
+  skills: Types.DocumentArray<Skills>;
+  projects: Types.DocumentArray<Project>;
+  experience: Types.DocumentArray<Experience>;
+  education: Types.DocumentArray<Education>;
 
   isPublished: boolean;
 }
+
+export type PortfolioKey = "skills" | "experience" | "education" | "projects";

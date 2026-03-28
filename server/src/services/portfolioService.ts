@@ -1,5 +1,5 @@
 import { PortfolioModel } from "../models/portfolio";
-import { Portfolio } from "../types/portfolioTypes";
+import { Portfolio, PortfolioKey } from "../types/portfolioTypes";
 import imageDelete from "../utils/cloudinaryImageDelete";
 
 export const createPortfolio = async (
@@ -70,6 +70,30 @@ export const togglePublish = async (userId: string, publish: boolean) => {
   if (!portfolio) {
     throw new Error("Portfolio not found");
   }
+
+  return portfolio;
+};
+export const deletePortfolioSection = async (
+  userId: string,
+  section: PortfolioKey,
+  deleteId: string,
+) => {
+  const portfolio = await PortfolioModel.findOne({ owner: userId });
+
+  if (!portfolio) {
+    throw new Error("Portfolio not found");
+  }
+
+  const array = portfolio[section];
+  const item = array.id(deleteId);
+
+  if (!item) {
+    throw new Error("Item not found");
+  }
+
+  item.deleteOne();
+
+  await portfolio.save();
 
   return portfolio;
 };

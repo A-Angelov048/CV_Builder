@@ -11,6 +11,10 @@ import {
   updateEducationController,
   publishPortfolioController,
   unpublishPortfolioController,
+  deleteSkillsController,
+  deleteProjectsController,
+  deleteExperienceController,
+  deleteEducationController,
 } from "../controllers/portfolioController";
 
 const router = express.Router();
@@ -30,7 +34,31 @@ router.patch("/portfolio/publish", authMiddleware, publishPortfolioController);
 router.patch(
   "/portfolio/unpublish",
   authMiddleware,
-  unpublishPortfolioController
+  unpublishPortfolioController,
+);
+
+router.delete(
+  "/portfolio/remove/skills/:deleteId",
+  authMiddleware,
+  deleteSkillsController,
+);
+
+router.delete(
+  "/portfolio/remove/projects/:deleteId",
+  authMiddleware,
+  deleteProjectsController,
+);
+
+router.delete(
+  "/portfolio/remove/experience/:deleteId",
+  authMiddleware,
+  deleteExperienceController,
+);
+
+router.delete(
+  "/portfolio/remove/education/:deleteId",
+  authMiddleware,
+  deleteEducationController,
 );
 
 export default router;
