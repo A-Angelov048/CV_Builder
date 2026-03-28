@@ -4,10 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
 
 import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
-import {
-  registerSchema,
-  type RegisterValues,
-} from "../../validation/formSchema";
+import { registerSchema, type RegisterValues } from "../../validation/formSchema";
 import { ErrorSnackbar } from "../../components/errorModal/ErrorSnackbar";
 import { useAuth, type AccessTokenBE } from "../../hooks/useAuth";
 import { useAxiosPrivate } from "../../hooks/useAxiosPrivate";
@@ -44,13 +41,10 @@ export default function Register() {
         <h2 className="title">REGISTER</h2>
       </div>
       <div className={styles["wrapper-guest"]}>
-        <form
-          onSubmit={handleSubmit(onSubmit, onError)}
-          className="simple-form"
-        >
+        <form onSubmit={handleSubmit(onSubmit, onError)} className="simple-form">
           <div className="form-group">
             <label htmlFor="username">Type your username *</label>
-            <input id="username" type="text" {...register("username")} />
+            <input id="username" type="text" {...register("username")} autoFocus />
           </div>
 
           <div className="form-group">
@@ -65,11 +59,7 @@ export default function Register() {
 
           <div className="form-group">
             <label htmlFor="rePassword">Confirm your password *</label>
-            <input
-              type="password"
-              id="rePassword"
-              {...register("rePassword")}
-            />
+            <input type="password" id="rePassword" {...register("rePassword")} />
           </div>
 
           <div className={styles.button}>

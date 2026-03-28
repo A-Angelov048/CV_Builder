@@ -58,7 +58,16 @@ export default function Header({ scrollFunc }: HeaderProps) {
           </li>
           {authData.accessToken && (
             <li>
-              <span onClick={logoutUser}>Logout</span>
+              <span
+                onClick={() => {
+                  if (checkboxRef.current?.checked) {
+                    checkboxRef.current.checked = false;
+                  }
+                  logoutUser();
+                }}
+              >
+                Logout
+              </span>
             </li>
           )}
         </ul>

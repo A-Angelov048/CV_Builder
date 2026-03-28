@@ -101,7 +101,7 @@ export default function ExperienceDynamic({
           <form onSubmit={handleSubmit(onSubmit, onError)} className="grid-form max-width">
             <div className="form-group m-t">
               <label htmlFor="yearsExperience">Years experience *</label>
-              <input type="text" id="yearsExperience" {...register("yearsExperience")} />
+              <input type="text" id="yearsExperience" {...register("yearsExperience")} autoFocus />
             </div>
             <div className="form-group m-t">
               <label htmlFor="position">Position *</label>

@@ -50,13 +50,10 @@ export default function Login() {
         <h2 className="title">LOGIN</h2>
       </div>
       <div className={styles["wrapper-guest"]}>
-        <form
-          onSubmit={handleSubmit(onSubmit, onError)}
-          className="simple-form"
-        >
+        <form onSubmit={handleSubmit(onSubmit, onError)} className="simple-form">
           <div className="form-group">
             <label htmlFor="email">Type your email *</label>
-            <input type="text" id="email" {...register("email")} />
+            <input type="text" id="email" {...register("email")} autoFocus />
           </div>
 
           <div className="form-group">
