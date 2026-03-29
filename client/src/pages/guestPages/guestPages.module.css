@@ -1,5 +1,5 @@
 .guest-page {
-  margin-top: 60px;
+  margin: 60px 10px 0px;
 }
 .wrapper-guest {
   max-width: 540px;
@@ -35,4 +35,10 @@
 .link a:hover {
   color: #004aad;
   text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .wrapper-guest {
+    padding: 20px 20px;
+  }
 }

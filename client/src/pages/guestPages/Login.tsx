@@ -46,7 +46,7 @@ export default function Login() {
 
   return (
     <section className={styles["guest-page"]}>
-      <div className="heading-container">
+      <div className="heading-container-2">
         <h2 className="title">LOGIN</h2>
       </div>
       <div className={styles["wrapper-guest"]}>

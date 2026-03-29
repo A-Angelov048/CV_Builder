@@ -10,7 +10,7 @@ import Footer from "./components/footer/Footer";
 import HomeCV from "./pages/HomeCV";
 import Register from "./pages/guestPages/Register";
 import Login from "./pages/guestPages/Login";
-import NotFound from "./components/notFound/NotFound";
+import NotFound from "./pages/notFound/NotFound";
 import AuthGuard from "./components/routeGuards/AuthGuard";
 
 type Section = "about" | "skills" | "projects" | "experience" | "education" | "contact";

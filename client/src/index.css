@@ -11,7 +11,7 @@
 
 html {
   font:
-    14px/1.6 Lato,
+    14px/1.6 Manrope,
     sans-serif;
   color: #333;
 }
@@ -119,6 +119,16 @@ button {
   border-top: 1px solid #333;
   border-bottom: 1px solid #333;
   background-color: #f1f1f1;
+}
+
+.heading-container-2 {
+  max-width: 540px;
+  margin: 0 auto;
+  text-align: center;
+  letter-spacing: 2px;
+  background-color: #f1f1f1;
+  border: 1px solid #333;
+  border-radius: 10px;
 }
 
 .title {
