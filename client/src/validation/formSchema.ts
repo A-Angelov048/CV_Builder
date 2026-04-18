@@ -104,7 +104,7 @@ export const registerSchema = z
       .string()
       .trim()
       .min(1, "Username is required.")
-      .min(5, "Username must be at least 5 characters long."),
+      .min(4, "Username must be at least 4 characters long."),
     email: z
       .string()
       .trim()
@@ -228,3 +228,46 @@ export const contactSchema = z.object({
 });
 
 export type ContactValues = z.infer<typeof contactSchema>;
+
+export const changeIdentitySchema = z.object({
+  username: z
+    .string()
+    .trim()
+    .min(1, "Username is required.")
+    .min(5, "Username must be at least 5 characters long."),
+  email: z
+    .email("Please enter a valid email address.")
+    .trim()
+    .min(5, "Email must be at least 5 characters long."),
+});
+
+export type ChangeIdentityValues = z.infer<typeof changeIdentitySchema>;
+
+export const changePasswordSchema = z
+  .object({
+    curPassword: z
+      .string()
+      .trim()
+      .min(1, "Current password is required.")
+      .min(6, "Current password must be at least 6 characters long."),
+    newPassword: z
+      .string()
+      .trim()
+      .min(1, "New password is required.")
+      .min(6, "New password must be at least 6 characters long."),
+    reNewPassword: z
+      .string()
+      .trim()
+      .min(1, "Please confirm your new password.")
+      .min(6, "Confirmed password must be at least 6 characters long."),
+  })
+  .refine((data) => data.curPassword !== data.newPassword, {
+    message: "New password cannot be the same as the current one.",
+    path: ["newPassword"],
+  })
+  .refine((data) => data.newPassword === data.reNewPassword, {
+    message: "Passwords do not match",
+    path: ["reNewPassword"],
+  });
+
+export type ChangePasswordValues = z.infer<typeof changePasswordSchema>;

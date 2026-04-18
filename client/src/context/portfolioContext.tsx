@@ -71,7 +71,7 @@ interface ProfileProviderProps {
 
 export function PortfolioProvider({ children }: ProfileProviderProps) {
   const { pathname } = useLocation();
-  const isUserLogged = sessionStorage.getItem("isLoggedIn");
+  const isUserLogged = localStorage.getItem("isLoggedIn");
   const [isLoading, setIsLoading] = useState(false);
   const [portfolio, setPortfolio] = useState<Portfolio>({
     owner: "",

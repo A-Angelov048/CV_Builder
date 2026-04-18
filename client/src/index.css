@@ -95,6 +95,12 @@ textarea {
   font-size: 16px;
 }
 
+input:focus {
+  outline: none;
+  border: 1px solid #004aad;
+  border-bottom: 2px solid #004aad;
+}
+
 textarea {
   resize: vertical;
   min-height: 100px;
@@ -126,9 +132,6 @@ button {
   margin: 0 auto;
   text-align: center;
   letter-spacing: 2px;
-  background-color: #f1f1f1;
-  border: 1px solid #333;
-  border-radius: 10px;
 }
 
 .title {
@@ -210,6 +213,10 @@ button {
   border-width: 6px;
 
   animation: spinner-rotate 1s linear infinite;
+}
+
+.icon {
+  font-size: 24px;
 }
 
 @keyframes spinner-rotate {

@@ -102,7 +102,7 @@ export default function EducationDynamic({
           <form onSubmit={handleSubmit(onSubmit, onError)} className="grid-form max-width">
             <div className="form-group m-t">
               <label htmlFor="yearsEducation">Years of education *</label>
-              <input type="text" id="yearsEducation" {...register("yearsEducation")} autoFocus />
+              <input type="text" id="yearsEducation" {...register("yearsEducation")} />
             </div>
             <div className="form-group m-t">
               <label htmlFor="degree">Degree / Diploma & Specialty*</label>

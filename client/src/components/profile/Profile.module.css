@@ -1,0 +1,249 @@
+body:has(.mono-modal-overlay) {
+  overflow: hidden;
+}
+
+.mono-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(12px);
+}
+
+.mono-modal-container {
+  background: #fff;
+  width: 100%;
+  max-width: 1000px;
+  height: 100%;
+  max-height: 700px;
+  box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  position: relative;
+  border-radius: 6px;
+}
+
+@media (max-width: 768px) {
+  .mono-modal-container {
+    flex-direction: column;
+    max-height: 90vh;
+  }
+}
+
+.mono-sidebar {
+  width: 280px;
+  background: #fff;
+  border-right: 1px solid #333;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .mono-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #333;
+    padding: 24px;
+  }
+}
+
+.mono-sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.mono-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mono-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 6px;
+  background: #333;
+  color: #ffffff;
+}
+
+.mono-nav-item:last-of-type {
+  margin-bottom: 12px;
+}
+
+.mono-nav-item span {
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 1.6px;
+}
+
+/* .mono-nav-item.active {
+  background: #000000;
+  color: #ffffff;
+}
+
+.mono-nav-item:not(.active) {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.mono-nav-item:not(.active):hover {
+  background: #f1f1f1;
+  color: #000000;
+} */
+
+.mono-logout-btn-position {
+  padding-top: 32px;
+  border-top: 1px solid #333;
+}
+
+.mono-logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  width: 100%;
+  border: 1px solid #00000014;
+  border-radius: 6px;
+  background: transparent;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mono-logout-btn:hover {
+  background: #333;
+  color: #ffffff;
+  border-color: #333;
+}
+
+.mono-logout-btn span {
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 1.6px;
+}
+
+.mono-main-content {
+  flex: 1;
+  padding: 64px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+@media (max-width: 768px) {
+  .mono-main-content {
+    padding: 32px;
+  }
+}
+
+.mono-title {
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 1;
+  margin: 0 0 64px 0;
+}
+
+.mono-section {
+  margin-bottom: 80px;
+}
+
+.mono-section-header {
+  border-bottom: 1px solid #333;
+  padding-bottom: 16px;
+  margin-bottom: 40px;
+}
+
+.mono-section-title {
+  font-size: 21px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.mono-form-group {
+  margin-bottom: 40px;
+  max-width: 440px;
+}
+
+.mono-form-group-two {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 40px;
+  max-width: 440px;
+  margin-bottom: 40px;
+}
+
+.mono-label {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 7px;
+  font-weight: 700;
+}
+
+.mono-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border: 1px solid #333;
+  padding: 10px;
+  transition: border-color 0.2s ease;
+}
+
+.mono-input::placeholder {
+  color: rgba(0, 0, 0, 0.15);
+  text-transform: uppercase;
+}
+
+.mono-button-primary {
+  background: #333;
+  color: #ffffff;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 12px 35px;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition:
+    transform 0.1s ease,
+    opacity 0.2s ease;
+}
+
+.mono-button-primary:active {
+  transform: scale(0.98);
+}
+
+.mono-button-primary:hover {
+  background: #004aad;
+}
+
+.mono-icon-btn-position {
+  display: flex;
+  align-items: center;
+}
+
+.mono-icon-btn {
+  padding: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

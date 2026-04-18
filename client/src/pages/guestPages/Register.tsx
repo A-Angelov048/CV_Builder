@@ -24,7 +24,7 @@ export default function Register() {
       const token: AccessTokenBE = await api.post("/auth/register", data);
 
       changeAuthState(token.data);
-      sessionStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("isLoggedIn", "true");
       navigate(`/${token.data.username}`, { replace: true });
     } catch (err: any) {
       handleErrors({ err: err.response.data });

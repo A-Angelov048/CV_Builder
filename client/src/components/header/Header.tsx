@@ -1,17 +1,20 @@
 import styles from "./Header.module.css";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import Profile from "../profile/Profile";
 
 type Section = "about" | "skills" | "projects" | "experience" | "education" | "contact";
 
 type HeaderProps = {
   scrollFunc: (section: Section) => void;
+  scrollUp: () => void;
 };
 
-export default function Header({ scrollFunc }: HeaderProps) {
+export default function Header({ scrollFunc, scrollUp }: HeaderProps) {
+  const [flagProfile, setFlagProfile] = useState(false);
   const checkboxRef = useRef<HTMLInputElement | null>(null);
-  const { authData, logoutUser } = useAuth();
+  const { authData } = useAuth();
 
   const handleScroll = (ref: Section) => {
     scrollFunc(ref);
@@ -20,6 +23,25 @@ export default function Header({ scrollFunc }: HeaderProps) {
       checkboxRef.current.checked = false;
     }
   };
+
+  const toggleProfile = () => {
+    setFlagProfile((prev) => !prev);
+
+    if (checkboxRef.current?.checked) {
+      checkboxRef.current.checked = false;
+    }
+  };
+
+  useEffect(() => {
+    if (flagProfile) {
+      toggleProfile();
+    }
+
+    if (authData.username && authData.username !== "") {
+      window.history.pushState(null, "", `/${authData.username}`);
+    }
+  }, [authData.username, authData.accessToken]);
+
   return (
     <header className={styles.header}>
       <div>
@@ -60,18 +82,17 @@ export default function Header({ scrollFunc }: HeaderProps) {
             <li>
               <span
                 onClick={() => {
-                  if (checkboxRef.current?.checked) {
-                    checkboxRef.current.checked = false;
-                  }
-                  logoutUser();
+                  scrollUp();
+                  setFlagProfile((prev) => !prev);
                 }}
               >
-                Logout
+                Profile
               </span>
             </li>
           )}
         </ul>
       </nav>
+      {flagProfile && <Profile toggleProfile={toggleProfile} />}
     </header>
   );
 }

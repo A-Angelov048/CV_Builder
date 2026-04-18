@@ -99,7 +99,7 @@ export const refreshService = async (token: string) => {
 };
 
 export const logoutService = async (token: string) => {
-  const test = await User.updateOne(
+  await User.updateOne(
     { refreshToken: token },
     { $pull: { refreshToken: token } },
   );
@@ -119,4 +119,83 @@ const createRefreshToken = (id: string, username: string) => {
     secret: process.env.REFRESH_SECRET as string,
     options: { expiresIn: "7d" },
   });
+};
+
+export const changeUserIdentity = async (
+  newUsername: string,
+  newEmail: string,
+  userId: string,
+  curToken: string,
+) => {
+  const user = await User.findByIdAndUpdate(
+    userId,
+    { $set: { username: newUsername, email: newEmail } },
+    { new: true, runValidators: true },
+  );
+
+  if (!user || user._id.toString() !== userId) {
+    throw new Error("User not found.");
+  }
+
+  const accessToken = await createAccessToken(
+    user._id.toString(),
+    user.username,
+  );
+  const refreshToken = await createRefreshToken(
+    user._id.toString(),
+    user.username,
+  );
+
+  await logoutService(curToken);
+  user.refreshToken.push(refreshToken);
+  await user.save();
+
+  return {
+    userId: user._id.toString(),
+    username: user.username,
+    accessToken,
+    refreshToken,
+  };
+};
+
+export const changeUserPassword = async (
+  curPassword: string,
+  newPassword: string,
+  userId: string,
+  curToken: string,
+) => {
+  const user = await User.findById(userId);
+
+  if (!user || user._id.toString() !== userId) {
+    throw new Error("User not found.");
+  }
+
+  const validatePassword = await bcrypt.compare(curPassword, user.password);
+
+  if (!validatePassword) {
+    throw new Error("Current password is incorrect.");
+  }
+
+  const hashed = await bcrypt.hash(newPassword, 12);
+
+  const accessToken = await createAccessToken(
+    user._id.toString(),
+    user.username,
+  );
+  const refreshToken = await createRefreshToken(
+    user._id.toString(),
+    user.username,
+  );
+
+  await logoutService(curToken);
+  user.refreshToken.push(refreshToken);
+  user.password = hashed;
+  await user.save();
+
+  return {
+    userId: user._id.toString(),
+    username: user.username,
+    accessToken,
+    refreshToken,
+  };
 };

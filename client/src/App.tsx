@@ -27,7 +27,7 @@ export default function App() {
 
   return (
     <AuthProvider>
-      <Header scrollFunc={scrollToSection} />
+      <Header scrollFunc={scrollToSection} scrollUp={scrollToUp} />
       <ScrollToTop scrollUp={scrollToUp}>
         <PortfolioProvider>
           <Routes>

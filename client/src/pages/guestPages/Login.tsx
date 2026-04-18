@@ -33,7 +33,7 @@ export default function Login() {
       const token: AccessTokenBE = await api.post("/auth/login", data);
 
       changeAuthState(token.data);
-      sessionStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("isLoggedIn", "true");
       navigate(`/${token.data.username}`, { replace: true });
     } catch (err: any) {
       handleErrors({ err: err.response.data });
