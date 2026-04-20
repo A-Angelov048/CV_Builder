@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function SocialLinksStatic() {
   return (
-    <>
+    <section className="max-width">
       <div className={styles["social-contacts"]}>
         <div className={styles["social-links"]}>
           <Link to="#">
@@ -32,6 +32,6 @@ export default function SocialLinksStatic() {
           maxime labore nulla laboriosam incidunt neque nihil.
         </p>
       </div>
-    </>
+    </section>
   );
 }

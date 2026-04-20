@@ -7,11 +7,12 @@ import { PortfolioProvider } from "./context/portfolioContext";
 import ScrollToTop from "./components/scrollToTop/ScrollToTop";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
-import HomeCV from "./pages/HomeCV";
 import Register from "./pages/guestPages/Register";
 import Login from "./pages/guestPages/Login";
 import NotFound from "./pages/notFound/NotFound";
 import AuthGuard from "./components/routeGuards/AuthGuard";
+import HomeCvUser from "./pages/HomeCvUser";
+import HomeCv from "./pages/guestPages/HomeCV";
 
 type Section = "about" | "skills" | "projects" | "experience" | "education" | "contact";
 
@@ -31,8 +32,8 @@ export default function App() {
       <ScrollToTop scrollUp={scrollToUp}>
         <PortfolioProvider>
           <Routes>
-            <Route path="/" element={<HomeCV sectionRefs={sectionRefs} />} />
-            <Route path="/:username" element={<HomeCV sectionRefs={sectionRefs} />} />
+            <Route path="/" element={<HomeCv sectionRefs={sectionRefs} />} />
+            <Route path="/:username" element={<HomeCvUser sectionRefs={sectionRefs} />} />
             <Route element={<AuthGuard />}>
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />

@@ -4,13 +4,10 @@ import { forwardRef } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { usePortfolio } from "../../hooks/usePortfolio";
 
-import ProfileCardStatic from "./ProfileCardStatic";
 import ProfileCardDynamic from "./ProfileCardDynamic";
 import portfolioValidation from "../../utils/portfolioValidation";
-import { useParams } from "react-router-dom";
 
 export default forwardRef<HTMLDivElement>(function ProfileCard(_, ref) {
-  const { username } = useParams();
   const { authData } = useAuth();
   const { portfolio } = usePortfolio();
 
@@ -25,18 +22,11 @@ export default forwardRef<HTMLDivElement>(function ProfileCard(_, ref) {
       className={styles.hero}
       style={
         {
-          "--bg-url":
-            portfolio.about.imageBackground.image && portfolio.about.imageBackground.image !== ""
-              ? `url(${portfolio.about.imageBackground.image})`
-              : "url(programming-background.jpg)",
+          "--bg-url": `url(${portfolio.about.imageBackground.image})`,
         } as React.CSSProperties
       }
     >
-      {viewType.canView && (viewType.isOwner || portfolio.about.name !== "") && username ? (
-        <ProfileCardDynamic portfolio={portfolio} viewType={viewType} />
-      ) : (
-        <ProfileCardStatic />
-      )}
+      <ProfileCardDynamic portfolio={portfolio} viewType={viewType} />
     </section>
   );
 });

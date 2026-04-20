@@ -32,16 +32,12 @@ export default forwardRef<HTMLDivElement>(function Experience(_, ref) {
         buttonCondition={checkPortfolioExperience}
       />
 
-      {viewType.canView && (viewType.isOwner || checkPortfolioExperience) && username ? (
-        <ExperienceDynamic
-          portfolio={portfolio}
-          flagForm={flagForm}
-          viewType={viewType}
-          changeStatus={changeState}
-        />
-      ) : (
-        <ExperienceStatic />
-      )}
+      <ExperienceDynamic
+        portfolio={portfolio}
+        flagForm={flagForm}
+        viewType={viewType}
+        changeStatus={changeState}
+      />
     </section>
   );
 });

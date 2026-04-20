@@ -8,15 +8,14 @@ import SocialLinks from "../components/socialLinks/SocialLinks";
 import { useParams } from "react-router-dom";
 import { useGetMyPortfolio, useGetPublicPortfolio } from "../hooks/usePortfolioResponse";
 import { useAuth } from "../hooks/useAuth";
-import RegisterNow from "../components/registerNow/RegisterNow";
 
 type Section = "about" | "skills" | "projects" | "experience" | "education" | "contact";
 
-type HomeCVProps = {
+type HomeProps = {
   sectionRefs: React.RefObject<Record<Section, HTMLDivElement | null>>;
 };
 
-export default function HomeCV({ sectionRefs }: HomeCVProps) {
+export default function HomeCvUser({ sectionRefs }: HomeProps) {
   const { authData } = useAuth();
   const { username } = useParams();
 
@@ -36,7 +35,6 @@ export default function HomeCV({ sectionRefs }: HomeCVProps) {
       <Experience ref={(el) => void (sectionRefs.current.experience = el)} />
       <Education ref={(el) => void (sectionRefs.current.education = el)} />
       <ContactMe ref={(el) => void (sectionRefs.current.contact = el)} />
-      {authData.accessToken === "" && <RegisterNow />}
     </>
   );
 }

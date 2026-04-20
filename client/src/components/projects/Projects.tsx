@@ -1,5 +1,4 @@
 import { forwardRef } from "react";
-import { useParams } from "react-router-dom";
 
 import { useAuth } from "../../hooks/useAuth";
 import { usePortfolio } from "../../hooks/usePortfolio";
@@ -8,12 +7,10 @@ import HeadingContainer from "../heading-container/HeadingContainer";
 import useHandleForm from "../../hooks/useHandleForm";
 import portfolioValidation from "../../utils/portfolioValidation";
 import ProjectsDynamic from "./ProjectsDynamic";
-import ProjectsStatic from "./ProjectsStatic";
 
 export default forwardRef<HTMLDivElement>(function Projects(_, ref) {
   const { flagForm, changeState } = useHandleForm(true);
 
-  const { username } = useParams();
   const { authData } = useAuth();
   const { portfolio } = usePortfolio();
 
@@ -34,16 +31,12 @@ export default forwardRef<HTMLDivElement>(function Projects(_, ref) {
         buttonCondition={checkPortfolioProjects}
       />
 
-      {viewType.canView && (viewType.isOwner || checkPortfolioProjects) && username ? (
-        <ProjectsDynamic
-          portfolio={portfolio}
-          flagForm={flagForm}
-          viewType={viewType}
-          changeStatus={changeState}
-        />
-      ) : (
-        <ProjectsStatic />
-      )}
+      <ProjectsDynamic
+        portfolio={portfolio}
+        flagForm={flagForm}
+        viewType={viewType}
+        changeStatus={changeState}
+      />
     </section>
   );
 });

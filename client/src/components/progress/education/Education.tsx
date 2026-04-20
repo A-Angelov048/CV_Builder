@@ -1,5 +1,4 @@
 import { forwardRef } from "react";
-import { useParams } from "react-router-dom";
 
 import { usePortfolio } from "../../../hooks/usePortfolio";
 import { useAuth } from "../../../hooks/useAuth";
@@ -9,12 +8,10 @@ import portfolioValidation from "../../../utils/portfolioValidation";
 
 import HeadingContainer from "../../heading-container/HeadingContainer";
 import EducationDynamic from "./EducationDynamic";
-import EducationStatic from "./EducationStatic";
 
 export default forwardRef<HTMLDivElement>(function Education(_, ref) {
   const { flagForm, changeState } = useHandleForm(true);
 
-  const { username } = useParams();
   const { authData } = useAuth();
   const { portfolio } = usePortfolio();
 
@@ -35,16 +32,12 @@ export default forwardRef<HTMLDivElement>(function Education(_, ref) {
         buttonCondition={checkPortfolioEducation}
       />
 
-      {viewType.canView && (viewType.isOwner || checkPortfolioEducation) && username ? (
-        <EducationDynamic
-          portfolio={portfolio}
-          flagForm={flagForm}
-          viewType={viewType}
-          changeStatus={changeState}
-        />
-      ) : (
-        <EducationStatic />
-      )}
+      <EducationDynamic
+        portfolio={portfolio}
+        flagForm={flagForm}
+        viewType={viewType}
+        changeStatus={changeState}
+      />
     </section>
   );
 });

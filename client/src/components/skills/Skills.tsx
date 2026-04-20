@@ -4,15 +4,12 @@ import HeadingContainer from "../heading-container/HeadingContainer";
 import useHandleForm from "../../hooks/useHandleForm";
 import portfolioValidation from "../../utils/portfolioValidation";
 import { usePortfolio } from "../../hooks/usePortfolio";
-import { useParams } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import SkillsDynamic from "./SkillsDynamic";
-import SkillsStatic from "./SkillsStatic";
 
 export default forwardRef<HTMLDivElement>(function Skills(_, ref) {
   const { flagForm, changeState } = useHandleForm(true);
 
-  const { username } = useParams();
   const { authData } = useAuth();
   const { portfolio } = usePortfolio();
 
@@ -32,16 +29,12 @@ export default forwardRef<HTMLDivElement>(function Skills(_, ref) {
         viewType={viewType}
         buttonCondition={checkPortfolioSkills}
       />
-      {viewType.canView && (viewType.isOwner || checkPortfolioSkills) && username ? (
-        <SkillsDynamic
-          portfolio={portfolio}
-          flagForm={flagForm}
-          viewType={viewType}
-          changeStatus={changeState}
-        />
-      ) : (
-        <SkillsStatic />
-      )}
+      <SkillsDynamic
+        portfolio={portfolio}
+        flagForm={flagForm}
+        viewType={viewType}
+        changeStatus={changeState}
+      />
     </section>
   );
 });

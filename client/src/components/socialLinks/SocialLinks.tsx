@@ -1,12 +1,9 @@
-import { useParams } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { usePortfolio } from "../../hooks/usePortfolio";
 import portfolioValidation from "../../utils/portfolioValidation";
 import SocialLinksDynamic from "./SocialLinksDynamic";
-import SocialLinksStatic from "./SocialLinksStatic";
 
 export default function SocialLinks() {
-  const { username } = useParams();
   const { authData } = useAuth();
   const { portfolio } = usePortfolio();
 
@@ -17,11 +14,7 @@ export default function SocialLinks() {
 
   return (
     <section className="max-width">
-      {viewType.canView && (viewType.isOwner || !!portfolio.links?.linkedin) && username ? (
-        <SocialLinksDynamic portfolio={portfolio} viewType={viewType} />
-      ) : (
-        <SocialLinksStatic />
-      )}
+      <SocialLinksDynamic portfolio={portfolio} viewType={viewType} />
     </section>
   );
 }
