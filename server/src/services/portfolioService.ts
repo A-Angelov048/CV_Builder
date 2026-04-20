@@ -1,19 +1,15 @@
 import { PortfolioModel } from "../models/portfolio";
+import { User } from "../models/user";
 import { Portfolio, PortfolioKey } from "../types/portfolioTypes";
 import imageDelete from "../utils/cloudinaryImageDelete";
 
-export const createPortfolio = async (
-  userId: string,
-  username: string,
-  body: Portfolio,
-) => {
+export const createPortfolio = async (userId: string, body: Portfolio) => {
   const exists = await PortfolioModel.findOne({ owner: userId });
 
   if (!exists) {
     const portfolioDB = await PortfolioModel.create({
       ...body,
       owner: userId,
-      username,
       isPublished: false,
     });
 
@@ -33,10 +29,18 @@ export const getMyPortfolio = async (userId: string) => {
 };
 
 export const getPublicPortfolio = async (username: string) => {
-  return PortfolioModel.findOne({
-    username,
+  const findUser = await User.findOne({ username: username });
+
+  if (!findUser) {
+    throw new Error("User not found");
+  }
+
+  const portfolio = await PortfolioModel.findOne({
+    owner: findUser._id,
     isPublished: true,
   });
+
+  return portfolio;
 };
 
 export const updatePortfolioSection = async <T>(
@@ -51,7 +55,7 @@ export const updatePortfolioSection = async <T>(
     { owner: userId },
     { [operation]: { [section]: body } },
     { new: true, runValidators: true },
-  ).select(section === "about" ? "about username owner isPublished" : section);
+  ).select(section === "about" ? "about owner isPublished" : section);
 
   if (!portfolio) {
     throw new Error("Portfolio not found");

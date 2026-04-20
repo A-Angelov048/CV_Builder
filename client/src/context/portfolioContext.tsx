@@ -15,7 +15,6 @@ export type AboutValues = {
 
 export interface Portfolio {
   owner: string;
-  username: string;
 
   about: AboutValues;
   links?: {
@@ -75,7 +74,6 @@ export function PortfolioProvider({ children }: ProfileProviderProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [portfolio, setPortfolio] = useState<Portfolio>({
     owner: "",
-    username: "",
     about: {
       name: "",
       career: "",
@@ -93,7 +91,6 @@ export function PortfolioProvider({ children }: ProfileProviderProps) {
     if (!isUserLogged && pathname === "/") {
       setPortfolio({
         owner: "",
-        username: "",
         about: {
           name: "",
           career: "",

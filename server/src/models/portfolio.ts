@@ -10,13 +10,6 @@ const PortfolioSchema = new Schema<Portfolio>(
       unique: true,
     },
 
-    username: {
-      type: String,
-      required: true,
-      unique: true,
-      minLength: [5, "Username should be at least 5 characters long."],
-    },
-
     about: {
       name: { type: String, required: true, minLength: 5 },
       career: { type: String, required: true, minLength: 5 },

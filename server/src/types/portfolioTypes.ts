@@ -52,7 +52,6 @@ export interface Education {
 
 export interface Portfolio extends Document {
   owner: Types.ObjectId;
-  username: string;
 
   about: About;
   links: Links;

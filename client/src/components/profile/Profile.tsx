@@ -34,7 +34,6 @@ export default function Profile({ toggleProfile }: { toggleProfile: () => void }
             <button
               onClick={() => {
                 logoutUser("/");
-                toggleProfile();
               }}
               className={style["mono-logout-btn"]}
             >

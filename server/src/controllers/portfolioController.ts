@@ -11,11 +11,10 @@ import {
 
 export async function createPortfolioController(req: Request, res: Response) {
   const userId = req.userId;
-  const username = req.username;
   const body = req.body;
 
   try {
-    const portfolio = await createPortfolio(userId, username, body);
+    const portfolio = await createPortfolio(userId, body);
     res.status(201).json(portfolio);
   } catch (err: any) {
     const imageProfileId = body.about.imageProfile.public_id;
