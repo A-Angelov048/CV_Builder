@@ -5,6 +5,7 @@ import {
   deletePortfolioSection,
   getMyPortfolio,
   getPublicPortfolio,
+  sendContactEmail,
   togglePublish,
   updatePortfolioSection,
 } from "../services/portfolioService";
@@ -234,5 +235,34 @@ export async function deleteEducationController(req: Request, res: Response) {
     res.json(portfolio);
   } catch (err: any) {
     res.status(400).json({ message: err.message });
+  }
+}
+
+export async function sendContactEmailController(req: Request, res: Response) {
+  const {
+    ownerId,
+    firstName,
+    lastName,
+    email,
+    message,
+  }: {
+    ownerId: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    message: string;
+  } = req.body;
+
+  try {
+    if (!ownerId) {
+      return res.status(400).json({ message: "Owner ID is required" });
+    }
+
+    await sendContactEmail(ownerId, firstName, lastName, email, message);
+
+    res.json({ message: "Email sent successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to send email" });
   }
 }

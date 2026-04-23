@@ -1,5 +1,5 @@
 import styles from "./Header.module.css";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import Profile from "../profile/Profile";
@@ -31,16 +31,6 @@ export default function Header({ scrollFunc, scrollUp }: HeaderProps) {
       checkboxRef.current.checked = false;
     }
   };
-
-  useEffect(() => {
-    if (flagProfile) {
-      toggleProfile();
-    }
-
-    if (authData.username && authData.username !== "") {
-      window.history.pushState(null, "", `/${authData.username}`);
-    }
-  }, [authData.username, authData.accessToken]);
 
   return (
     <header className={styles.header}>

@@ -5,17 +5,20 @@ import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
 
 import { useAxiosPrivate } from "../../../hooks/useAxiosPrivate";
 import { useFormErrorSnackbar } from "../../../hooks/useFormErrorSnackbar";
+import { useFormSuccessSnackbar } from "../../../hooks/useFormSuccessSnackbar";
+import { useAuth, type AccessTokenBE } from "../../../hooks/useAuth";
 
 import { changePasswordSchema, type ChangePasswordValues } from "../../../validation/formSchema";
 import { ErrorSnackbar } from "../../errorModal/ErrorSnackbar";
-import { useAuth, type AccessTokenBE } from "../../../hooks/useAuth";
+import { SuccessSnackbar } from "../../successModal/SuccessSnackbar";
 
 export default function ChangeCredentials() {
   const api = useAxiosPrivate();
   const { changeAuthState } = useAuth();
   const { open, messages, close, handleErrors } = useFormErrorSnackbar();
+  const { openSuccess, messagesSuccess, closeSuccess, handleSuccess } = useFormSuccessSnackbar();
 
-  const { register, handleSubmit } = useForm<ChangePasswordValues>({
+  const { register, handleSubmit, reset } = useForm<ChangePasswordValues>({
     resolver: zodResolver(changePasswordSchema),
   });
 
@@ -25,6 +28,9 @@ export default function ChangeCredentials() {
       changeAuthState(token.data);
     } catch (err: any) {
       handleErrors({ err: err.response.data });
+    } finally {
+      reset();
+      handleSuccess("Password updated successfully!");
     }
   };
 
@@ -78,6 +84,7 @@ export default function ChangeCredentials() {
         </button>
       </form>
       <ErrorSnackbar open={open} messages={messages} onClose={close} />
+      <SuccessSnackbar open={openSuccess} messages={messagesSuccess} onClose={closeSuccess} />
     </section>
   );
 }

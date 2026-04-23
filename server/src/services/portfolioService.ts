@@ -2,6 +2,7 @@ import { PortfolioModel } from "../models/portfolio";
 import { User } from "../models/user";
 import { Portfolio, PortfolioKey } from "../types/portfolioTypes";
 import imageDelete from "../utils/cloudinaryImageDelete";
+import nodemailer from "nodemailer";
 
 export const createPortfolio = async (userId: string, body: Portfolio) => {
   const exists = await PortfolioModel.findOne({ owner: userId });
@@ -77,6 +78,7 @@ export const togglePublish = async (userId: string, publish: boolean) => {
 
   return portfolio;
 };
+
 export const deletePortfolioSection = async (
   userId: string,
   section: PortfolioKey,
@@ -100,4 +102,42 @@ export const deletePortfolioSection = async (
   await portfolio.save();
 
   return portfolio;
+};
+
+export const sendContactEmail = async (
+  ownerId: string,
+  firstName: string,
+  lastName: string,
+  email: string,
+  message: string,
+) => {
+  const findUser = await User.findById(ownerId);
+
+  if (!findUser) {
+    throw new Error("User not found");
+  }
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+
+  const mailOptions = {
+    from: `"${firstName} ${lastName}" <${email}>`,
+    to: findUser.email,
+    subject: `New Contact Message from ${firstName} ${lastName}`,
+    replyTo: findUser.email,
+    html: `
+      <h3>New Message</h3>
+      <p><strong>Name:</strong> ${firstName} ${lastName}</p>
+      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Message:</strong></p>
+      <p>${message}</p>
+    `,
+  };
+
+  transporter.sendMail(mailOptions);
 };

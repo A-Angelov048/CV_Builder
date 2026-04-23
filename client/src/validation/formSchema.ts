@@ -210,21 +210,23 @@ export const contactSchema = z.object({
     .string()
     .trim()
     .min(1, "First name is required.")
-    .min(5, "First name must be at least 5 characters long."),
+    .min(4, "First name must be at least 4 characters long."),
   lastName: z
     .string()
     .trim()
     .min(1, "Last name is required.")
-    .min(5, "Last name must be at least 5 characters long."),
+    .min(4, "Last name must be at least 4 characters long."),
   email: z
-    .email("Please enter a valid email address.")
+    .string()
     .trim()
-    .min(5, "Email must be at least 5 characters long."),
+    .min(10, "Email must be at least 10 characters long.")
+    .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Please enter a valid email address."),
   message: z
     .string()
     .trim()
     .min(1, "Message is required.")
-    .min(5, "Message must be at least 5 characters long."),
+    .min(10, "Message must be at least 10 characters long.")
+    .max(240, "Message must be at most 240 characters long."),
 });
 
 export type ContactValues = z.infer<typeof contactSchema>;
@@ -236,9 +238,10 @@ export const changeIdentitySchema = z.object({
     .min(1, "Username is required.")
     .min(5, "Username must be at least 5 characters long."),
   email: z
-    .email("Please enter a valid email address.")
+    .string()
     .trim()
-    .min(5, "Email must be at least 5 characters long."),
+    .min(10, "Email must be at least 10 characters long.")
+    .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Please enter a valid email address."),
 });
 
 export type ChangeIdentityValues = z.infer<typeof changeIdentitySchema>;

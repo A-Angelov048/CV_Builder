@@ -9,13 +9,16 @@ import { useFormErrorSnackbar } from "../../../hooks/useFormErrorSnackbar";
 
 import { changeIdentitySchema, type ChangeIdentityValues } from "../../../validation/formSchema";
 import { ErrorSnackbar } from "../../errorModal/ErrorSnackbar";
+import { SuccessSnackbar } from "../../successModal/SuccessSnackbar";
+import { useFormSuccessSnackbar } from "../../../hooks/useFormSuccessSnackbar";
 
 export default function ChangeIdentity() {
   const api = useAxiosPrivate();
   const { authData, changeAuthState } = useAuth();
   const { open, messages, close, handleErrors, handleCustomError } = useFormErrorSnackbar();
+  const { openSuccess, messagesSuccess, closeSuccess, handleSuccess } = useFormSuccessSnackbar();
 
-  const { register, handleSubmit } = useForm<ChangeIdentityValues>({
+  const { register, handleSubmit, reset } = useForm<ChangeIdentityValues>({
     resolver: zodResolver(changeIdentitySchema),
   });
 
@@ -29,6 +32,9 @@ export default function ChangeIdentity() {
       changeAuthState(token.data);
     } catch (err: any) {
       handleErrors({ err: err.response.data });
+    } finally {
+      reset();
+      handleSuccess("Identity details updated successfully!");
     }
   };
 
@@ -64,6 +70,7 @@ export default function ChangeIdentity() {
         </button>
       </form>
       <ErrorSnackbar open={open} messages={messages} onClose={close} />
+      <SuccessSnackbar open={openSuccess} messages={messagesSuccess} onClose={closeSuccess} />
     </section>
   );
 }

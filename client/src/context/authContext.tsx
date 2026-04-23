@@ -33,6 +33,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
   });
 
   useEffect(() => {
+    if (user.username && user.username !== "") {
+      window.history.pushState(null, "", `/${user.username}`);
+    }
+
     if (isUser === "true") {
       refreshAccessToken();
     } else {

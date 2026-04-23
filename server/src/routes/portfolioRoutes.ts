@@ -15,6 +15,7 @@ import {
   deleteProjectsController,
   deleteExperienceController,
   deleteEducationController,
+  sendContactEmailController,
 } from "../controllers/portfolioController";
 
 const router = express.Router();
@@ -22,6 +23,7 @@ const router = express.Router();
 router.get("/portfolio/me", authMiddleware, getMyPortfolioController);
 router.get("/portfolio/public/:username", getPublicPortfolioController);
 
+router.post("/portfolio/contact-me", sendContactEmailController);
 router.post("/portfolio", authMiddleware, createPortfolioController);
 router.post("/portfolio/links", authMiddleware, createLinksController);
 
