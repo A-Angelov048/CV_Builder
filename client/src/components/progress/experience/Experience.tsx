@@ -7,12 +7,10 @@ import { usePortfolio } from "../../../hooks/usePortfolio";
 import portfolioValidation from "../../../utils/portfolioValidation";
 import { useAuth } from "../../../hooks/useAuth";
 import ExperienceDynamic from "./ExperienceDynamic";
-import ExperienceStatic from "./ExperienceStatic";
 
 export default forwardRef<HTMLDivElement>(function Experience(_, ref) {
   const { flagForm, changeState } = useHandleForm(true);
 
-  const { username } = useParams();
   const { authData } = useAuth();
   const { portfolio } = usePortfolio();
 

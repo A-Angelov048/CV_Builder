@@ -12,7 +12,7 @@ import Login from "./pages/guestPages/Login";
 import NotFound from "./pages/notFound/NotFound";
 import AuthGuard from "./components/routeGuards/AuthGuard";
 import HomeCvUser from "./pages/HomeCvUser";
-import HomeCv from "./pages/guestPages/HomeCV";
+import HomeCv from "./pages/guestPages/HomeCv";
 
 type Section = "about" | "skills" | "projects" | "experience" | "education" | "contact";
 
