@@ -193,8 +193,14 @@ export const profileCardSchema = z.object({
     .trim()
     .min(1, "Date of birth is required.")
     .min(5, "Date of birth must be at least 5 characters long."),
-  imageProfile: z.instanceof(File, { message: "Profile image is required" }),
-  imageBackground: z.instanceof(File, { message: "Background image is required" }),
+  imageProfile: imageSchema({
+    maxDimensions: { width: 600, height: 600 },
+    imageType: "Profile image",
+  }),
+  imageBackground: imageSchema({
+    maxDimensions: { width: 4096, height: 4096 },
+    imageType: "Background image",
+  }),
 });
 
 export type ProfileCardValues = z.infer<typeof profileCardSchema>;

@@ -78,7 +78,7 @@ export function useCreatePortfolio() {
     const { imageProfile, imageBackground, ...others } = data;
 
     try {
-      const uploaded = await uploadImages(imageProfile, imageBackground);
+      const uploaded = await uploadImages(imageProfile[0], imageBackground[0]);
 
       if (!uploaded.imageProfile?.image || !uploaded.imageBackground?.image) {
         throw new Error("Cloudinary upload failed, try again later");
