@@ -2,7 +2,6 @@ import { forwardRef } from "react";
 
 import HeadingContainer from "../../heading-container/HeadingContainer";
 import useHandleForm from "../../../hooks/useHandleForm";
-import { useParams } from "react-router-dom";
 import { usePortfolio } from "../../../hooks/usePortfolio";
 import portfolioValidation from "../../../utils/portfolioValidation";
 import { useAuth } from "../../../hooks/useAuth";
