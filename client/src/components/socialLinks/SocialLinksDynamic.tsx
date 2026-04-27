@@ -1,7 +1,6 @@
 import styles from "./SocialLinks.module.css";
 
 import { Link } from "react-router-dom";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
 
 import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
@@ -24,15 +23,20 @@ export default function SocialLinksDynamic({
   const { createPortfolioLinks } = useCreatePortfolioLinks();
   const { flagForm, changeState } = useHandleForm(true);
 
-  const { open, messages, close, handleErrors } = useFormErrorSnackbar();
+  const { open, messages, close, handleErrors, handleZodErrors } = useFormErrorSnackbar();
 
-  const { register, handleSubmit } = useForm<SocialLinkValues>({
-    resolver: zodResolver(socialLinkSchema),
-  });
+  const { register, handleSubmit } = useForm<SocialLinkValues>();
 
   const onSubmit: SubmitHandler<SocialLinkValues> = async (data) => {
     if (!flagForm) {
       changeState(true);
+    }
+
+    const result = socialLinkSchema.safeParse(data);
+
+    if (!result.success) {
+      handleZodErrors(result.error);
+      return;
     }
 
     try {

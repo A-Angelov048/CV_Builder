@@ -1,6 +1,5 @@
 import styles from "./Projects.module.css";
 import { Link } from "react-router-dom";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
 
 import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
@@ -30,15 +29,20 @@ export default function ProjectsDynamic({
   const { updatePortfolio } = useUpdatePortfolio("projects");
   const { deletePortfolioInfo } = useDeletePortfolioInfo();
 
-  const { open, messages, close, handleErrors } = useFormErrorSnackbar();
+  const { open, messages, close, handleErrors, handleZodErrors } = useFormErrorSnackbar();
 
-  const { register, handleSubmit } = useForm<ProjectsValues>({
-    resolver: zodResolver(projectsSchema),
-  });
+  const { register, handleSubmit } = useForm<ProjectsValues>();
 
   const onSubmit: SubmitHandler<ProjectsValues> = async (data) => {
     if (!flagForm) {
       changeStatus(true);
+    }
+
+    const result = projectsSchema.safeParse(data);
+
+    if (!result.success) {
+      handleZodErrors(result.error);
+      return;
     }
 
     try {

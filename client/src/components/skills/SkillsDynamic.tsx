@@ -1,7 +1,6 @@
 import styles from "./Skills.module.css";
 
 import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useInView } from "../../hooks/useInView";
 import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
@@ -35,15 +34,20 @@ export default function SkillsDynamic({
     threshold: 0.6,
   });
 
-  const { open, messages, close, handleErrors } = useFormErrorSnackbar();
+  const { open, messages, close, handleErrors, handleZodErrors } = useFormErrorSnackbar();
 
-  const { register, handleSubmit } = useForm<SkillValues>({
-    resolver: zodResolver(skillSchema),
-  });
+  const { register, handleSubmit } = useForm<SkillValues>();
 
   const onSubmit: SubmitHandler<SkillValues> = async (data) => {
     if (!flagForm) {
       changeStatus(true);
+    }
+
+    const result = skillSchema.safeParse(data);
+
+    if (!result.success) {
+      handleZodErrors(result.error);
+      return;
     }
 
     try {

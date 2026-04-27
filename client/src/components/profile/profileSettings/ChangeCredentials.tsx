@@ -1,5 +1,4 @@
 import style from "../Profile.module.css";
-import { zodResolver } from "@hookform/resolvers/zod/src/index.js";
 
 import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
 
@@ -15,14 +14,19 @@ import { SuccessSnackbar } from "../../successModal/SuccessSnackbar";
 export default function ChangeCredentials() {
   const api = useAxiosPrivate();
   const { changeAuthState } = useAuth();
-  const { open, messages, close, handleErrors } = useFormErrorSnackbar();
+  const { open, messages, close, handleErrors, handleZodErrors } = useFormErrorSnackbar();
   const { openSuccess, messagesSuccess, closeSuccess, handleSuccess } = useFormSuccessSnackbar();
 
-  const { register, handleSubmit, reset } = useForm<ChangePasswordValues>({
-    resolver: zodResolver(changePasswordSchema),
-  });
+  const { register, handleSubmit, reset } = useForm<ChangePasswordValues>();
 
   const onSubmit: SubmitHandler<ChangePasswordValues> = async (data) => {
+    const result = changePasswordSchema.safeParse(data);
+
+    if (!result.success) {
+      handleZodErrors(result.error);
+      return;
+    }
+
     try {
       const token: AccessTokenBE = await api.put("/auth/change-password", data);
       changeAuthState(token.data);

@@ -4,7 +4,6 @@ import { forwardRef } from "react";
 import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
 import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
 import { contactSchema, type ContactValues } from "../../validation/formSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { ErrorSnackbar } from "../errorModal/ErrorSnackbar";
 import { usePortfolio } from "../../hooks/usePortfolio";
 import { useAxiosPrivate } from "../../hooks/useAxiosPrivate";
@@ -15,14 +14,19 @@ import HeadingContainerStatic from "../heading-container/HeadingContainerStatic"
 export default forwardRef<HTMLDivElement>(function ContactMe(_, ref) {
   const api = useAxiosPrivate();
   const { portfolio } = usePortfolio();
-  const { open, messages, close, handleErrors } = useFormErrorSnackbar();
+  const { open, messages, close, handleErrors, handleZodErrors } = useFormErrorSnackbar();
   const { openSuccess, messagesSuccess, closeSuccess, handleSuccess } = useFormSuccessSnackbar();
 
-  const { register, handleSubmit, reset } = useForm<ContactValues>({
-    resolver: zodResolver(contactSchema),
-  });
+  const { register, handleSubmit, reset } = useForm<ContactValues>();
 
   const onSubmit: SubmitHandler<ContactValues> = async (data) => {
+    const result = contactSchema.safeParse(data);
+
+    if (!result.success) {
+      handleZodErrors(result.error);
+      return;
+    }
+
     try {
       await api.post("/portfolio/contact-me", { ...data, ownerId: portfolio.owner });
     } catch (err: any) {

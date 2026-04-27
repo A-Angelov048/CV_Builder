@@ -1,6 +1,5 @@
 import styles from "./guestPages.module.css";
 import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
 
 import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
@@ -13,13 +12,18 @@ export default function Register() {
   const navigate = useNavigate();
   const api = useAxiosPrivate();
   const { changeAuthState } = useAuth();
-  const { open, messages, close, handleErrors } = useFormErrorSnackbar();
+  const { open, messages, close, handleErrors, handleZodErrors } = useFormErrorSnackbar();
 
-  const { register, handleSubmit } = useForm<RegisterValues>({
-    resolver: zodResolver(registerSchema),
-  });
+  const { register, handleSubmit } = useForm<RegisterValues>();
 
   const onSubmit: SubmitHandler<RegisterValues> = async (data) => {
+    const result = registerSchema.safeParse(data);
+
+    if (!result.success) {
+      handleZodErrors(result.error);
+      return;
+    }
+
     try {
       const token: AccessTokenBE = await api.post("/auth/register", data);
 

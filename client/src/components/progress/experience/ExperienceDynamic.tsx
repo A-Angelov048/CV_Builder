@@ -1,7 +1,6 @@
 import styles from "../Progress.module.css";
 
 import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useFormErrorSnackbar } from "../../../hooks/useFormErrorSnackbar";
 import { useInView } from "../../../hooks/useInView";
@@ -35,15 +34,20 @@ export default function ExperienceDynamic({
     threshold: 0.2,
   });
 
-  const { open, messages, close, handleErrors } = useFormErrorSnackbar();
+  const { open, messages, close, handleErrors, handleZodErrors } = useFormErrorSnackbar();
 
-  const { register, handleSubmit } = useForm<ExperienceValues>({
-    resolver: zodResolver(experienceSchema),
-  });
+  const { register, handleSubmit } = useForm<ExperienceValues>({});
 
   const onSubmit: SubmitHandler<ExperienceValues> = async (data) => {
     if (!flagForm) {
       changeStatus(true);
+    }
+
+    const result = experienceSchema.safeParse(data);
+
+    if (!result.success) {
+      handleZodErrors(result.error);
+      return;
     }
 
     try {

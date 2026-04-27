@@ -1,5 +1,4 @@
 import style from "../Profile.module.css";
-import { zodResolver } from "@hookform/resolvers/zod/src/index.js";
 
 import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
 
@@ -15,16 +14,22 @@ import { useFormSuccessSnackbar } from "../../../hooks/useFormSuccessSnackbar";
 export default function ChangeIdentity() {
   const api = useAxiosPrivate();
   const { authData, changeAuthState } = useAuth();
-  const { open, messages, close, handleErrors, handleCustomError } = useFormErrorSnackbar();
+  const { open, messages, close, handleErrors, handleCustomError, handleZodErrors } =
+    useFormErrorSnackbar();
   const { openSuccess, messagesSuccess, closeSuccess, handleSuccess } = useFormSuccessSnackbar();
 
-  const { register, handleSubmit, reset } = useForm<ChangeIdentityValues>({
-    resolver: zodResolver(changeIdentitySchema),
-  });
+  const { register, handleSubmit, reset } = useForm<ChangeIdentityValues>();
 
   const onSubmit: SubmitHandler<ChangeIdentityValues> = async (data) => {
     if (data.username === authData.username) {
       return handleCustomError("New username cannot be the same as the current one.");
+    }
+
+    const result = changeIdentitySchema.safeParse(data);
+
+    if (!result.success) {
+      handleZodErrors(result.error);
+      return;
     }
 
     try {

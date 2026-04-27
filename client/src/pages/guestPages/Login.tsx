@@ -1,6 +1,5 @@
 import styles from "./guestPages.module.css";
 import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
@@ -16,11 +15,9 @@ export default function Login() {
 
   const api = useAxiosPrivate();
   const { changeAuthState } = useAuth();
-  const { open, messages, close, handleErrors } = useFormErrorSnackbar();
+  const { open, messages, close, handleErrors, handleZodErrors } = useFormErrorSnackbar();
 
-  const { register, handleSubmit } = useForm<LoginValues>({
-    resolver: zodResolver(loginSchema),
-  });
+  const { register, handleSubmit } = useForm<LoginValues>();
 
   useEffect(() => {
     if (state && state.message) {
@@ -29,6 +26,13 @@ export default function Login() {
   }, []);
 
   const onSubmit: SubmitHandler<LoginValues> = async (data) => {
+    const result = loginSchema.safeParse(data);
+
+    if (!result.success) {
+      handleZodErrors(result.error);
+      return;
+    }
+
     try {
       const token: AccessTokenBE = await api.post("/auth/login", data);
 

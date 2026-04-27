@@ -1,7 +1,6 @@
 import styles from "../Progress.module.css";
 
 import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useDeletePortfolioInfo, useUpdatePortfolio } from "../../../hooks/usePortfolioResponse";
 import { useInView } from "../../../hooks/useInView";
@@ -36,15 +35,20 @@ export default function EducationDynamic({
     threshold: 0.2,
   });
 
-  const { open, messages, close, handleErrors } = useFormErrorSnackbar();
+  const { open, messages, close, handleErrors, handleZodErrors } = useFormErrorSnackbar();
 
-  const { register, handleSubmit } = useForm<EducationValues>({
-    resolver: zodResolver(educationSchema),
-  });
+  const { register, handleSubmit } = useForm<EducationValues>();
 
   const onSubmit: SubmitHandler<EducationValues> = async (data) => {
     if (!flagForm) {
       changeStatus(true);
+    }
+
+    const result = educationSchema.safeParse(data);
+
+    if (!result.success) {
+      handleZodErrors(result.error);
+      return;
     }
 
     try {

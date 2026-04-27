@@ -1,7 +1,6 @@
 import styles from "./ProfileCard.module.css";
 
 import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { profileCardSchema, type ProfileCardValues } from "../../validation/formSchema";
 
 import useHandleForm from "../../hooks/useHandleForm";
@@ -24,16 +23,22 @@ export default function ProfileCardDynamic({
 }) {
   const { createPortfolio } = useCreatePortfolio();
 
-  const { open, messages, close, handleErrors, handleCustomError } = useFormErrorSnackbar();
+  const { open, messages, close, handleErrors, handleCustomError, handleZodErrors } =
+    useFormErrorSnackbar();
 
   const { flagForm, changeState } = useHandleForm(true);
-  const { register, handleSubmit } = useForm<ProfileCardValues>({
-    resolver: zodResolver(profileCardSchema),
-  });
+  const { register, handleSubmit } = useForm<ProfileCardValues>();
 
   const onSubmit: SubmitHandler<ProfileCardValues> = async (data) => {
     if (!flagForm) {
       changeState(true);
+    }
+
+    const result = profileCardSchema.safeParse(data);
+
+    if (!result.success) {
+      handleZodErrors(result.error);
+      return;
     }
 
     try {
