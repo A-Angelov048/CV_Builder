@@ -20,11 +20,7 @@ export default forwardRef<HTMLDivElement>(function ProfileCard(_, ref) {
     <section
       ref={ref}
       className={styles.hero}
-      style={
-        {
-          "--bg-url": `url(${portfolio.about.imageBackground.image})`,
-        } as React.CSSProperties
-      }
+      style={{ backgroundImage: `url(${portfolio.about.imageBackground.image})` }}
     >
       <ProfileCardDynamic portfolio={portfolio} viewType={viewType} />
     </section>

@@ -6,11 +6,7 @@ export default forwardRef<HTMLDivElement>(function ProfileCardStatic(_, ref) {
     <section
       ref={ref}
       className={styles.hero}
-      style={
-        {
-          "--bg-url": "url(programming-background.jpg)",
-        } as React.CSSProperties
-      }
+      style={{ backgroundImage: "url(programming-background.jpg)" }}
     >
       <div className={styles["profile-card"]}>
         <div className={styles["profile-left"]}>

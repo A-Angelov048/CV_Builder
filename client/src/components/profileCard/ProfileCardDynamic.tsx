@@ -64,14 +64,7 @@ export default function ProfileCardDynamic({
       {flagForm && portfolio.owner !== "" ? (
         <>
           <div className={styles["profile-left"]}>
-            <img
-              src={
-                portfolio.about.imageProfile.image && portfolio.about.imageProfile.image !== ""
-                  ? portfolio.about.imageProfile.image
-                  : "image_600_600.jpg"
-              }
-              alt="Profile Picture"
-            />
+            <img src={portfolio.about.imageProfile.image} alt="Profile Picture" />
           </div>
 
           <div className={styles["profile-right"]}>
