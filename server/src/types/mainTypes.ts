@@ -1,3 +1,5 @@
+import { Secret, SignOptions, VerifyOptions } from "jsonwebtoken";
+
 declare global {
   namespace Express {
     interface Request {
@@ -13,3 +15,18 @@ export type jwtData = {
   iat: number;
   exp: number;
 };
+
+export interface JwtSignData {
+  token: {
+    userId: string | object;
+    username: string;
+  };
+  secret: Secret;
+  options?: SignOptions;
+}
+
+export interface JwtVerifyData {
+  token: string;
+  secret: Secret;
+  options?: VerifyOptions;
+}

@@ -62,11 +62,11 @@ interface CurrentPortfolioContextType {
   changeLoadingState: (state: boolean) => void;
 }
 
-export const PortfolioContext = createContext<CurrentPortfolioContextType | null>(null);
-
 interface ProfileProviderProps {
   children: ReactNode;
 }
+
+export const PortfolioContext = createContext<CurrentPortfolioContextType | null>(null);
 
 export function PortfolioProvider({ children }: ProfileProviderProps) {
   const { pathname } = useLocation();

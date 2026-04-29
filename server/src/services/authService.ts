@@ -1,7 +1,8 @@
 import bcrypt from "bcrypt";
 import jwt from "../utils/jwt";
-import { User, IUser } from "../models/user";
+import { User } from "../models/user";
 import { jwtData } from "../types/mainTypes";
+import { IUser } from "../types/userTypes";
 
 export const createUser = async (body: IUser) => {
   const [username, email] = await Promise.all([

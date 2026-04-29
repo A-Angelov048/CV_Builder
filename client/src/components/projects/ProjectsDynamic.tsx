@@ -5,18 +5,8 @@ import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
 import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
 import { projectsSchema, type ProjectsValues } from "../../validation/formSchema";
 import { ErrorSnackbar } from "../errorModal/ErrorSnackbar";
-import type { Portfolio } from "../../context/portfolioContext";
 import { useDeletePortfolioInfo, useUpdatePortfolio } from "../../hooks/usePortfolioResponse";
-
-type ProjectsDynamicProps = {
-  portfolio: Portfolio;
-  flagForm: boolean;
-  viewType: {
-    isOwner: boolean;
-    canView: boolean;
-  };
-  changeStatus: (value: boolean) => void;
-};
+import { ProjectsDynamicProps } from "../../types/componentsPropsTypes";
 
 export default function ProjectsDynamic({
   portfolio,

@@ -16,11 +16,11 @@ interface CurrentAuthContextType {
   logoutUser: (nav: string, message?: string) => Promise<void>;
 }
 
-export const AuthContext = createContext<CurrentAuthContextType | null>(null);
-
 interface AuthProviderProps {
   children: ReactNode;
 }
+
+export const AuthContext = createContext<CurrentAuthContextType | null>(null);
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const navigate = useNavigate();

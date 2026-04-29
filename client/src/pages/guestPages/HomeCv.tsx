@@ -6,12 +6,7 @@ import ProjectsStatic from "../../components/projects/ProjectsStatic";
 import ExperienceStatic from "../../components/progress/experience/ExperienceStatic";
 import EducationStatic from "../../components/progress/education/EducationStatic";
 import ContactMeStatic from "../../components/contactMe/ContactMeStatic";
-
-type Section = "about" | "skills" | "projects" | "experience" | "education" | "contact";
-
-type HomeProps = {
-  sectionRefs: React.RefObject<Record<Section, HTMLDivElement | null>>;
-};
+import { HomeProps } from "../../types/componentsPropsTypes";
 
 export default function HomeCv({ sectionRefs }: HomeProps) {
   return (

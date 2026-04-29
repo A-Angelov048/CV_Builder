@@ -1,14 +1,8 @@
+import { UploadResult } from "../types/generalTypes";
 import compressImage from "../utils/imageCompression ";
 
-type UploadResult = {
-  imageProfile?: { image: string; public_id: string };
-  imageBackground?: { image: string; public_id: string };
-};
-
 export const useCloudinaryUpload = () => {
-  const uploadImage = async (
-    file: File,
-  ): Promise<{ image: string; public_id: string }> => {
+  const uploadImage = async (file: File): Promise<{ image: string; public_id: string }> => {
     const compressed = await compressImage(file);
 
     const formData = new FormData();
@@ -20,7 +14,7 @@ export const useCloudinaryUpload = () => {
       {
         method: "POST",
         body: formData,
-      },
+      }
     );
 
     if (!res.ok) {
@@ -34,13 +28,11 @@ export const useCloudinaryUpload = () => {
 
   const uploadImages = async (
     imageProfile?: File,
-    imageBackground?: File,
+    imageBackground?: File
   ): Promise<UploadResult> => {
     const [imageProfileResult, imageBackgroundResult] = await Promise.all([
       imageProfile ? uploadImage(imageProfile) : Promise.resolve(undefined),
-      imageBackground
-        ? uploadImage(imageBackground)
-        : Promise.resolve(undefined),
+      imageBackground ? uploadImage(imageBackground) : Promise.resolve(undefined),
     ]);
 
     return {

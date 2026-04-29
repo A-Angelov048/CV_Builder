@@ -3,13 +3,8 @@ import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import Profile from "../profile/Profile";
-
-type Section = "about" | "skills" | "projects" | "experience" | "education" | "contact";
-
-type HeaderProps = {
-  scrollFunc: (section: Section) => void;
-  scrollUp: () => void;
-};
+import { HeaderProps } from "../../types/componentsPropsTypes";
+import { Section } from "../../types/generalTypes";
 
 export default function Header({ scrollFunc, scrollUp }: HeaderProps) {
   const [flagProfile, setFlagProfile] = useState(false);

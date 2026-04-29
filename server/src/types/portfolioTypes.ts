@@ -1,4 +1,5 @@
 import { Document, Types } from "mongoose";
+
 export interface About {
   name: string;
   career: string;

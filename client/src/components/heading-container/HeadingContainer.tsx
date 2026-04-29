@@ -1,15 +1,5 @@
+import { HeadingContainerProps } from "../../types/componentsPropsTypes";
 import styles from "./HeadingContainer.module.css";
-
-type HeadingContainerProps = {
-  header: string;
-  status: boolean;
-  changeStatus: (value: boolean) => void;
-  viewType: {
-    isOwner: boolean;
-    canView: boolean;
-  };
-  buttonCondition?: boolean;
-};
 
 export default function HeadingContainer({
   header,

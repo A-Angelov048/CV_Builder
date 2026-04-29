@@ -2,12 +2,13 @@ import { useLocation } from "react-router-dom";
 import styles from "./ScrollToTop.module.css";
 import { useEffect, useState, type ReactNode } from "react";
 
-type ScrollProps = {
+export default function ScrollToTop({
+  children,
+  scrollUp,
+}: {
   children: ReactNode;
   scrollUp: () => void;
-};
-
-export default function ScrollToTop({ children, scrollUp }: ScrollProps) {
+}) {
   const { pathname } = useLocation();
   const [visible, setVisible] = useState(false);
 
@@ -20,8 +21,13 @@ export default function ScrollToTop({ children, scrollUp }: ScrollProps) {
       }
     };
 
+    toggleVisibility();
+
     window.addEventListener("scroll", toggleVisibility);
-    return () => window.removeEventListener("scroll", toggleVisibility);
+
+    return () => {
+      window.removeEventListener("scroll", toggleVisibility);
+    };
   }, []);
 
   useEffect(() => {
@@ -29,19 +35,17 @@ export default function ScrollToTop({ children, scrollUp }: ScrollProps) {
   }, [pathname]);
 
   return (
-    <main>
-      {children}
+    <>
+      <main>{children}</main>
       <button
         onClick={() => scrollUp()}
         className={
-          visible
-            ? `${styles["scroll-to-top"]} ${styles.visible}`
-            : styles["scroll-to-top"]
+          visible ? `${styles["scroll-to-top"]} ${styles.visible}` : styles["scroll-to-top"]
         }
         aria-label="Scroll to top"
       >
         <i className="bx bxs-chevrons-up"></i>
       </button>
-    </main>
+    </>
   );
 }

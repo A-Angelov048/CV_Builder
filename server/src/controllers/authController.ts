@@ -7,7 +7,7 @@ import {
   logoutService,
   refreshService,
 } from "../services/authService";
-import { IUser } from "../models/user";
+import { IUser } from "../types/userTypes";
 
 export async function registerUser(req: Request<{}, {}, IUser>, res: Response) {
   try {

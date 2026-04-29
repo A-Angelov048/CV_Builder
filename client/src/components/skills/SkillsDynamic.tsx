@@ -6,18 +6,8 @@ import { useInView } from "../../hooks/useInView";
 import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
 import { skillSchema, type SkillValues } from "../../validation/formSchema";
 import { ErrorSnackbar } from "../errorModal/ErrorSnackbar";
-import type { Portfolio } from "../../context/portfolioContext";
 import { useDeletePortfolioInfo, useUpdatePortfolio } from "../../hooks/usePortfolioResponse";
-
-type SkillsDynamicProps = {
-  portfolio: Portfolio;
-  flagForm: boolean;
-  viewType: {
-    isOwner: boolean;
-    canView: boolean;
-  };
-  changeStatus: (value: boolean) => void;
-};
+import { SkillsDynamicProps } from "../../types/componentsPropsTypes";
 
 export default function SkillsDynamic({
   portfolio,

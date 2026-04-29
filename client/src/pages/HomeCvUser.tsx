@@ -8,12 +8,7 @@ import SocialLinks from "../components/socialLinks/SocialLinks";
 import { useParams } from "react-router-dom";
 import { useGetMyPortfolio, useGetPublicPortfolio } from "../hooks/usePortfolioResponse";
 import { useAuth } from "../hooks/useAuth";
-
-type Section = "about" | "skills" | "projects" | "experience" | "education" | "contact";
-
-type HomeProps = {
-  sectionRefs: React.RefObject<Record<Section, HTMLDivElement | null>>;
-};
+import { HomeProps } from "../types/componentsPropsTypes";
 
 export default function HomeCvUser({ sectionRefs }: HomeProps) {
   const { authData } = useAuth();

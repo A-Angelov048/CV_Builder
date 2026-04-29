@@ -6,18 +6,8 @@ import { useFormErrorSnackbar } from "../../../hooks/useFormErrorSnackbar";
 import { useInView } from "../../../hooks/useInView";
 import { experienceSchema, type ExperienceValues } from "../../../validation/formSchema";
 import { ErrorSnackbar } from "../../errorModal/ErrorSnackbar";
-import type { Portfolio } from "../../../context/portfolioContext";
 import { useDeletePortfolioInfo, useUpdatePortfolio } from "../../../hooks/usePortfolioResponse";
-
-type ExperienceDynamicProps = {
-  portfolio: Portfolio;
-  flagForm: boolean;
-  viewType: {
-    isOwner: boolean;
-    canView: boolean;
-  };
-  changeStatus: (value: boolean) => void;
-};
+import { ExperienceDynamicProps } from "../../../types/componentsPropsTypes";
 
 export default function ExperienceDynamic({
   portfolio,

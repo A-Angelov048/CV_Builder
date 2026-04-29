@@ -1,10 +1,5 @@
 import { Snackbar, Alert, AlertTitle } from "@mui/material";
-
-interface SuccessSnackbarProps {
-  open: boolean;
-  messages: string;
-  onClose: () => void;
-}
+import { SuccessSnackbarProps } from "../../types/componentsPropsTypes";
 
 export function SuccessSnackbar({ open, messages, onClose }: SuccessSnackbarProps) {
   return (

@@ -1,19 +1,5 @@
-import jwt, { SignOptions, VerifyOptions, Secret } from "jsonwebtoken";
-
-interface JwtSignData {
-  token: {
-    userId: string | object;
-    username: string;
-  };
-  secret: Secret;
-  options?: SignOptions;
-}
-
-interface JwtVerifyData {
-  token: string;
-  secret: Secret;
-  options?: VerifyOptions;
-}
+import jwt from "jsonwebtoken";
+import { JwtSignData, JwtVerifyData } from "../types/mainTypes";
 
 function sign({ token, secret, options = {} }: JwtSignData): Promise<string> {
   return new Promise((resolve, reject) => {

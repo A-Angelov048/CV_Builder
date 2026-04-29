@@ -6,26 +6,16 @@ import { useDeletePortfolioInfo, useUpdatePortfolio } from "../../../hooks/usePo
 import { useInView } from "../../../hooks/useInView";
 import { useFormErrorSnackbar } from "../../../hooks/useFormErrorSnackbar";
 
-import type { Portfolio } from "../../../context/portfolioContext";
 import { ErrorSnackbar } from "../../errorModal/ErrorSnackbar";
 import { educationSchema, type EducationValues } from "../../../validation/formSchema";
-
-type ExperienceDynamicProps = {
-  portfolio: Portfolio;
-  flagForm: boolean;
-  viewType: {
-    isOwner: boolean;
-    canView: boolean;
-  };
-  changeStatus: (value: boolean) => void;
-};
+import { EducationDynamicProps } from "../../../types/componentsPropsTypes";
 
 export default function EducationDynamic({
   portfolio,
   flagForm,
   viewType,
   changeStatus,
-}: ExperienceDynamicProps) {
+}: EducationDynamicProps) {
   const checkPortfolioEducation = portfolio.education && portfolio.education.length > 0;
 
   const { updatePortfolio } = useUpdatePortfolio("education");
