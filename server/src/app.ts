@@ -1,14 +1,11 @@
-import express from "express";
 import dotenv from "dotenv";
-import path from "path";
+dotenv.config();
+
+import express from "express";
 import userRouter from "./routes/userRoutes";
 import portfolioRouter from "./routes/portfolioRoutes";
 import cloudinaryConfig from "./config/cloudinary";
 import expressConfig from "./config/expressConfig";
-
-dotenv.config({
-  path: path.resolve(__dirname, ".env"),
-});
 
 const app = express();
 cloudinaryConfig();
