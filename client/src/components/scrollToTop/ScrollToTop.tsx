@@ -36,18 +36,20 @@ export default function ScrollToTop({
 
   return (
     <>
-      <main>{children}</main>
-      <div>
-        <button
-          onClick={() => scrollUp()}
-          className={
-            visible ? `${styles["scroll-to-top"]} ${styles.visible}` : styles["scroll-to-top"]
-          }
-          aria-label="Scroll to top"
-        >
-          <i className="bx bxs-chevrons-up"></i>
-        </button>
-      </div>
+      <main>
+        {children}
+        <div>
+          <button
+            onClick={() => scrollUp()}
+            className={
+              visible ? `${styles["scroll-to-top"]} ${styles.visible}` : styles["scroll-to-top"]
+            }
+            aria-label="Scroll to top"
+          >
+            <i className="bx bxs-chevrons-up"></i>
+          </button>
+        </div>
+      </main>
     </>
   );
 }

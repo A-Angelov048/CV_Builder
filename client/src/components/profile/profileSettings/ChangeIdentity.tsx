@@ -2,21 +2,22 @@ import style from "../Profile.module.css";
 
 import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
 
-import { useAuth, type AccessTokenBE } from "../../../hooks/useAuth";
-import { useAxiosPrivate } from "../../../hooks/useAxiosPrivate";
+import { useAuth } from "../../../hooks/useAuth";
 import { useFormErrorSnackbar } from "../../../hooks/useFormErrorSnackbar";
-
-import { changeIdentitySchema, type ChangeIdentityValues } from "../../../validation/formSchema";
-import { ErrorSnackbar } from "../../errorModal/ErrorSnackbar";
-import { SuccessSnackbar } from "../../successModal/SuccessSnackbar";
 import { useFormSuccessSnackbar } from "../../../hooks/useFormSuccessSnackbar";
+import { useChangeUserInfo } from "../../../hooks/useAuthResponse";
+import { changeIdentitySchema, type ChangeIdentityValues } from "../../../validation/formSchema";
+
+import ErrorSnackbar from "../../errorModal/ErrorSnackbar";
+import SuccessSnackbar from "../../successModal/SuccessSnackbar";
+import Spinner from "../../spinner/Spinner";
 
 export default function ChangeIdentity() {
-  const api = useAxiosPrivate();
-  const { authData, changeAuthState } = useAuth();
+  const { authData } = useAuth();
   const { open, messages, close, handleErrors, handleCustomError, handleZodErrors } =
     useFormErrorSnackbar();
   const { openSuccess, messagesSuccess, closeSuccess, handleSuccess } = useFormSuccessSnackbar();
+  const { changeIdentity, spinner } = useChangeUserInfo();
 
   const { register, handleSubmit, reset } = useForm<ChangeIdentityValues>();
 
@@ -27,19 +28,14 @@ export default function ChangeIdentity() {
 
     const result = changeIdentitySchema.safeParse(data);
 
-    if (!result.success) {
-      handleZodErrors(result.error);
-      return;
-    }
+    if (!result.success) return handleZodErrors(result.error);
 
     try {
-      const token: AccessTokenBE = await api.put("/auth/change-identity", data);
-      changeAuthState(token.data);
-    } catch (err: any) {
-      handleErrors({ err: err.response.data });
-    } finally {
-      reset();
+      await changeIdentity(data);
       handleSuccess("Identity details updated successfully!");
+      reset();
+    } catch (error: any) {
+      handleErrors({ err: error.response.data });
     }
   };
 
@@ -76,6 +72,7 @@ export default function ChangeIdentity() {
       </form>
       <ErrorSnackbar open={open} messages={messages} onClose={close} />
       <SuccessSnackbar open={openSuccess} messages={messagesSuccess} onClose={closeSuccess} />
+      {spinner && <Spinner />}
     </section>
   );
 }

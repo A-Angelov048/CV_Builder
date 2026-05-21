@@ -1,37 +1,29 @@
 import styles from "./guestPages.module.css";
 import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
 import { registerSchema, type RegisterValues } from "../../validation/formSchema";
-import { ErrorSnackbar } from "../../components/errorModal/ErrorSnackbar";
-import { useAuth, type AccessTokenBE } from "../../hooks/useAuth";
-import { useAxiosPrivate } from "../../hooks/useAxiosPrivate";
+import { useRegisterUser } from "../../hooks/useAuthResponse";
+
+import ErrorSnackbar from "../../components/errorModal/ErrorSnackbar";
+import Spinner from "../../components/spinner/Spinner";
 
 export default function Register() {
-  const navigate = useNavigate();
-  const api = useAxiosPrivate();
-  const { changeAuthState } = useAuth();
-  const { open, messages, close, handleErrors, handleZodErrors } = useFormErrorSnackbar();
-
   const { register, handleSubmit } = useForm<RegisterValues>();
+
+  const { open, messages, close, handleErrors, handleZodErrors } = useFormErrorSnackbar();
+  const { createUser, spinner } = useRegisterUser();
 
   const onSubmit: SubmitHandler<RegisterValues> = async (data) => {
     const result = registerSchema.safeParse(data);
 
-    if (!result.success) {
-      handleZodErrors(result.error);
-      return;
-    }
+    if (!result.success) return handleZodErrors(result.error);
 
     try {
-      const token: AccessTokenBE = await api.post("/auth/register", data);
-
-      changeAuthState(token.data);
-      localStorage.setItem("isLoggedIn", "true");
-      navigate(`/${token.data.username}`, { replace: true });
-    } catch (err: any) {
-      handleErrors({ err: err.response.data });
+      await createUser(data);
+    } catch (error: any) {
+      handleErrors({ err: error.response.data });
     }
   };
 
@@ -79,6 +71,7 @@ export default function Register() {
         </form>
         <ErrorSnackbar open={open} messages={messages} onClose={close} />
       </div>
+      {spinner && <Spinner />}
     </section>
   );
 }

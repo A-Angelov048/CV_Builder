@@ -50,7 +50,7 @@ export async function getPublicPortfolioController(
   const username = req.params.username;
 
   if (!username) {
-    return res.status(400).json({ message: "Username is required" });
+    return res.status(404).json({ message: "Username is required" });
   }
 
   try {
@@ -62,7 +62,7 @@ export async function getPublicPortfolioController(
 
     res.json(portfolio);
   } catch (err: any) {
-    res.status(400).json({ message: err.message });
+    res.status(404).json({ message: err.message });
   }
 }
 

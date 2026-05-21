@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 
+import { Section } from "./types/generalTypes";
 import { useScroll } from "./hooks/useScroll";
 import { AuthProvider } from "./context/authContext";
 import { PortfolioProvider } from "./context/portfolioContext";
@@ -13,7 +14,6 @@ import NotFound from "./pages/notFound/NotFound";
 import AuthGuard from "./components/routeGuards/AuthGuard";
 import HomeCvUser from "./pages/HomeCvUser";
 import HomeCv from "./pages/guestPages/HomeCv";
-import { Section } from "./types/generalTypes";
 
 export default function App() {
   const [sectionRefs, scrollToSection, scrollToUp] = useScroll<Section>([
@@ -27,9 +27,9 @@ export default function App() {
 
   return (
     <AuthProvider>
-      <Header scrollFunc={scrollToSection} scrollUp={scrollToUp} />
-      <ScrollToTop scrollUp={scrollToUp}>
-        <PortfolioProvider>
+      <PortfolioProvider>
+        <Header scrollFunc={scrollToSection} scrollUp={scrollToUp} />
+        <ScrollToTop scrollUp={scrollToUp}>
           <Routes>
             <Route path="/" element={<HomeCv sectionRefs={sectionRefs} />} />
             <Route path="/:username" element={<HomeCvUser sectionRefs={sectionRefs} />} />
@@ -39,9 +39,9 @@ export default function App() {
             </Route>
             <Route path="/not-found" element={<NotFound />} />
           </Routes>
-        </PortfolioProvider>
-      </ScrollToTop>
-      <Footer />
+        </ScrollToTop>
+        <Footer />
+      </PortfolioProvider>
     </AuthProvider>
   );
 }

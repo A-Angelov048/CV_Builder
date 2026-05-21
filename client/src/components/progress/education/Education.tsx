@@ -2,8 +2,7 @@ import { forwardRef } from "react";
 
 import { usePortfolio } from "../../../hooks/usePortfolio";
 import { useAuth } from "../../../hooks/useAuth";
-import useHandleForm from "../../../hooks/useHandleForm";
-
+import { useHandleForm } from "../../../hooks/useHandleForm";
 import portfolioValidation from "../../../utils/portfolioValidation";
 
 import HeadingContainer from "../../heading-container/HeadingContainer";

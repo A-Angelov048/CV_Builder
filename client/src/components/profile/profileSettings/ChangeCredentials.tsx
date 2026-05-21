@@ -2,39 +2,33 @@ import style from "../Profile.module.css";
 
 import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
 
-import { useAxiosPrivate } from "../../../hooks/useAxiosPrivate";
 import { useFormErrorSnackbar } from "../../../hooks/useFormErrorSnackbar";
 import { useFormSuccessSnackbar } from "../../../hooks/useFormSuccessSnackbar";
-import { useAuth, type AccessTokenBE } from "../../../hooks/useAuth";
-
+import { useChangeUserInfo } from "../../../hooks/useAuthResponse";
 import { changePasswordSchema, type ChangePasswordValues } from "../../../validation/formSchema";
-import { ErrorSnackbar } from "../../errorModal/ErrorSnackbar";
-import { SuccessSnackbar } from "../../successModal/SuccessSnackbar";
+
+import ErrorSnackbar from "../../errorModal/ErrorSnackbar";
+import SuccessSnackbar from "../../successModal/SuccessSnackbar";
+import Spinner from "../../spinner/Spinner";
 
 export default function ChangeCredentials() {
-  const api = useAxiosPrivate();
-  const { changeAuthState } = useAuth();
   const { open, messages, close, handleErrors, handleZodErrors } = useFormErrorSnackbar();
   const { openSuccess, messagesSuccess, closeSuccess, handleSuccess } = useFormSuccessSnackbar();
+  const { changeCredentials, spinner } = useChangeUserInfo();
 
   const { register, handleSubmit, reset } = useForm<ChangePasswordValues>();
 
   const onSubmit: SubmitHandler<ChangePasswordValues> = async (data) => {
     const result = changePasswordSchema.safeParse(data);
 
-    if (!result.success) {
-      handleZodErrors(result.error);
-      return;
-    }
+    if (!result.success) return handleZodErrors(result.error);
 
     try {
-      const token: AccessTokenBE = await api.put("/auth/change-password", data);
-      changeAuthState(token.data);
-    } catch (err: any) {
-      handleErrors({ err: err.response.data });
-    } finally {
-      reset();
+      await changeCredentials(data);
       handleSuccess("Password updated successfully!");
+      reset();
+    } catch (error: any) {
+      handleErrors({ err: error.response.data });
     }
   };
 
@@ -89,6 +83,7 @@ export default function ChangeCredentials() {
       </form>
       <ErrorSnackbar open={open} messages={messages} onClose={close} />
       <SuccessSnackbar open={openSuccess} messages={messagesSuccess} onClose={closeSuccess} />
+      {spinner && <Spinner />}
     </section>
   );
 }

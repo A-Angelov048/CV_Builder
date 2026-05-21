@@ -1,19 +1,20 @@
-import { createContext, useCallback, useEffect, useState, type ReactNode } from "react";
-import type { AccessTokenBE } from "../hooks/useAuth";
-import api from "../api/axios";
+import { createContext, useEffect, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
+
+import api from "../api/axios";
+import type { AccessTokenBE } from "../hooks/useAuth";
 
 export interface AuthData {
   userId: string;
   username: string;
   accessToken: string;
+  isLoggedOff?: boolean;
 }
 
 interface CurrentAuthContextType {
   authData: AuthData;
   changeAuthState: (state: AuthData) => void;
   refreshAccessToken: () => Promise<{ newToken: string; isError: boolean }>;
-  logoutUser: (nav: string, message?: string) => Promise<void>;
 }
 
 interface AuthProviderProps {
@@ -25,7 +26,8 @@ export const AuthContext = createContext<CurrentAuthContextType | null>(null);
 export function AuthProvider({ children }: AuthProviderProps) {
   const navigate = useNavigate();
   const isUser = localStorage.getItem("isLoggedIn");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingAuth, setIsLoadingAuth] = useState(false);
+
   const [user, setAuthToken] = useState<AuthData>({
     userId: "",
     username: "",
@@ -33,20 +35,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
   });
 
   useEffect(() => {
-    if (user.username && user.username !== "") {
-      window.history.pushState(null, "", `/${user.username}`);
-    }
-
     if (isUser === "true") {
       refreshAccessToken();
     } else {
-      setIsLoading(true);
+      setIsLoadingAuth(true);
     }
   }, []);
 
-  const changeAuthState = useCallback((state: AuthData) => {
+  const changeAuthState = (state: AuthData) => {
     setAuthToken(state);
-  }, []);
+  };
 
   const refreshAccessToken = async () => {
     const result: { newToken: string; isError: boolean } = {
@@ -60,32 +58,25 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       result.newToken = response.data.accessToken;
     } catch (error: any) {
-      logoutUser("/login", "Session expired. Please log in again.");
+      setAuthToken({ userId: "", username: "", accessToken: "", isLoggedOff: true });
+      localStorage.removeItem("isLoggedIn");
       result.isError = true;
+      navigate("/login", {
+        replace: true,
+        state: { message: "Session expired. Please log in again." },
+      });
     } finally {
-      setIsLoading(true);
+      setIsLoadingAuth(true);
     }
 
     return result;
   };
 
-  const logoutUser = useCallback(async (nav: string, message?: string) => {
-    const result = await api.post("/auth/logout");
-
-    if (result.status === 200) {
-      setAuthToken({ userId: "", username: "", accessToken: "" });
-      localStorage.removeItem("isLoggedIn");
-    }
-
-    navigate(nav, { replace: true, state: { message } });
-  }, []);
-
   const data: CurrentAuthContextType = {
     authData: user,
     changeAuthState,
     refreshAccessToken,
-    logoutUser,
   };
 
-  return <AuthContext.Provider value={data}>{isLoading && children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={data}>{isLoadingAuth && children}</AuthContext.Provider>;
 }

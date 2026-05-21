@@ -5,21 +5,22 @@ import Experience from "../components/progress/experience/Experience";
 import Projects from "../components/projects/Projects";
 import Skills from "../components/skills/Skills";
 import SocialLinks from "../components/socialLinks/SocialLinks";
+import RegisterNow from "../components/registerNow/RegisterNow";
+import Spinner from "../components/spinner/Spinner";
+
 import { useParams } from "react-router-dom";
-import { useGetMyPortfolio, useGetPublicPortfolio } from "../hooks/usePortfolioResponse";
-import { useAuth } from "../hooks/useAuth";
 import { HomeProps } from "../types/componentsPropsTypes";
 
+import { useGetPortfolio } from "../hooks/usePortfolioResponse";
+import { useAuth } from "../hooks/useAuth";
+
 export default function HomeCvUser({ sectionRefs }: HomeProps) {
-  const { authData } = useAuth();
   const { username } = useParams();
+  const { authData } = useAuth();
 
-  const isOwner = authData.accessToken && username && authData.username === username;
+  const { isLoading } = useGetPortfolio(username);
 
-  const isPublicProfile = username && (!authData.accessToken || authData.username !== username);
-
-  useGetMyPortfolio(isOwner);
-  useGetPublicPortfolio(username, isPublicProfile);
+  if (isLoading) return <Spinner />;
 
   return (
     <>
@@ -30,6 +31,7 @@ export default function HomeCvUser({ sectionRefs }: HomeProps) {
       <Experience ref={(el) => void (sectionRefs.current.experience = el)} />
       <Education ref={(el) => void (sectionRefs.current.education = el)} />
       <ContactMe ref={(el) => void (sectionRefs.current.contact = el)} />
+      {!authData.accessToken && <RegisterNow />}
     </>
   );
 }

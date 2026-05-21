@@ -3,6 +3,7 @@ import jwt from "../utils/jwt";
 import { User } from "../models/user";
 import { jwtData } from "../types/mainTypes";
 import { IUser } from "../types/userTypes";
+import { PortfolioModel } from "../models/portfolio";
 
 export const createUser = async (body: IUser) => {
   const [username, email] = await Promise.all([
@@ -34,7 +35,14 @@ export const createUser = async (body: IUser) => {
   );
 
   createdUser.refreshToken.push(refreshToken);
-  await createdUser.save();
+
+  Promise.all([
+    await createdUser.save(),
+    await PortfolioModel.create({
+      owner: createdUser._id,
+      isPublished: false,
+    }),
+  ]);
 
   return {
     userId: createdUser._id.toString(),

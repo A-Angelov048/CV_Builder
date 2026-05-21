@@ -4,10 +4,11 @@ import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
 
 import { useInView } from "../../hooks/useInView";
 import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
-import { skillSchema, type SkillValues } from "../../validation/formSchema";
-import { ErrorSnackbar } from "../errorModal/ErrorSnackbar";
 import { useDeletePortfolioInfo, useUpdatePortfolio } from "../../hooks/usePortfolioResponse";
+import { skillSchema, type SkillValues } from "../../validation/formSchema";
 import { SkillsDynamicProps } from "../../types/componentsPropsTypes";
+
+import ErrorSnackbar from "../errorModal/ErrorSnackbar";
 
 export default function SkillsDynamic({
   portfolio,
@@ -29,15 +30,12 @@ export default function SkillsDynamic({
   const { register, handleSubmit } = useForm<SkillValues>();
 
   const onSubmit: SubmitHandler<SkillValues> = async (data) => {
-    if (!flagForm) {
-      changeStatus(true);
-    }
-
     const result = skillSchema.safeParse(data);
 
-    if (!result.success) {
-      handleZodErrors(result.error);
-      return;
+    if (!result.success) return handleZodErrors(result.error);
+
+    if (!flagForm) {
+      changeStatus(true);
     }
 
     try {
@@ -73,15 +71,17 @@ export default function SkillsDynamic({
         </div>
       ) : (
         <>
-          <form onSubmit={handleSubmit(onSubmit, onError)} className="simple-form">
-            <div className="form-group">
-              <label htmlFor="skill">Add skill *</label>
-              <input type="text" id="skill" {...register("skill")} />
-            </div>
-            <button className="main-button m-t" type="submit">
-              Submit
-            </button>
-          </form>
+          {viewType.isOwner && (
+            <form onSubmit={handleSubmit(onSubmit, onError)} className="simple-form">
+              <div className="form-group">
+                <label htmlFor="skill">Add skill *</label>
+                <input type="text" id="skill" {...register("skill")} />
+              </div>
+              <button className="main-button m-t" type="submit">
+                Submit
+              </button>
+            </form>
+          )}
           <ErrorSnackbar open={open} messages={messages} onClose={close} />
         </>
       )}

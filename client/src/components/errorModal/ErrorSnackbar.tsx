@@ -1,7 +1,7 @@
 import { Snackbar, Alert, AlertTitle } from "@mui/material";
 import { ErrorSnackbarProps } from "../../types/componentsPropsTypes";
 
-export function ErrorSnackbar({ open, messages, onClose }: ErrorSnackbarProps) {
+export default function ErrorSnackbar({ open, messages, onClose }: ErrorSnackbarProps) {
   return (
     <Snackbar
       open={open}

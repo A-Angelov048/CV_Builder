@@ -1,15 +1,22 @@
 import styles from "./Header.module.css";
+
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
+
 import { useAuth } from "../../hooks/useAuth";
-import Profile from "../profile/Profile";
+import { useLogoutUser } from "../../hooks/useAuthResponse";
 import { HeaderProps } from "../../types/componentsPropsTypes";
 import { Section } from "../../types/generalTypes";
 
+import Profile from "../profile/Profile";
+import Spinner from "../spinner/Spinner";
+
 export default function Header({ scrollFunc, scrollUp }: HeaderProps) {
-  const [flagProfile, setFlagProfile] = useState(false);
-  const checkboxRef = useRef<HTMLInputElement | null>(null);
   const { authData } = useAuth();
+  const { logoutUser, spinner } = useLogoutUser();
+
+  const checkboxRef = useRef<HTMLInputElement | null>(null);
+  const [flagProfile, setFlagProfile] = useState(false);
 
   const handleScroll = (ref: Section) => {
     scrollFunc(ref);
@@ -77,7 +84,8 @@ export default function Header({ scrollFunc, scrollUp }: HeaderProps) {
           )}
         </ul>
       </nav>
-      {flagProfile && <Profile toggleProfile={toggleProfile} />}
+      {flagProfile && <Profile toggleProfile={toggleProfile} logoutUser={logoutUser} />}
+      {spinner && <Spinner />}
     </header>
   );
 }

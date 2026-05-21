@@ -30,11 +30,11 @@ const imageSchema = ({
     .refine((files) => ACCEPTED_IMAGE_TYPES.includes(files[0]?.type), {
       message: "Please upload a valid image file (JPEG, JPG, PNG, or WebP).",
     })
-    .superRefine(async (files, ctx) => {
+    .superRefine((files, ctx) => {
       const file = files?.[0];
       if (!file) return;
 
-      const checkDimensions = await hasValidDimensions(file, MIN_DIMENSIONS, maxDimensions);
+      const checkDimensions = hasValidDimensions(file, MIN_DIMENSIONS, maxDimensions);
 
       if (!checkDimensions) {
         ctx.addIssue({

@@ -1,15 +1,14 @@
 import styles from "./ProfileCard.module.css";
 
 import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
-import { profileCardSchema, type ProfileCardValues } from "../../validation/formSchema";
 
-import useHandleForm from "../../hooks/useHandleForm";
+import { profileCardSchema, type ProfileCardValues } from "../../validation/formSchema";
+import { useHandleForm } from "../../hooks/useHandleForm";
 import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
 import { useCreatePortfolio } from "../../hooks/usePortfolioResponse";
-
-import { ErrorSnackbar } from "../errorModal/ErrorSnackbar";
-
 import type { Portfolio } from "../../context/portfolioContext";
+
+import ErrorSnackbar from "../errorModal/ErrorSnackbar";
 
 export default function ProfileCardDynamic({
   portfolio,
@@ -30,15 +29,12 @@ export default function ProfileCardDynamic({
   const { register, handleSubmit } = useForm<ProfileCardValues>();
 
   const onSubmit: SubmitHandler<ProfileCardValues> = async (data) => {
-    if (!flagForm) {
-      changeState(true);
-    }
-
     const result = profileCardSchema.safeParse(data);
 
-    if (!result.success) {
-      handleZodErrors(result.error);
-      return;
+    if (!result.success) return handleZodErrors(result.error);
+
+    if (!flagForm) {
+      changeState(true);
     }
 
     try {
@@ -61,7 +57,7 @@ export default function ProfileCardDynamic({
 
   return (
     <div className={styles["profile-card"]}>
-      {flagForm && portfolio.owner !== "" ? (
+      {flagForm && portfolio.about.name !== "" ? (
         <>
           <div className={styles["profile-left"]}>
             <img src={portfolio.about.imageProfile.image} alt="Profile Picture" />
@@ -100,53 +96,55 @@ export default function ProfileCardDynamic({
         </>
       ) : (
         <>
-          <form onSubmit={handleSubmit(onSubmit, onError)} className="grid-form">
-            <div className="form-group">
-              <label htmlFor="name">Name *</label>
-              <input type="text" id="name" {...register("name")} />
-            </div>
-            <div className="form-group">
-              <label htmlFor="career">Career *</label>
-              <input type="text" id="career" {...register("career")} />
-            </div>
-            <div className="form-group">
-              <label htmlFor="phone">Phone *</label>
-              <input type="text" id="phone" {...register("phone")} />
-            </div>
-            <div className="form-group">
-              <label htmlFor="email">Email *</label>
-              <input type="text" id="email" {...register("email")} />
-            </div>
-            <div className="form-group">
-              <label htmlFor="address">Address *</label>
-              <input type="text" id="address" {...register("address")} />
-            </div>
-            <div className="form-group">
-              <label htmlFor="date">Date of Birth *</label>
-              <input type="text" id="date" {...register("date")} />
-            </div>
-            <div className="form-group">
-              <label htmlFor="image-profile">Profile Image *</label>
-              <input
-                type="file"
-                accept="image/*"
-                id="image-profile"
-                {...register("imageProfile")}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="image-background">Background Image *</label>
-              <input
-                type="file"
-                accept="image/*"
-                id="image-background"
-                {...register("imageBackground")}
-              />
-            </div>
-            <button className="main-button" type="submit">
-              Submit
-            </button>
-          </form>
+          {viewType.isOwner && (
+            <form onSubmit={handleSubmit(onSubmit, onError)} className="grid-form">
+              <div className="form-group">
+                <label htmlFor="name">Name *</label>
+                <input type="text" id="name" {...register("name")} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="career">Career *</label>
+                <input type="text" id="career" {...register("career")} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="phone">Phone *</label>
+                <input type="text" id="phone" {...register("phone")} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="email">Email *</label>
+                <input type="text" id="email" {...register("email")} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="address">Address *</label>
+                <input type="text" id="address" {...register("address")} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="date">Date of Birth *</label>
+                <input type="text" id="date" {...register("date")} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="image-profile">Profile Image *</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  id="image-profile"
+                  {...register("imageProfile")}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="image-background">Background Image *</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  id="image-background"
+                  {...register("imageBackground")}
+                />
+              </div>
+              <button className="main-button" type="submit">
+                Submit
+              </button>
+            </form>
+          )}
           <ErrorSnackbar open={open} messages={messages} onClose={close} />
         </>
       )}

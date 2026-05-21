@@ -4,10 +4,11 @@ import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
 
 import { useFormErrorSnackbar } from "../../../hooks/useFormErrorSnackbar";
 import { useInView } from "../../../hooks/useInView";
-import { experienceSchema, type ExperienceValues } from "../../../validation/formSchema";
-import { ErrorSnackbar } from "../../errorModal/ErrorSnackbar";
 import { useDeletePortfolioInfo, useUpdatePortfolio } from "../../../hooks/usePortfolioResponse";
+import { experienceSchema, type ExperienceValues } from "../../../validation/formSchema";
 import { ExperienceDynamicProps } from "../../../types/componentsPropsTypes";
+
+import ErrorSnackbar from "../../errorModal/ErrorSnackbar";
 
 export default function ExperienceDynamic({
   portfolio,
@@ -29,15 +30,12 @@ export default function ExperienceDynamic({
   const { register, handleSubmit } = useForm<ExperienceValues>({});
 
   const onSubmit: SubmitHandler<ExperienceValues> = async (data) => {
-    if (!flagForm) {
-      changeStatus(true);
-    }
-
     const result = experienceSchema.safeParse(data);
 
-    if (!result.success) {
-      handleZodErrors(result.error);
-      return;
+    if (!result.success) return handleZodErrors(result.error);
+
+    if (!flagForm) {
+      changeStatus(true);
     }
 
     try {
@@ -92,27 +90,29 @@ export default function ExperienceDynamic({
         </div>
       ) : (
         <>
-          <form onSubmit={handleSubmit(onSubmit, onError)} className="grid-form max-width">
-            <div className="form-group m-t">
-              <label htmlFor="yearsExperience">Years experience *</label>
-              <input type="text" id="yearsExperience" {...register("yearsExperience")} />
-            </div>
-            <div className="form-group m-t">
-              <label htmlFor="position">Position *</label>
-              <input type="text" id="position" {...register("position")} />
-            </div>
-            <div className="form-group m-t">
-              <label htmlFor="companyName">Company Name *</label>
-              <input type="text" id="companyName" {...register("companyName")} />
-            </div>
-            <div className="form-group m-t">
-              <label htmlFor="activity">Activity in the company *</label>
-              <textarea id="activity" {...register("activity")} />
-            </div>
-            <button className="main-button m-t" type="submit">
-              Submit
-            </button>
-          </form>
+          {viewType.isOwner && (
+            <form onSubmit={handleSubmit(onSubmit, onError)} className="grid-form max-width">
+              <div className="form-group m-t">
+                <label htmlFor="yearsExperience">Years experience *</label>
+                <input type="text" id="yearsExperience" {...register("yearsExperience")} />
+              </div>
+              <div className="form-group m-t">
+                <label htmlFor="position">Position *</label>
+                <input type="text" id="position" {...register("position")} />
+              </div>
+              <div className="form-group m-t">
+                <label htmlFor="companyName">Company Name *</label>
+                <input type="text" id="companyName" {...register("companyName")} />
+              </div>
+              <div className="form-group m-t">
+                <label htmlFor="activity">Activity in the company *</label>
+                <textarea id="activity" {...register("activity")} />
+              </div>
+              <button className="main-button m-t" type="submit">
+                Submit
+              </button>
+            </form>
+          )}
           <ErrorSnackbar open={open} messages={messages} onClose={close} />
         </>
       )}

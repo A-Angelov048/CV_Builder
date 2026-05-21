@@ -4,11 +4,12 @@ import { Link } from "react-router-dom";
 import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
 
 import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
-import { type SocialLinkValues, socialLinkSchema } from "../../validation/formSchema";
-import { ErrorSnackbar } from "../errorModal/ErrorSnackbar";
-import useHandleForm from "../../hooks/useHandleForm";
-import type { Portfolio } from "../../context/portfolioContext";
+import { useHandleForm } from "../../hooks/useHandleForm";
 import { useCreatePortfolioLinks } from "../../hooks/usePortfolioResponse";
+import { type SocialLinkValues, socialLinkSchema } from "../../validation/formSchema";
+import type { Portfolio } from "../../context/portfolioContext";
+
+import ErrorSnackbar from "../errorModal/ErrorSnackbar";
 
 export default function SocialLinksDynamic({
   portfolio,
@@ -28,15 +29,12 @@ export default function SocialLinksDynamic({
   const { register, handleSubmit } = useForm<SocialLinkValues>();
 
   const onSubmit: SubmitHandler<SocialLinkValues> = async (data) => {
-    if (!flagForm) {
-      changeState(true);
-    }
-
     const result = socialLinkSchema.safeParse(data);
 
-    if (!result.success) {
-      handleZodErrors(result.error);
-      return;
+    if (!result.success) return handleZodErrors(result.error);
+
+    if (!flagForm) {
+      changeState(true);
     }
 
     try {
@@ -99,35 +97,37 @@ export default function SocialLinksDynamic({
         </>
       ) : (
         <>
-          <form onSubmit={handleSubmit(onSubmit, onError)} className="grid-form">
-            <div className="form-group">
-              <label htmlFor="linkedin">Linkedin contact *</label>
-              <input type="text" id="linkedin" {...register("linkedin")} />
-            </div>
-            <div className="form-group">
-              <label htmlFor="telegram">Telegram contact</label>
-              <input type="text" id="telegram" {...register("telegram")} />
-            </div>
-            <div className="form-group">
-              <label htmlFor="github">Github contact</label>
-              <input type="text" id="github" {...register("github")} />
-            </div>
-            <div className="form-group">
-              <label htmlFor="facebook">Facebook contact</label>
-              <input type="text" id="facebook" {...register("facebook")} />
-            </div>
-            <div className="form-group">
-              <label htmlFor="instagram">Instagram contact</label>
-              <input type="text" id="instagram" {...register("instagram")} />
-            </div>
-            <div className="form-group">
-              <label htmlFor="short-info">Type here short Info about you *</label>
-              <textarea id="short-info" {...register("shortInfo")}></textarea>
-            </div>
-            <button className="main-button" type="submit">
-              Submit
-            </button>
-          </form>
+          {viewType.isOwner && (
+            <form onSubmit={handleSubmit(onSubmit, onError)} className="grid-form">
+              <div className="form-group">
+                <label htmlFor="linkedin">Linkedin contact *</label>
+                <input type="text" id="linkedin" {...register("linkedin")} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="telegram">Telegram contact</label>
+                <input type="text" id="telegram" {...register("telegram")} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="github">Github contact</label>
+                <input type="text" id="github" {...register("github")} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="facebook">Facebook contact</label>
+                <input type="text" id="facebook" {...register("facebook")} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="instagram">Instagram contact</label>
+                <input type="text" id="instagram" {...register("instagram")} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="short-info">Type here short Info about you *</label>
+                <textarea id="short-info" {...register("shortInfo")}></textarea>
+              </div>
+              <button className="main-button" type="submit">
+                Submit
+              </button>
+            </form>
+          )}
           <ErrorSnackbar open={open} messages={messages} onClose={close} />
         </>
       )}

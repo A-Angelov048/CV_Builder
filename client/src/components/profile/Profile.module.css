@@ -247,3 +247,11 @@ body:has(.mono-modal-overlay) {
   align-items: center;
   justify-content: center;
 }
+
+.mono-section-paragraph {
+  width: 70%;
+  font-size: 16px;
+  color: #777;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}

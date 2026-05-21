@@ -17,10 +17,15 @@ export const createPortfolio = async (userId: string, body: Portfolio) => {
     return portfolioDB;
   }
 
-  const oldImageProfileId = exists.about.imageProfile.public_id;
-  const oldImageBackgroundId = exists.about.imageBackground.public_id;
+  if (
+    !!exists?.about.imageBackground?.public_id &&
+    !!exists?.about.imageProfile?.public_id
+  ) {
+    const oldImageProfileId = exists.about.imageProfile.public_id;
+    const oldImageBackgroundId = exists.about.imageBackground.public_id;
 
-  await imageDelete(oldImageProfileId, oldImageBackgroundId, body);
+    await imageDelete(oldImageProfileId, oldImageBackgroundId, body);
+  }
 
   return updatePortfolioSection(userId, "about", body.about);
 };
@@ -70,7 +75,7 @@ export const togglePublish = async (userId: string, publish: boolean) => {
     { owner: userId },
     { isPublished: publish },
     { new: true },
-  );
+  ).select("isPublished");
 
   if (!portfolio) {
     throw new Error("Portfolio not found");

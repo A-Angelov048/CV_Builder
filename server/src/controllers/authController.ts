@@ -74,11 +74,12 @@ export async function logout(req: Request, res: Response) {
 }
 
 export const refresh = async (req: Request, res: Response) => {
-  try {
-    const token: string = req.cookies.refreshToken;
-    if (!token)
-      return res.status(401).json({ message: "Required a refresh token" });
+  const token: string = req.cookies.refreshToken;
 
+  if (!token)
+    return res.status(401).json({ message: "Required a refresh token" });
+
+  try {
     const { userId, username, accessToken } = await refreshService(token);
 
     res.json({
@@ -87,6 +88,14 @@ export const refresh = async (req: Request, res: Response) => {
       accessToken,
     });
   } catch (err: any) {
+    await logoutService(token);
+
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    });
+
     res.status(401).json({ message: err.message });
   }
 };
@@ -119,7 +128,13 @@ export const changeIdentity = async (req: Request, res: Response) => {
       accessToken,
     });
   } catch (err: any) {
-    res.status(400).json({ message: err.message });
+    if (err.code === 11000) {
+      res
+        .status(400)
+        .json({ message: "Username or Email is taken from another user." });
+    } else {
+      res.status(400).json({ message: err.message });
+    }
   }
 };
 

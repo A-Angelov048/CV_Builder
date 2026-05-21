@@ -2,11 +2,11 @@ import { forwardRef } from "react";
 
 import { useAuth } from "../../hooks/useAuth";
 import { usePortfolio } from "../../hooks/usePortfolio";
-
-import HeadingContainer from "../heading-container/HeadingContainer";
-import useHandleForm from "../../hooks/useHandleForm";
+import { useHandleForm } from "../../hooks/useHandleForm";
 import portfolioValidation from "../../utils/portfolioValidation";
+
 import ProjectsDynamic from "./ProjectsDynamic";
+import HeadingContainer from "../heading-container/HeadingContainer";
 
 export default forwardRef<HTMLDivElement>(function Projects(_, ref) {
   const { flagForm, changeState } = useHandleForm(true);

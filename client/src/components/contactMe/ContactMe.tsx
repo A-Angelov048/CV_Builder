@@ -1,19 +1,22 @@
 import styles from "./ContactMe.module.css";
+
 import { Link } from "react-router-dom";
 import { forwardRef } from "react";
-import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
 import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
+
+import ErrorSnackbar from "../errorModal/ErrorSnackbar";
+import SuccessSnackbar from "../successModal/SuccessSnackbar";
+import HeadingContainerStatic from "../heading-container/HeadingContainerStatic";
+
 import { contactSchema, type ContactValues } from "../../validation/formSchema";
-import { ErrorSnackbar } from "../errorModal/ErrorSnackbar";
+import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
 import { usePortfolio } from "../../hooks/usePortfolio";
 import { useAxiosPrivate } from "../../hooks/useAxiosPrivate";
-import { SuccessSnackbar } from "../successModal/SuccessSnackbar";
 import { useFormSuccessSnackbar } from "../../hooks/useFormSuccessSnackbar";
-import HeadingContainerStatic from "../heading-container/HeadingContainerStatic";
 
 export default forwardRef<HTMLDivElement>(function ContactMe(_, ref) {
   const api = useAxiosPrivate();
-  const { portfolio } = usePortfolio();
+  const { portfolio, changeLoadingState } = usePortfolio();
   const { open, messages, close, handleErrors, handleZodErrors } = useFormErrorSnackbar();
   const { openSuccess, messagesSuccess, closeSuccess, handleSuccess } = useFormSuccessSnackbar();
 
@@ -22,18 +25,18 @@ export default forwardRef<HTMLDivElement>(function ContactMe(_, ref) {
   const onSubmit: SubmitHandler<ContactValues> = async (data) => {
     const result = contactSchema.safeParse(data);
 
-    if (!result.success) {
-      handleZodErrors(result.error);
-      return;
-    }
+    if (!result.success) return handleZodErrors(result.error);
+
+    changeLoadingState(true);
 
     try {
       await api.post("/portfolio/contact-me", { ...data, ownerId: portfolio.owner });
+      handleSuccess("Message sent successfully!");
     } catch (err: any) {
       handleErrors({ err: err.response.data });
     } finally {
       reset();
-      handleSuccess("Message sent successfully!");
+      changeLoadingState(false);
     }
   };
 

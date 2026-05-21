@@ -1,46 +1,44 @@
 import styles from "./guestPages.module.css";
-import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
-import { Link, useLocation, useNavigate } from "react-router-dom";
 
-import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
-import { loginSchema, type LoginValues } from "../../validation/formSchema";
-import { ErrorSnackbar } from "../../components/errorModal/ErrorSnackbar";
-import { useAuth, type AccessTokenBE } from "../../hooks/useAuth";
-import { useAxiosPrivate } from "../../hooks/useAxiosPrivate";
+import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
+import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
+import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
+import { useLoginUser } from "../../hooks/useAuthResponse";
+import { useAuth } from "../../hooks/useAuth";
+import { loginSchema, type LoginValues } from "../../validation/formSchema";
+
+import Spinner from "../../components/spinner/Spinner";
+import ErrorSnackbar from "../../components/errorModal/ErrorSnackbar";
+
 export default function Login() {
-  const navigate = useNavigate();
   const { state } = useLocation();
-
-  const api = useAxiosPrivate();
-  const { changeAuthState } = useAuth();
-  const { open, messages, close, handleErrors, handleZodErrors } = useFormErrorSnackbar();
-
+  const { authData, changeAuthState } = useAuth();
   const { register, handleSubmit } = useForm<LoginValues>();
+
+  const { open, messages, close, handleErrors, handleZodErrors } = useFormErrorSnackbar();
+  const { getUser, spinner } = useLoginUser();
 
   useEffect(() => {
     if (state && state.message) {
       handleErrors({ err: { message: state.message } });
     }
-  }, []);
+
+    if (authData.isLoggedOff) {
+      changeAuthState({ userId: "", username: "", accessToken: "", isLoggedOff: false });
+    }
+  }, [state]);
 
   const onSubmit: SubmitHandler<LoginValues> = async (data) => {
     const result = loginSchema.safeParse(data);
 
-    if (!result.success) {
-      handleZodErrors(result.error);
-      return;
-    }
+    if (!result.success) return handleZodErrors(result.error);
 
     try {
-      const token: AccessTokenBE = await api.post("/auth/login", data);
-
-      changeAuthState(token.data);
-      localStorage.setItem("isLoggedIn", "true");
-      navigate(`/${token.data.username}`, { replace: true });
-    } catch (err: any) {
-      handleErrors({ err: err.response.data });
+      await getUser(data);
+    } catch (error: any) {
+      handleErrors({ err: error.response.data });
     }
   };
 
@@ -78,6 +76,7 @@ export default function Login() {
         </form>
         <ErrorSnackbar open={open} messages={messages} onClose={close} />
       </div>
+      {spinner && <Spinner />}
     </section>
   );
 }

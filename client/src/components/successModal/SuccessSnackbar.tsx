@@ -1,7 +1,7 @@
 import { Snackbar, Alert, AlertTitle } from "@mui/material";
 import { SuccessSnackbarProps } from "../../types/componentsPropsTypes";
 
-export function SuccessSnackbar({ open, messages, onClose }: SuccessSnackbarProps) {
+export default function SuccessSnackbar({ open, messages, onClose }: SuccessSnackbarProps) {
   return (
     <Snackbar
       open={open}

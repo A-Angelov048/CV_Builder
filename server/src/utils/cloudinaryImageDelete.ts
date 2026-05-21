@@ -8,13 +8,13 @@ export default async function imageDelete(
 ) {
   if (
     oldImageProfileId &&
-    oldImageProfileId !== data?.about.imageProfile.public_id
+    oldImageProfileId !== data?.about?.imageProfile?.public_id
   ) {
     await cloudinary.uploader.destroy(oldImageProfileId);
   }
   if (
     oldImageBackgroundId &&
-    oldImageBackgroundId !== data?.about.imageBackground.public_id
+    oldImageBackgroundId !== data?.about?.imageBackground?.public_id
   ) {
     await cloudinary.uploader.destroy(oldImageBackgroundId);
   }

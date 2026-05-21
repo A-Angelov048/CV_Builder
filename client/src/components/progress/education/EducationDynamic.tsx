@@ -5,10 +5,10 @@ import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
 import { useDeletePortfolioInfo, useUpdatePortfolio } from "../../../hooks/usePortfolioResponse";
 import { useInView } from "../../../hooks/useInView";
 import { useFormErrorSnackbar } from "../../../hooks/useFormErrorSnackbar";
-
-import { ErrorSnackbar } from "../../errorModal/ErrorSnackbar";
 import { educationSchema, type EducationValues } from "../../../validation/formSchema";
 import { EducationDynamicProps } from "../../../types/componentsPropsTypes";
+
+import ErrorSnackbar from "../../errorModal/ErrorSnackbar";
 
 export default function EducationDynamic({
   portfolio,
@@ -30,15 +30,12 @@ export default function EducationDynamic({
   const { register, handleSubmit } = useForm<EducationValues>();
 
   const onSubmit: SubmitHandler<EducationValues> = async (data) => {
-    if (!flagForm) {
-      changeStatus(true);
-    }
-
     const result = educationSchema.safeParse(data);
 
-    if (!result.success) {
-      handleZodErrors(result.error);
-      return;
+    if (!result.success) return handleZodErrors(result.error);
+
+    if (!flagForm) {
+      changeStatus(true);
     }
 
     try {
@@ -93,27 +90,29 @@ export default function EducationDynamic({
         </div>
       ) : (
         <>
-          <form onSubmit={handleSubmit(onSubmit, onError)} className="grid-form max-width">
-            <div className="form-group m-t">
-              <label htmlFor="yearsEducation">Years of education *</label>
-              <input type="text" id="yearsEducation" {...register("yearsEducation")} />
-            </div>
-            <div className="form-group m-t">
-              <label htmlFor="degree">Degree / Diploma & Specialty*</label>
-              <input type="text" id="degree" {...register("degree")} />
-            </div>
-            <div className="form-group m-t">
-              <label htmlFor="nameSchool">Name of the school *</label>
-              <input type="text" id="nameSchool" {...register("nameSchool")} />
-            </div>
-            <div className="form-group m-t">
-              <label htmlFor="infoSchool">Information of the school *</label>
-              <textarea id="infoSchool" {...register("infoSchool")} />
-            </div>
-            <button className="main-button m-t" type="submit">
-              Submit
-            </button>
-          </form>
+          {viewType.isOwner && (
+            <form onSubmit={handleSubmit(onSubmit, onError)} className="grid-form max-width">
+              <div className="form-group m-t">
+                <label htmlFor="yearsEducation">Years of education *</label>
+                <input type="text" id="yearsEducation" {...register("yearsEducation")} />
+              </div>
+              <div className="form-group m-t">
+                <label htmlFor="degree">Degree / Diploma & Specialty*</label>
+                <input type="text" id="degree" {...register("degree")} />
+              </div>
+              <div className="form-group m-t">
+                <label htmlFor="nameSchool">Name of the school *</label>
+                <input type="text" id="nameSchool" {...register("nameSchool")} />
+              </div>
+              <div className="form-group m-t">
+                <label htmlFor="infoSchool">Information of the school *</label>
+                <textarea id="infoSchool" {...register("infoSchool")} />
+              </div>
+              <button className="main-button m-t" type="submit">
+                Submit
+              </button>
+            </form>
+          )}
           <ErrorSnackbar open={open} messages={messages} onClose={close} />
         </>
       )}

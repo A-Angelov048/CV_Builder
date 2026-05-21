@@ -11,11 +11,10 @@ const PortfolioSchema = new Schema<Portfolio>(
     },
 
     about: {
-      name: { type: String, required: true, minLength: 5 },
-      career: { type: String, required: true, minLength: 5 },
+      name: { type: String, minLength: 5 },
+      career: { type: String, minLength: 5 },
       phone: {
         type: String,
-        required: true,
         match: [
           /^\+359[- ]?\d{3}[- ]?\d{3}[- ]?\d{3}$/,
           "Invalid phone number (example: +359 111 222 333)",
@@ -23,7 +22,6 @@ const PortfolioSchema = new Schema<Portfolio>(
       },
       email: {
         type: String,
-        required: true,
         unique: true,
         trim: true,
         minLength: [10, "Email must be at least 10 characters long."],
@@ -32,29 +30,27 @@ const PortfolioSchema = new Schema<Portfolio>(
           "Please enter a valid email address.",
         ],
       },
-      address: { type: String, required: true, minLength: 5 },
-      date: { type: String, required: true, minLength: 5 },
+      address: { type: String, minLength: 5 },
+      date: { type: String, minLength: 5 },
       imageProfile: {
         image: {
           type: String,
-          required: true,
           match: [
             /^https?:\/\//,
             "URL should stars with http://... or https://...",
           ],
         },
-        public_id: { type: String, required: true },
+        public_id: { type: String },
       },
       imageBackground: {
         image: {
           type: String,
-          required: true,
           match: [
             /^https?:\/\//,
             "URL should stars with http://... or https://...",
           ],
         },
-        public_id: { type: String, required: true },
+        public_id: { type: String },
       },
     },
 
@@ -65,7 +61,6 @@ const PortfolioSchema = new Schema<Portfolio>(
           /^https?:\/\//,
           "Image URL should stars with http://... or https://...",
         ],
-        require: true,
       },
       telegram: {
         type: String,
@@ -97,7 +92,6 @@ const PortfolioSchema = new Schema<Portfolio>(
       },
       shortInfo: {
         type: String,
-        require: true,
         minLength: [10, "Short info must be at least 10 characters long."],
         maxLength: [240, "Short info must be at most 240 characters long."],
       },
@@ -105,16 +99,15 @@ const PortfolioSchema = new Schema<Portfolio>(
 
     skills: [
       {
-        skill: { type: String, required: true, minLength: 5 },
+        skill: { type: String, minLength: 5 },
       },
     ],
 
     projects: [
       {
-        nameProject: { type: String, required: true, minLength: 5 },
+        nameProject: { type: String, minLength: 5 },
         urlProject: {
           type: String,
-          required: true,
           match: [
             /^https?:\/\//,
             "Image URL should stars with http://... or https://...",
@@ -122,7 +115,6 @@ const PortfolioSchema = new Schema<Portfolio>(
         },
         screenshotProject: {
           type: String,
-          required: true,
           match: [
             /^https?:\/\//,
             "Image URL should stars with http://... or https://...",
@@ -142,17 +134,15 @@ const PortfolioSchema = new Schema<Portfolio>(
       {
         yearsExperience: {
           type: String,
-          required: true,
           match: [
             /^\d{4}-\d{4}$/,
             "Enter a year range in the format YYYY-YYYY (e.g., 2016-2020)",
           ],
         },
-        position: { type: String, required: true, minLength: 5 },
-        companyName: { type: String, required: true, minLength: 5 },
+        position: { type: String, minLength: 5 },
+        companyName: { type: String, minLength: 5 },
         activity: {
           type: String,
-          required: true,
           minLength: 10,
           maxLength: 240,
         },
@@ -163,17 +153,15 @@ const PortfolioSchema = new Schema<Portfolio>(
       {
         yearsEducation: {
           type: String,
-          required: true,
           match: [
             /^\d{4}-\d{4}$/,
             "Enter a year range in the format YYYY-YYYY (e.g., 2016-2020)",
           ],
         },
-        degree: { type: String, required: true, minLength: 5 },
-        nameSchool: { type: String, required: true, minLength: 5 },
+        degree: { type: String, minLength: 5 },
+        nameSchool: { type: String, minLength: 5 },
         infoSchool: {
           type: String,
-          required: true,
           minLength: 10,
           maxLength: 240,
         },

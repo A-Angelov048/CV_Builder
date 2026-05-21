@@ -1,12 +1,14 @@
 import styles from "./Projects.module.css";
+
 import { Link } from "react-router-dom";
 import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
 
 import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
-import { projectsSchema, type ProjectsValues } from "../../validation/formSchema";
-import { ErrorSnackbar } from "../errorModal/ErrorSnackbar";
 import { useDeletePortfolioInfo, useUpdatePortfolio } from "../../hooks/usePortfolioResponse";
+import { projectsSchema, type ProjectsValues } from "../../validation/formSchema";
 import { ProjectsDynamicProps } from "../../types/componentsPropsTypes";
+
+import ErrorSnackbar from "../errorModal/ErrorSnackbar";
 
 export default function ProjectsDynamic({
   portfolio,
@@ -24,15 +26,12 @@ export default function ProjectsDynamic({
   const { register, handleSubmit } = useForm<ProjectsValues>();
 
   const onSubmit: SubmitHandler<ProjectsValues> = async (data) => {
-    if (!flagForm) {
-      changeStatus(true);
-    }
-
     const result = projectsSchema.safeParse(data);
 
-    if (!result.success) {
-      handleZodErrors(result.error);
-      return;
+    if (!result.success) return handleZodErrors(result.error);
+
+    if (!flagForm) {
+      changeStatus(true);
     }
 
     try {
@@ -87,27 +86,29 @@ export default function ProjectsDynamic({
         </div>
       ) : (
         <>
-          <form onSubmit={handleSubmit(onSubmit, onError)} className="grid-form max-width">
-            <div className="form-group m-t">
-              <label htmlFor="nameProject">Name of the project *</label>
-              <input type="text" id="nameProject" {...register("nameProject")} />
-            </div>
-            <div className="form-group m-t">
-              <label htmlFor="urlProject">URL of the project *</label>
-              <input type="text" id="urlProject" {...register("urlProject")} />
-            </div>
-            <div className="form-group m-t">
-              <label htmlFor="screenshotProject">Screenshot (by URL) of the project *</label>
-              <input type="text" id="screenshotProject" {...register("screenshotProject")} />
-            </div>
-            <div className="form-group m-t">
-              <label htmlFor="brief">URL of brief project documentation</label>
-              <input type="text" id="brief" {...register("brief")} />
-            </div>
-            <button className="main-button m-t" type="submit">
-              Submit
-            </button>
-          </form>
+          {viewType.isOwner && (
+            <form onSubmit={handleSubmit(onSubmit, onError)} className="grid-form max-width">
+              <div className="form-group m-t">
+                <label htmlFor="nameProject">Name of the project *</label>
+                <input type="text" id="nameProject" {...register("nameProject")} />
+              </div>
+              <div className="form-group m-t">
+                <label htmlFor="urlProject">URL of the project *</label>
+                <input type="text" id="urlProject" {...register("urlProject")} />
+              </div>
+              <div className="form-group m-t">
+                <label htmlFor="screenshotProject">Screenshot (by URL) of the project *</label>
+                <input type="text" id="screenshotProject" {...register("screenshotProject")} />
+              </div>
+              <div className="form-group m-t">
+                <label htmlFor="brief">URL of brief project documentation</label>
+                <input type="text" id="brief" {...register("brief")} />
+              </div>
+              <button className="main-button m-t" type="submit">
+                Submit
+              </button>
+            </form>
+          )}
           <ErrorSnackbar open={open} messages={messages} onClose={close} />
         </>
       )}

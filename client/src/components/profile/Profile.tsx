@@ -2,11 +2,13 @@ import style from "./Profile.module.css";
 
 import ProfileSettings from "./profileSettings/ProfileSettings";
 
-import { useAuth } from "../../hooks/useAuth";
-
-export default function Profile({ toggleProfile }: { toggleProfile: () => void }) {
-  const { logoutUser } = useAuth();
-
+export default function Profile({
+  toggleProfile,
+  logoutUser,
+}: {
+  toggleProfile: () => void;
+  logoutUser: () => void;
+}) {
   return (
     <div onClick={() => toggleProfile()} className={style["mono-modal-overlay"]}>
       <div onClick={(e) => e.stopPropagation()} className={style["mono-modal-container"]}>
@@ -33,7 +35,7 @@ export default function Profile({ toggleProfile }: { toggleProfile: () => void }
           <div className={style["mono-logout-btn-position"]}>
             <button
               onClick={() => {
-                logoutUser("/");
+                logoutUser();
                 toggleProfile();
               }}
               className={style["mono-logout-btn"]}

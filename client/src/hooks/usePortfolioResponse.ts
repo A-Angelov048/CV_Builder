@@ -1,70 +1,67 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAxiosPrivate } from "./useAxiosPrivate";
 import { usePortfolio } from "./usePortfolio";
 import type { AboutValues } from "../context/portfolioContext";
 import { useCloudinaryUpload } from "./useCloudinary";
 import type { ProfileCardValues, SocialLinkValues } from "../validation/formSchema";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useAuth } from "./useAuth";
 
-export function useGetMyPortfolio(enabled: boolean | "" | undefined) {
+export function useGetPortfolio(username?: string) {
   const api = useAxiosPrivate();
-  const { changePortfolioState } = usePortfolio();
-
-  useEffect(() => {
-    if (!enabled) return;
-
-    const controller = new AbortController();
-
-    const portfolio = async () => {
-      try {
-        const response = await api.get("/portfolio/me", {
-          signal: controller.signal,
-        });
-        changePortfolioState(response.data);
-      } catch (error: any) {
-        console.error(error.response.data.message);
-      }
-    };
-
-    portfolio();
-
-    return () => {
-      controller.abort();
-    };
-  }, [enabled]);
-}
-
-export function useGetPublicPortfolio(
-  username: string | undefined,
-  enabled: boolean | "" | undefined
-) {
   const navigate = useNavigate();
-  const api = useAxiosPrivate();
+
+  const { authData } = useAuth();
   const { changePortfolioState } = usePortfolio();
 
+  const [isLoading, setIsLoading] = useState(true);
+
+  const isOwner = !!authData.accessToken && !!username && authData.username === username;
+
+  const isPublic = !!username && (!authData.accessToken || authData.username !== username);
+
   useEffect(() => {
-    if (!enabled) return;
+    if (authData.isLoggedOff) return;
 
     const controller = new AbortController();
 
-    const portfolio = async () => {
+    const fetchPortfolio = async () => {
       try {
-        const response = await api.get(`/portfolio/public/${username}`, {
-          signal: controller.signal,
-        });
-        changePortfolioState(response.data);
+        setIsLoading(true);
+
+        if (isOwner) {
+          const response = await api.get("/portfolio/me", {
+            signal: controller.signal,
+          });
+
+          changePortfolioState(response.data);
+        } else if (isPublic) {
+          const response = await api.get(`/portfolio/public/${username}`, {
+            signal: controller.signal,
+          });
+          changePortfolioState(response.data);
+        }
       } catch (error: any) {
+        if (axios.isCancel(error)) return;
+
         navigate("/not-found");
         console.error(error.response.data.message);
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    portfolio();
+    fetchPortfolio();
 
     return () => {
       controller.abort();
     };
-  }, []);
+  }, [username]);
+
+  return {
+    isLoading: isLoading || authData.isLoggedOff,
+  };
 }
 
 export function useCreatePortfolio() {
