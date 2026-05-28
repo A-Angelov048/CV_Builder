@@ -27,12 +27,6 @@ const isPortfolioComplete = (data: Portfolio): boolean | undefined => {
     // skills
     isArrayNotEmpty(data.skills) &&
     data.skills?.every((s) => isNotEmpty(s.skill)) &&
-    // projects
-    isArrayNotEmpty(data.projects) &&
-    data.projects?.every(
-      (p) =>
-        isNotEmpty(p.nameProject) && isNotEmpty(p.urlProject) && isNotEmpty(p.screenshotProject)
-    ) &&
     // experience
     isArrayNotEmpty(data.experience) &&
     data.experience?.every(

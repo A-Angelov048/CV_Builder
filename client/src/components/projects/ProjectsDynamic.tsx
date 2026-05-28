@@ -87,27 +87,32 @@ export default function ProjectsDynamic({
       ) : (
         <>
           {viewType.isOwner && (
-            <form onSubmit={handleSubmit(onSubmit, onError)} className="grid-form max-width">
-              <div className="form-group m-t">
-                <label htmlFor="nameProject">Name of the project *</label>
-                <input type="text" id="nameProject" {...register("nameProject")} />
-              </div>
-              <div className="form-group m-t">
-                <label htmlFor="urlProject">URL of the project *</label>
-                <input type="text" id="urlProject" {...register("urlProject")} />
-              </div>
-              <div className="form-group m-t">
-                <label htmlFor="screenshotProject">Screenshot (by URL) of the project *</label>
-                <input type="text" id="screenshotProject" {...register("screenshotProject")} />
-              </div>
-              <div className="form-group m-t">
-                <label htmlFor="brief">URL of brief project documentation</label>
-                <input type="text" id="brief" {...register("brief")} />
-              </div>
-              <button className="main-button m-t" type="submit">
-                Submit
-              </button>
-            </form>
+            <>
+              <p className={styles["optional-section"]}>
+                This section is optional and can be skipped!
+              </p>
+              <form onSubmit={handleSubmit(onSubmit, onError)} className="grid-form max-width">
+                <div className="form-group m-t">
+                  <label htmlFor="nameProject">Name of the project *</label>
+                  <input type="text" id="nameProject" {...register("nameProject")} />
+                </div>
+                <div className="form-group m-t">
+                  <label htmlFor="urlProject">URL of the project *</label>
+                  <input type="text" id="urlProject" {...register("urlProject")} />
+                </div>
+                <div className="form-group m-t">
+                  <label htmlFor="screenshotProject">Screenshot (by URL) of the project *</label>
+                  <input type="text" id="screenshotProject" {...register("screenshotProject")} />
+                </div>
+                <div className="form-group m-t">
+                  <label htmlFor="brief">URL of brief project documentation</label>
+                  <input type="text" id="brief" {...register("brief")} />
+                </div>
+                <button className="main-button m-t" type="submit">
+                  Submit
+                </button>
+              </form>
+            </>
           )}
           <ErrorSnackbar open={open} messages={messages} onClose={close} />
         </>

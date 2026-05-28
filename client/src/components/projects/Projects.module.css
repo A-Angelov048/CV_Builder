@@ -49,7 +49,7 @@
 }
 
 .remove {
-  color: red;
+  color: #ba1a1a;
   cursor: pointer;
 }
 
@@ -57,6 +57,13 @@
   color: #004aad;
   text-decoration: underline;
   cursor: pointer;
+}
+
+.optional-section {
+  color: #ba1a1a;
+  margin-top: 30px;
+  text-align: center;
+  font-weight: 800;
 }
 
 @media (max-width: 1200px) {

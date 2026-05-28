@@ -21,6 +21,8 @@ export default forwardRef<HTMLDivElement>(function Projects(_, ref) {
 
   const checkPortfolioProjects = portfolio.projects && portfolio.projects.length > 0;
 
+  if (!checkPortfolioProjects && !viewType.isOwner) return;
+
   return (
     <section ref={ref}>
       <HeadingContainer
