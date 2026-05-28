@@ -9,6 +9,7 @@ import { useCreatePortfolio } from "../../hooks/usePortfolioResponse";
 import type { Portfolio } from "../../context/portfolioContext";
 
 import ErrorSnackbar from "../errorModal/ErrorSnackbar";
+import DoubleButton from "../doubleButton/DoubleButton";
 
 export default function ProfileCardDynamic({
   portfolio,
@@ -140,9 +141,7 @@ export default function ProfileCardDynamic({
                   {...register("imageBackground")}
                 />
               </div>
-              <button className="main-button" type="submit">
-                Submit
-              </button>
+              <DoubleButton changeState={changeState} />
             </form>
           )}
           <ErrorSnackbar open={open} messages={messages} onClose={close} />

@@ -10,6 +10,7 @@ import { type SocialLinkValues, socialLinkSchema } from "../../validation/formSc
 import type { Portfolio } from "../../context/portfolioContext";
 
 import ErrorSnackbar from "../errorModal/ErrorSnackbar";
+import DoubleButton from "../doubleButton/DoubleButton";
 
 export default function SocialLinksDynamic({
   portfolio,
@@ -123,9 +124,7 @@ export default function SocialLinksDynamic({
                 <label htmlFor="short-info">Type here short Info about you *</label>
                 <textarea id="short-info" {...register("shortInfo")}></textarea>
               </div>
-              <button className="main-button" type="submit">
-                Submit
-              </button>
+              <DoubleButton changeState={changeState} />
             </form>
           )}
           <ErrorSnackbar open={open} messages={messages} onClose={close} />

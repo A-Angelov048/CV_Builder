@@ -18,7 +18,6 @@
   display: flex;
   max-width: 850px;
   border-radius: 6px;
-  overflow: hidden;
 }
 
 .profile-left {
