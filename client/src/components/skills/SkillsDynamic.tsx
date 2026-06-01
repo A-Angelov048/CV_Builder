@@ -20,10 +20,12 @@ export default function SkillsDynamic({
 
   const { updatePortfolio } = useUpdatePortfolio("skills");
   const { deletePortfolioInfo } = useDeletePortfolioInfo();
-
-  const { refView, isInView } = useInView({
-    threshold: 0.6,
-  });
+  const { refView, isInView } = useInView(
+    {
+      threshold: 0.6,
+    },
+    flagForm
+  );
 
   const { open, messages, close, handleErrors, handleZodErrors } = useFormErrorSnackbar();
 

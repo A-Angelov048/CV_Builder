@@ -21,9 +21,12 @@ export default function EducationDynamic({
   const { updatePortfolio } = useUpdatePortfolio("education");
   const { deletePortfolioInfo } = useDeletePortfolioInfo();
 
-  const { refView, isInView } = useInView({
-    threshold: 0.2,
-  });
+  const { refView, isInView } = useInView(
+    {
+      threshold: 0.2,
+    },
+    flagForm
+  );
 
   const { open, messages, close, handleErrors, handleZodErrors } = useFormErrorSnackbar();
 
