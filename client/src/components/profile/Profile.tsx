@@ -1,5 +1,7 @@
 import style from "./Profile.module.css";
 
+import { useEffect } from "react";
+
 import ProfileSettings from "./profileSettings/ProfileSettings";
 
 export default function Profile({
@@ -9,6 +11,30 @@ export default function Profile({
   toggleProfile: () => void;
   logoutUser: () => void;
 }) {
+  useEffect(() => {
+    const handleInteraction = (e: Event) => {
+      const target = e.target as HTMLElement;
+
+      if (
+        !target.closest(`.${style["mono-modal-container"]}`) &&
+        !target.closest(`.${style["mono-modal-overlay"]}`)
+      ) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    };
+
+    document.addEventListener("pointerdown", handleInteraction, true);
+    document.addEventListener("click", handleInteraction, true);
+    document.addEventListener("touchstart", handleInteraction, true);
+
+    return () => {
+      document.removeEventListener("pointerdown", handleInteraction, true);
+      document.removeEventListener("click", handleInteraction, true);
+      document.removeEventListener("touchstart", handleInteraction, true);
+    };
+  }, []);
+
   return (
     <div onClick={() => toggleProfile()} className={style["mono-modal-overlay"]}>
       <div onClick={(e) => e.stopPropagation()} className={style["mono-modal-container"]}>

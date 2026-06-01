@@ -1,3 +1,4 @@
+html:has(.mono-modal-overlay),
 body:has(.mono-modal-overlay) {
   overflow: hidden;
 }
@@ -12,6 +13,7 @@ body:has(.mono-modal-overlay) {
   padding: 16px;
   background: rgba(0, 0, 0, 0.05);
   backdrop-filter: blur(12px);
+  pointer-events: auto;
 }
 
 .mono-modal-container {
@@ -26,6 +28,7 @@ body:has(.mono-modal-overlay) {
   overflow: hidden;
   position: relative;
   border-radius: 6px;
+  pointer-events: auto;
 }
 
 @media (max-width: 768px) {

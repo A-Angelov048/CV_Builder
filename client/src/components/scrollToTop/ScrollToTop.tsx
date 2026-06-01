@@ -49,7 +49,7 @@ export default function ScrollToTop({
   return (
     <>
       <main>{children}</main>
-      {createPortal(buttonElement, document.body)}
+      {createPortal(buttonElement, document.getElementById("root")!)}
     </>
   );
 }
