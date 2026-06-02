@@ -146,6 +146,10 @@ const PortfolioSchema = new Schema<Portfolio>(
           minLength: 10,
           maxLength: 240,
         },
+        createdAt: {
+          type: Date,
+          default: Date.now,
+        },
       },
     ],
 
@@ -164,6 +168,10 @@ const PortfolioSchema = new Schema<Portfolio>(
           type: String,
           minLength: 10,
           maxLength: 240,
+        },
+        createdAt: {
+          type: Date,
+          default: Date.now,
         },
       },
     ],

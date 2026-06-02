@@ -13,10 +13,10 @@ export interface About {
 
 export interface Links {
   linkedin: string;
-  telegram?: string;
-  github?: string;
-  facebook?: string;
-  instagram?: string;
+  telegram: string;
+  github: string;
+  facebook: string;
+  instagram: string;
   shortInfo: string;
 }
 
@@ -27,12 +27,11 @@ export interface Skills {
 
 export interface Experience {
   _id: Types.ObjectId;
-  company: string;
+  yearsExperience: string;
   position: string;
-  startDate: Date;
-  endDate?: Date;
-  description?: string;
-  technologies?: string[];
+  companyName: string;
+  activity: string;
+  createdAt: Date;
 }
 
 export interface Project {
@@ -40,15 +39,16 @@ export interface Project {
   nameProject: string;
   urlProject: string;
   screenshotProject: string;
-  brief?: string;
+  brief: string;
 }
 
 export interface Education {
   _id: Types.ObjectId;
-  yearsExperience: string;
-  position: string;
-  companyName: string;
-  activity: string;
+  yearsEducation: string;
+  degree: string;
+  nameSchool: string;
+  infoSchool: string;
+  createdAt: Date;
 }
 
 export interface Portfolio extends Document {

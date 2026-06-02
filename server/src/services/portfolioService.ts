@@ -31,7 +31,21 @@ export const createPortfolio = async (userId: string, body: Portfolio) => {
 };
 
 export const getMyPortfolio = async (userId: string) => {
-  return PortfolioModel.findOne({ owner: userId });
+  const portfolio = await PortfolioModel.findOne({ owner: userId });
+
+  if (!portfolio) {
+    throw new Error("Portfolio not found.");
+  }
+
+  portfolio.experience.sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  );
+
+  portfolio.education.sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  );
+
+  return portfolio;
 };
 
 export const getPublicPortfolio = async (username: string) => {
@@ -45,6 +59,18 @@ export const getPublicPortfolio = async (username: string) => {
     owner: findUser._id,
     isPublished: true,
   });
+
+  if (!portfolio) {
+    throw new Error("Portfolio not found.");
+  }
+
+  portfolio.experience.sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  );
+
+  portfolio.education.sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  );
 
   return portfolio;
 };
@@ -65,6 +91,20 @@ export const updatePortfolioSection = async <T>(
 
   if (!portfolio) {
     throw new Error("Portfolio not found");
+  }
+
+  if (section === "experience") {
+    portfolio.experience.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    );
+  }
+
+  if (section === "education") {
+    portfolio.education.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    );
   }
 
   return portfolio;
@@ -105,6 +145,20 @@ export const deletePortfolioSection = async (
   item.deleteOne();
 
   await portfolio.save();
+
+  if (section === "experience") {
+    portfolio.experience.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    );
+  }
+
+  if (section === "education") {
+    portfolio.education.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    );
+  }
 
   return portfolio;
 };

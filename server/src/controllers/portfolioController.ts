@@ -33,10 +33,6 @@ export async function getMyPortfolioController(req: Request, res: Response) {
   try {
     const portfolio = await getMyPortfolio(userId);
 
-    if (!portfolio) {
-      throw new Error("Portfolio not found.");
-    }
-
     res.json(portfolio);
   } catch (err: any) {
     res.status(404).json({ message: err.message });
@@ -55,10 +51,6 @@ export async function getPublicPortfolioController(
 
   try {
     const portfolio = await getPublicPortfolio(username);
-
-    if (!portfolio) {
-      return res.status(404).json({ message: "CV not found" });
-    }
 
     res.json(portfolio);
   } catch (err: any) {
