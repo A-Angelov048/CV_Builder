@@ -1,9 +1,11 @@
 import bcrypt from "bcrypt";
+import nodemailer from "nodemailer";
 import jwt from "../utils/jwt";
+
 import { User } from "../models/user";
+import { PortfolioModel } from "../models/portfolio";
 import { jwtData } from "../types/mainTypes";
 import { IUser } from "../types/userTypes";
-import { PortfolioModel } from "../models/portfolio";
 
 export const createUser = async (body: IUser) => {
   const [username, email] = await Promise.all([
@@ -114,22 +116,6 @@ export const logoutService = async (token: string) => {
   );
 };
 
-const createAccessToken = (id: string, username: string) => {
-  return jwt.sign({
-    token: { userId: id, username },
-    secret: process.env.JWT_SECRET as string,
-    options: { expiresIn: "15m" },
-  });
-};
-
-const createRefreshToken = (id: string, username: string) => {
-  return jwt.sign({
-    token: { userId: id, username },
-    secret: process.env.REFRESH_SECRET as string,
-    options: { expiresIn: "7d" },
-  });
-};
-
 export const changeUserIdentity = async (
   newUsername: string,
   newEmail: string,
@@ -207,4 +193,91 @@ export const changeUserPassword = async (
     accessToken,
     refreshToken,
   };
+};
+
+export const handleForgottenPassword = async (email: string) => {
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    throw new Error("If an account exists, a reset link has been sent.");
+  }
+
+  const resetPasswordToken = await createPasswordResetToken(user.email);
+
+  user.passwordToken = resetPasswordToken;
+  await user.save();
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+
+  const mailOptions = {
+    to: user.email,
+    subject: `Password Reset Request`,
+    replyTo: user.email,
+    html: `
+        <h3>Password Reset Request</h3>
+        <p>If you have not requested a password reset, please ignore this email.</p>
+        <p>You have requested to reset your password. Please click the link below to proceed:</p>
+        <a href="${process.env.CLIENT_URL}/reset-password/${user.passwordToken}">Reset Password</a>
+      `,
+  };
+
+  transporter.sendMail(mailOptions);
+};
+
+export const handleResetPassword = async (
+  newPassword: string,
+  token: string,
+) => {
+  const decoded = (await jwt.verify({
+    token,
+    secret: process.env.JWT_SECRET as string,
+  })) as jwtData;
+
+  if (!decoded.email) {
+    throw new Error("Invalid or expired reset token.");
+  }
+
+  const user = await User.findOne({
+    passwordToken: token,
+    email: decoded.email,
+  });
+
+  if (!user) {
+    throw new Error("Invalid or expired reset token.");
+  }
+
+  const hashed = await bcrypt.hash(newPassword, 12);
+  user.password = hashed;
+  user.passwordToken = "";
+  await user.save();
+};
+
+const createAccessToken = (id: string, username: string) => {
+  return jwt.sign({
+    token: { userId: id, username },
+    secret: process.env.JWT_SECRET as string,
+    options: { expiresIn: "15m" },
+  });
+};
+
+const createRefreshToken = (id: string, username: string) => {
+  return jwt.sign({
+    token: { userId: id, username },
+    secret: process.env.REFRESH_SECRET as string,
+    options: { expiresIn: "7d" },
+  });
+};
+
+const createPasswordResetToken = (email: string) => {
+  return jwt.sign({
+    token: { userId: "", username: "", email },
+    secret: process.env.JWT_SECRET as string,
+    options: { expiresIn: "15m" },
+  });
 };

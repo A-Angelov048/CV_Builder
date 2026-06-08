@@ -38,6 +38,22 @@
   text-decoration: underline;
 }
 
+.forgot-password {
+  margin-top: 4px;
+  text-align: right;
+}
+
+.forgot-password-btn {
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.forgot-password-btn:hover {
+  text-decoration: underline;
+  color: #004aad;
+}
+
 @media (max-width: 768px) {
   .wrapper-guest {
     padding: 20px 20px;

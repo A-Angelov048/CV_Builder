@@ -32,6 +32,7 @@
   height: 100%;
   object-fit: cover;
   filter: grayscale(100%);
+  border-radius: 6px 0 0 6px;
 }
 
 .profile-right {
@@ -45,6 +46,7 @@
   padding: 30px;
   background-color: #f1f1f1;
   border-left: solid 1px #333;
+  border-radius: 0 6px 6px 0;
 
   opacity: 0;
   transform: translateX(80px);

@@ -6,6 +6,8 @@ import {
   getUser,
   logoutService,
   refreshService,
+  handleForgottenPassword,
+  handleResetPassword,
 } from "../services/authService";
 import { IUser } from "../types/userTypes";
 
@@ -72,6 +74,35 @@ export async function logout(req: Request, res: Response) {
   });
   res.json({ message: "Logged out" });
 }
+
+export async function forgotPassword(
+  req: Request<{}, {}, { email: string }>,
+  res: Response,
+) {
+  const { email } = req.body;
+
+  try {
+    await handleForgottenPassword(email);
+    res.json({ message: "If an account exists, a reset link has been sent." });
+  } catch (err: any) {
+    res.status(400).json({ message: err.message });
+  }
+}
+
+export const resetPassword = async (
+  req: Request<{}, {}, { newPassword: string; token: string }>,
+  res: Response,
+) => {
+  const { newPassword, token } = req.body;
+  try {
+    await handleResetPassword(newPassword, token);
+    res.json({ message: "Password updated successfully." });
+  } catch (err: any) {
+    if (err.message === "jwt expired")
+      res.status(400).json({ message: "Invalid or expired reset token." });
+    else res.status(400).json({ message: err.message });
+  }
+};
 
 export const refresh = async (req: Request, res: Response) => {
   const token: string = req.cookies.refreshToken;

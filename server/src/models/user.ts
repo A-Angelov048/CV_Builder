@@ -29,6 +29,10 @@ const UserSchema = new Schema<IUser>(
       type: [String],
       default: [],
     },
+    passwordToken: {
+      type: String,
+      default: "",
+    },
   },
   { timestamps: true },
 );

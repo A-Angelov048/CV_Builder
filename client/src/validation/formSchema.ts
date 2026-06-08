@@ -274,3 +274,33 @@ export const changePasswordSchema = z
   });
 
 export type ChangePasswordValues = z.infer<typeof changePasswordSchema>;
+
+export const forgotPasswordSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .min(10, "Email must be at least 10 characters long.")
+    .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Please enter a valid email address."),
+});
+
+export type ForgotPasswordValues = z.infer<typeof forgotPasswordSchema>;
+
+export const resetPasswordSchema = z
+  .object({
+    newPassword: z
+      .string()
+      .trim()
+      .min(1, "New password is required.")
+      .min(6, "New password must be at least 6 characters long."),
+    reNewPassword: z
+      .string()
+      .trim()
+      .min(1, "Please confirm your new password.")
+      .min(6, "Confirmed password must be at least 6 characters long."),
+  })
+  .refine((data) => data.newPassword === data.reNewPassword, {
+    message: "Passwords do not match",
+    path: ["reNewPassword"],
+  });
+
+export type ResetPasswordValues = z.infer<typeof resetPasswordSchema>;

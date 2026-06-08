@@ -40,6 +40,7 @@ export default function Header({ scrollFunc, scrollUp }: HeaderProps) {
         <Link
           className={styles.username}
           to={authData.username !== "" ? `/${authData.username}` : "/"}
+          replace
         >
           {authData.username !== "" ? authData.username : "Rachel Smith"}
         </Link>

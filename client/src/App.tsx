@@ -14,6 +14,8 @@ import NotFound from "./pages/notFound/NotFound";
 import AuthGuard from "./components/routeGuards/AuthGuard";
 import HomeCvUser from "./pages/HomeCvUser";
 import HomeCv from "./pages/guestPages/HomeCv";
+import ForgotPassword from "./pages/guestPages/ForgotPassword";
+import ResetPassword from "./pages/guestPages/ResetPassword";
 
 export default function App() {
   const [sectionRefs, scrollToSection, scrollToUp] = useScroll<Section>([
@@ -36,6 +38,8 @@ export default function App() {
             <Route element={<AuthGuard />}>
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password/:token" element={<ResetPassword />} />
             </Route>
             <Route path="/not-found" element={<NotFound />} />
           </Routes>

@@ -1,7 +1,7 @@
 import styles from "./guestPages.module.css";
 
-import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
-import { Link, useLocation } from "react-router-dom";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
@@ -13,6 +13,7 @@ import Spinner from "../../components/spinner/Spinner";
 import ErrorSnackbar from "../../components/errorModal/ErrorSnackbar";
 
 export default function Login() {
+  const navigate = useNavigate();
   const { state } = useLocation();
   const { authData, changeAuthState } = useAuth();
   const { register, handleSubmit } = useForm<LoginValues>();
@@ -42,17 +43,13 @@ export default function Login() {
     }
   };
 
-  const onError = (formErrors: FieldErrors<LoginValues>) => {
-    handleErrors(formErrors);
-  };
-
   return (
     <section className={styles["guest-page"]}>
       <div className="heading-container-2">
         <h2 className="title">LOGIN</h2>
       </div>
       <div className={styles["wrapper-guest"]}>
-        <form onSubmit={handleSubmit(onSubmit, onError)} className="simple-form">
+        <form onSubmit={handleSubmit(onSubmit)} className="simple-form">
           <div className="form-group">
             <label htmlFor="email">Type your email *</label>
             <input type="text" id="email" {...register("email")} autoFocus />
@@ -61,6 +58,18 @@ export default function Login() {
           <div className="form-group">
             <label htmlFor="password">Type your password *</label>
             <input type="password" id="password" {...register("password")} />
+          </div>
+
+          <div className={styles["forgot-password"]}>
+            <button
+              onClick={() =>
+                navigate("/forgot-password", { state: { isFromLogin: true }, replace: true })
+              }
+              className={styles["forgot-password-btn"]}
+              type="button"
+            >
+              Forgot Password?
+            </button>
           </div>
 
           <div className={styles.button}>
