@@ -1,6 +1,6 @@
 import styles from "./Skills.module.css";
 
-import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 
 import { useInView } from "../../hooks/useInView";
 import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
@@ -48,10 +48,6 @@ export default function SkillsDynamic({
     }
   };
 
-  const onError = (formErrors: FieldErrors<SkillValues>) => {
-    handleErrors(formErrors);
-  };
-
   return (
     <>
       {flagForm && checkPortfolioSkills ? (
@@ -74,7 +70,7 @@ export default function SkillsDynamic({
       ) : (
         <>
           {viewType.isOwner && (
-            <form onSubmit={handleSubmit(onSubmit, onError)} className="simple-form">
+            <form onSubmit={handleSubmit(onSubmit)} className="simple-form">
               <div className="form-group">
                 <label htmlFor="skill">Add skill *</label>
                 <input type="text" id="skill" {...register("skill")} />

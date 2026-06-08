@@ -1,5 +1,5 @@
 import styles from "./guestPages.module.css";
-import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { Link } from "react-router-dom";
 
 import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
@@ -27,17 +27,13 @@ export default function Register() {
     }
   };
 
-  const onError = (formErrors: FieldErrors<RegisterValues>) => {
-    handleErrors(formErrors);
-  };
-
   return (
     <section className={styles["guest-page"]}>
       <div className="heading-container-2">
         <h2 className="title">REGISTER</h2>
       </div>
       <div className={styles["wrapper-guest"]}>
-        <form onSubmit={handleSubmit(onSubmit, onError)} className="simple-form">
+        <form onSubmit={handleSubmit(onSubmit)} className="simple-form">
           <div className="form-group">
             <label htmlFor="username">Type your username *</label>
             <input id="username" type="text" {...register("username")} autoFocus />

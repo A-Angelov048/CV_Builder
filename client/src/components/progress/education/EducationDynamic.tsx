@@ -1,6 +1,6 @@
 import styles from "../Progress.module.css";
 
-import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 
 import { useDeletePortfolioInfo, useUpdatePortfolio } from "../../../hooks/usePortfolioResponse";
 import { useInView } from "../../../hooks/useInView";
@@ -49,10 +49,6 @@ export default function EducationDynamic({
     }
   };
 
-  const onError = (formErrors: FieldErrors<EducationValues>) => {
-    handleErrors(formErrors);
-  };
-
   return (
     <>
       {flagForm && checkPortfolioEducation ? (
@@ -94,7 +90,7 @@ export default function EducationDynamic({
       ) : (
         <>
           {viewType.isOwner && (
-            <form onSubmit={handleSubmit(onSubmit, onError)} className="grid-form max-width">
+            <form onSubmit={handleSubmit(onSubmit)} className="grid-form max-width">
               <div className="form-group m-t">
                 <label htmlFor="yearsEducation">Years of education *</label>
                 <input type="text" id="yearsEducation" {...register("yearsEducation")} />

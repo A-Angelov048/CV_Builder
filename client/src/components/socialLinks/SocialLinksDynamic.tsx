@@ -1,7 +1,7 @@
 import styles from "./SocialLinks.module.css";
 
 import { Link } from "react-router-dom";
-import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 
 import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
 import { useHandleForm } from "../../hooks/useHandleForm";
@@ -44,10 +44,6 @@ export default function SocialLinksDynamic({
       changeState(false);
       handleErrors({ err: { message: error.response.data.message } });
     }
-  };
-
-  const onError = (formErrors: FieldErrors<SocialLinkValues>) => {
-    handleErrors(formErrors);
   };
 
   return (
@@ -99,7 +95,7 @@ export default function SocialLinksDynamic({
       ) : (
         <>
           {viewType.isOwner && (
-            <form onSubmit={handleSubmit(onSubmit, onError)} className="grid-form">
+            <form onSubmit={handleSubmit(onSubmit)} className="grid-form">
               <div className="form-group">
                 <label htmlFor="linkedin">Linkedin contact *</label>
                 <input type="text" id="linkedin" {...register("linkedin")} />

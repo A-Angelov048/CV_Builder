@@ -1,6 +1,6 @@
 import styles from "../Progress.module.css";
 
-import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 
 import { useFormErrorSnackbar } from "../../../hooks/useFormErrorSnackbar";
 import { useInView } from "../../../hooks/useInView";
@@ -49,10 +49,6 @@ export default function ExperienceDynamic({
     }
   };
 
-  const onError = (formErrors: FieldErrors<ExperienceValues>) => {
-    handleErrors(formErrors);
-  };
-
   return (
     <>
       {flagForm && checkPortfolioExperience ? (
@@ -94,7 +90,7 @@ export default function ExperienceDynamic({
       ) : (
         <>
           {viewType.isOwner && (
-            <form onSubmit={handleSubmit(onSubmit, onError)} className="grid-form max-width">
+            <form onSubmit={handleSubmit(onSubmit)} className="grid-form max-width">
               <div className="form-group m-t">
                 <label htmlFor="yearsExperience">Years experience *</label>
                 <input type="text" id="yearsExperience" {...register("yearsExperience")} />

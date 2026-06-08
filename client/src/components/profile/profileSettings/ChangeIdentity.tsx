@@ -1,6 +1,6 @@
 import style from "../Profile.module.css";
 
-import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 
 import { useAuth } from "../../../hooks/useAuth";
 import { useFormErrorSnackbar } from "../../../hooks/useFormErrorSnackbar";
@@ -39,16 +39,12 @@ export default function ChangeIdentity() {
     }
   };
 
-  const onError = (formErrors: FieldErrors<ChangeIdentityValues>) => {
-    handleErrors(formErrors);
-  };
-
   return (
     <section className={style["mono-section"]}>
       <div className={style["mono-section-header"]}>
         <h2 className={style["mono-section-title"]}>Identity Details</h2>
       </div>
-      <form onSubmit={handleSubmit(onSubmit, onError)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className={style["mono-form-group"]}>
           <label htmlFor="username" className={style["mono-label"]}>
             New Username

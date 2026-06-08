@@ -2,7 +2,7 @@ import styles from "./ContactMe.module.css";
 
 import { Link } from "react-router-dom";
 import { forwardRef } from "react";
-import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 
 import ErrorSnackbar from "../errorModal/ErrorSnackbar";
 import SuccessSnackbar from "../successModal/SuccessSnackbar";
@@ -40,16 +40,12 @@ export default forwardRef<HTMLDivElement>(function ContactMe(_, ref) {
     }
   };
 
-  const onError = (formErrors: FieldErrors<ContactValues>) => {
-    handleErrors(formErrors);
-  };
-
   return (
     <section ref={ref} className="color">
       <HeadingContainerStatic header={"CONTACT ME"} />
 
       <div className={styles["contact-container"]}>
-        <form onSubmit={handleSubmit(onSubmit, onError)} className={styles["contact-form"]}>
+        <form onSubmit={handleSubmit(onSubmit)} className={styles["contact-form"]}>
           <label htmlFor="firstName">First Name *</label>
           <input type="text" id="firstName" {...register("firstName")} />
 

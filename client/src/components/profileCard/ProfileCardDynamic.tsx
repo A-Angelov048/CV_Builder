@@ -1,6 +1,6 @@
 import styles from "./ProfileCard.module.css";
 
-import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 
 import { profileCardSchema, type ProfileCardValues } from "../../validation/formSchema";
 import { useHandleForm } from "../../hooks/useHandleForm";
@@ -52,10 +52,6 @@ export default function ProfileCardDynamic({
     }
   };
 
-  const onError = (formErrors: FieldErrors<ProfileCardValues>) => {
-    handleErrors(formErrors);
-  };
-
   return (
     <div className={styles["profile-card"]}>
       {flagForm && portfolio.about.name !== "" ? (
@@ -98,7 +94,7 @@ export default function ProfileCardDynamic({
       ) : (
         <>
           {viewType.isOwner && (
-            <form onSubmit={handleSubmit(onSubmit, onError)} className="grid-form">
+            <form onSubmit={handleSubmit(onSubmit)} className="grid-form">
               <div className="form-group">
                 <label htmlFor="name">Name *</label>
                 <input type="text" id="name" {...register("name")} />

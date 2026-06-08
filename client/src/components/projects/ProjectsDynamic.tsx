@@ -1,7 +1,7 @@
 import styles from "./Projects.module.css";
 
 import { Link } from "react-router-dom";
-import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 
 import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
 import { useDeletePortfolioInfo, useUpdatePortfolio } from "../../hooks/usePortfolioResponse";
@@ -40,10 +40,6 @@ export default function ProjectsDynamic({
       changeStatus(false);
       handleErrors({ err: { message: error.response.data.message } });
     }
-  };
-
-  const onError = (formErrors: FieldErrors<ProjectsValues>) => {
-    handleErrors(formErrors);
   };
 
   return (
@@ -91,7 +87,7 @@ export default function ProjectsDynamic({
               <p className={styles["optional-section"]}>
                 This section is optional and can be skipped!
               </p>
-              <form onSubmit={handleSubmit(onSubmit, onError)} className="grid-form max-width">
+              <form onSubmit={handleSubmit(onSubmit)} className="grid-form max-width">
                 <div className="form-group m-t">
                   <label htmlFor="nameProject">Name of the project *</label>
                   <input type="text" id="nameProject" {...register("nameProject")} />

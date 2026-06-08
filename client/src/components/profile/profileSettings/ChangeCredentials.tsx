@@ -1,6 +1,6 @@
 import style from "../Profile.module.css";
 
-import { useForm, type FieldErrors, type SubmitHandler } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 
 import { useFormErrorSnackbar } from "../../../hooks/useFormErrorSnackbar";
 import { useFormSuccessSnackbar } from "../../../hooks/useFormSuccessSnackbar";
@@ -32,16 +32,12 @@ export default function ChangeCredentials() {
     }
   };
 
-  const onError = (formErrors: FieldErrors<ChangePasswordValues>) => {
-    handleErrors(formErrors);
-  };
-
   return (
     <section className={style["mono-section"]}>
       <div className={style["mono-section-header"]}>
         <h2 className={style["mono-section-title"]}>Security Credentials</h2>
       </div>
-      <form onSubmit={handleSubmit(onSubmit, onError)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className={style["mono-form-group"]}>
           <label htmlFor="curPassword" className={style["mono-label"]}>
             Current Password
