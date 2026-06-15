@@ -97,7 +97,7 @@ export default function Login() {
               console.log("Token expired, resetting widget");
             }}
             options={{
-              action: "register-form",
+              action: "login-form",
               theme: "dark",
               size: "flexible",
               language: "en",
