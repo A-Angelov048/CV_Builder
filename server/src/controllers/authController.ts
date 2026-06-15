@@ -85,7 +85,7 @@ export async function forgotPassword(
     await handleForgottenPassword(email);
     res.json({ message: "If an account exists, a reset link has been sent." });
   } catch (err: any) {
-    res.status(400).json({ message: err.message });
+    res.status(200).json({ message: err.message });
   }
 }
 

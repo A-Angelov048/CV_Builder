@@ -2,7 +2,8 @@ import styles from "./guestPages.module.css";
 
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { Turnstile, TurnstileInstance } from "@marsidev/react-turnstile";
 
 import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
 import { useLoginUser } from "../../hooks/useAuthResponse";
@@ -13,13 +14,15 @@ import Spinner from "../../components/spinner/Spinner";
 import ErrorSnackbar from "../../components/errorModal/ErrorSnackbar";
 
 export default function Login() {
+  const turnstileRef = useRef<TurnstileInstance | null>(null);
   const navigate = useNavigate();
   const { state } = useLocation();
   const { authData, changeAuthState } = useAuth();
   const { register, handleSubmit } = useForm<LoginValues>();
 
-  const { open, messages, close, handleErrors, handleZodErrors } = useFormErrorSnackbar();
-  const { getUser, spinner } = useLoginUser();
+  const { open, messages, close, handleErrors, handleZodErrors, handleCustomError } =
+    useFormErrorSnackbar();
+  const { getUser, spinner, setCaptchaToken } = useLoginUser();
 
   useEffect(() => {
     if (state && state.message) {
@@ -32,6 +35,13 @@ export default function Login() {
   }, [state]);
 
   const onSubmit: SubmitHandler<LoginValues> = async (data) => {
+    if (turnstileRef.current?.isExpired()) {
+      handleCustomError("Verification expired. Please verify again.");
+      turnstileRef.current?.reset();
+      setCaptchaToken("");
+      return;
+    }
+
     const result = loginSchema.safeParse(data);
 
     if (!result.success) return handleZodErrors(result.error);
@@ -40,6 +50,8 @@ export default function Login() {
       await getUser(data);
     } catch (error: any) {
       handleErrors({ err: error.response.data });
+      turnstileRef.current?.reset();
+      setCaptchaToken("");
     }
   };
 
@@ -55,7 +67,7 @@ export default function Login() {
             <input type="text" id="email" {...register("email")} autoFocus />
           </div>
 
-          <div className="form-group">
+          <div className="form-group ">
             <label htmlFor="password">Type your password *</label>
             <input type="password" id="password" {...register("password")} />
           </div>
@@ -71,6 +83,26 @@ export default function Login() {
               Forgot Password?
             </button>
           </div>
+
+          <Turnstile
+            siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
+            ref={turnstileRef}
+            onSuccess={setCaptchaToken}
+            onError={(error) => {
+              setCaptchaToken("");
+              console.error("Turnstile error:", error);
+            }}
+            onExpire={() => {
+              setCaptchaToken("");
+              console.log("Token expired, resetting widget");
+            }}
+            options={{
+              action: "register-form",
+              theme: "dark",
+              size: "flexible",
+              language: "en",
+            }}
+          />
 
           <div className={styles.button}>
             <button type="submit" className="main-button">

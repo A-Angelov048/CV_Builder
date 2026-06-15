@@ -32,3 +32,16 @@ export interface JwtVerifyData {
   secret: Secret;
   options?: VerifyOptions;
 }
+
+export interface TurnstileResponse {
+  success: boolean;
+  "error-codes": string[];
+  challenge_ts?: string;
+  hostname?: string;
+  action?: string;
+  cdata?: string;
+  metadata?: {
+    interactive: boolean;
+  };
+  messages?: string[];
+}

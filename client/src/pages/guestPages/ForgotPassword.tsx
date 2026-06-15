@@ -1,8 +1,9 @@
 import styles from "./guestPages.module.css";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { Turnstile, TurnstileInstance } from "@marsidev/react-turnstile";
 
 import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
 import { useFormSuccessSnackbar } from "../../hooks/useFormSuccessSnackbar";
@@ -14,6 +15,9 @@ import ErrorSnackbar from "../../components/errorModal/ErrorSnackbar";
 import SuccessSnackbar from "../../components/successModal/SuccessSnackbar";
 
 export default function ForgotPassword() {
+  const turnstileRef = useRef<TurnstileInstance | null>(null);
+  const [captchaToken, setCaptchaToken] = useState("");
+
   const api = useAxiosPrivate();
   const navigate = useNavigate();
   const { state } = useLocation();
@@ -24,12 +28,24 @@ export default function ForgotPassword() {
 
   const [spinner, setSpinner] = useState(false);
 
-  const { register, handleSubmit } = useForm<ForgotPasswordValues>();
+  const { register, handleSubmit, reset } = useForm<ForgotPasswordValues>();
 
-  const { open, messages, close, handleZodErrors } = useFormErrorSnackbar();
+  const { open, messages, close, handleZodErrors, handleCustomError } = useFormErrorSnackbar();
   const { openSuccess, messagesSuccess, closeSuccess, handleSuccess } = useFormSuccessSnackbar();
 
   const onSubmit: SubmitHandler<ForgotPasswordValues> = async (data) => {
+    if (turnstileRef.current?.isExpired()) {
+      handleCustomError("Verification expired. Please verify again.");
+      turnstileRef.current?.reset();
+      setCaptchaToken("");
+      return;
+    }
+
+    if (!captchaToken) {
+      handleCustomError("Please verify first.");
+      return;
+    }
+
     const result = forgotPasswordSchema.safeParse(data);
 
     if (!result.success) return handleZodErrors(result.error);
@@ -37,15 +53,22 @@ export default function ForgotPassword() {
     setSpinner(true);
 
     try {
-      const result = await api.post("/auth/forgot-password", data);
+      const result = await api.post("/auth/forgot-password", {
+        ...data,
+        turnstileToken: captchaToken,
+      });
       handleSuccess(result.data.message);
     } catch (err: any) {
-      handleSuccess(err.response.data.message);
+      if (err.response.status !== 200) {
+        handleCustomError(err.response.data.message);
+      } else {
+        handleSuccess(err.response.data.message);
+      }
     } finally {
+      reset();
       setSpinner(false);
-      setTimeout(() => {
-        navigate("/", { replace: true });
-      }, 3000);
+      turnstileRef.current?.reset();
+      setCaptchaToken("");
     }
   };
 
@@ -56,10 +79,30 @@ export default function ForgotPassword() {
       </div>
       <div className={styles["wrapper-guest"]}>
         <form onSubmit={handleSubmit(onSubmit)} className="simple-form">
-          <div className="form-group">
+          <div className="form-group m-b">
             <label htmlFor="email">Type your email *</label>
             <input type="text" id="email" {...register("email")} autoFocus />
           </div>
+
+          <Turnstile
+            siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
+            ref={turnstileRef}
+            onSuccess={setCaptchaToken}
+            onError={(error) => {
+              setCaptchaToken("");
+              console.error("Turnstile error:", error);
+            }}
+            onExpire={() => {
+              setCaptchaToken("");
+              console.log("Token expired, resetting widget");
+            }}
+            options={{
+              action: "forgot-password-form",
+              theme: "dark",
+              size: "flexible",
+              language: "en",
+            }}
+          />
 
           <div className={styles.button}>
             <button type="submit" className="main-button">

@@ -1,5 +1,6 @@
 import express from "express";
 import { authMiddleware } from "../middleware/authMiddleware";
+import { verifyHuman } from "../middleware/verifyHuman";
 import {
   createPortfolioController,
   getMyPortfolioController,
@@ -23,7 +24,7 @@ const router = express.Router();
 router.get("/portfolio/me", authMiddleware, getMyPortfolioController);
 router.get("/portfolio/public/:username", getPublicPortfolioController);
 
-router.post("/portfolio/contact-me", sendContactEmailController);
+router.post("/portfolio/contact-me", verifyHuman, sendContactEmailController);
 router.post("/portfolio", authMiddleware, createPortfolioController);
 router.post("/portfolio/links", authMiddleware, createLinksController);
 

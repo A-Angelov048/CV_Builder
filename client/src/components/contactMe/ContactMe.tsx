@@ -1,8 +1,9 @@
 import styles from "./ContactMe.module.css";
 
 import { Link } from "react-router-dom";
-import { forwardRef } from "react";
+import { forwardRef, useRef, useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { Turnstile, TurnstileInstance } from "@marsidev/react-turnstile";
 
 import ErrorSnackbar from "../errorModal/ErrorSnackbar";
 import SuccessSnackbar from "../successModal/SuccessSnackbar";
@@ -15,14 +16,30 @@ import { useAxiosPrivate } from "../../hooks/useAxiosPrivate";
 import { useFormSuccessSnackbar } from "../../hooks/useFormSuccessSnackbar";
 
 export default forwardRef<HTMLDivElement>(function ContactMe(_, ref) {
+  const turnstileRef = useRef<TurnstileInstance | null>(null);
+  const [captchaToken, setCaptchaToken] = useState("");
+
   const api = useAxiosPrivate();
   const { portfolio, changeLoadingState } = usePortfolio();
-  const { open, messages, close, handleErrors, handleZodErrors } = useFormErrorSnackbar();
+  const { open, messages, close, handleErrors, handleZodErrors, handleCustomError } =
+    useFormErrorSnackbar();
   const { openSuccess, messagesSuccess, closeSuccess, handleSuccess } = useFormSuccessSnackbar();
 
   const { register, handleSubmit, reset } = useForm<ContactValues>();
 
   const onSubmit: SubmitHandler<ContactValues> = async (data) => {
+    if (turnstileRef.current?.isExpired()) {
+      handleCustomError("Verification expired. Please verify again.");
+      turnstileRef.current?.reset();
+      setCaptchaToken("");
+      return;
+    }
+
+    if (!captchaToken) {
+      handleCustomError("Please verify first.");
+      return;
+    }
+
     const result = contactSchema.safeParse(data);
 
     if (!result.success) return handleZodErrors(result.error);
@@ -30,13 +47,19 @@ export default forwardRef<HTMLDivElement>(function ContactMe(_, ref) {
     changeLoadingState(true);
 
     try {
-      await api.post("/portfolio/contact-me", { ...data, ownerId: portfolio.owner });
+      await api.post("/portfolio/contact-me", {
+        ...data,
+        ownerId: portfolio.owner,
+        turnstileToken: captchaToken,
+      });
       handleSuccess("Message sent successfully!");
     } catch (err: any) {
       handleErrors({ err: err.response.data });
     } finally {
       reset();
       changeLoadingState(false);
+      turnstileRef.current?.reset();
+      setCaptchaToken("");
     }
   };
 
@@ -57,6 +80,26 @@ export default forwardRef<HTMLDivElement>(function ContactMe(_, ref) {
 
           <label htmlFor="message">Type your message here... *</label>
           <textarea id="message" {...register("message")}></textarea>
+
+          <Turnstile
+            siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
+            ref={turnstileRef}
+            onSuccess={setCaptchaToken}
+            onError={(error) => {
+              setCaptchaToken("");
+              console.error("Turnstile error:", error);
+            }}
+            onExpire={() => {
+              setCaptchaToken("");
+              console.log("Token expired, resetting widget");
+            }}
+            options={{
+              action: "contact-form",
+              theme: "dark",
+              size: "flexible",
+              language: "en",
+            }}
+          />
 
           <button className="main-button" type="submit">
             Submit

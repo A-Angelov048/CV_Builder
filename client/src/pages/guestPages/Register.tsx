@@ -1,6 +1,8 @@
 import styles from "./guestPages.module.css";
+import { useRef } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { Turnstile, TurnstileInstance } from "@marsidev/react-turnstile";
 
 import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
 import { registerSchema, type RegisterValues } from "../../validation/formSchema";
@@ -10,12 +12,21 @@ import ErrorSnackbar from "../../components/errorModal/ErrorSnackbar";
 import Spinner from "../../components/spinner/Spinner";
 
 export default function Register() {
+  const turnstileRef = useRef<TurnstileInstance | null>(null);
   const { register, handleSubmit } = useForm<RegisterValues>();
 
-  const { open, messages, close, handleErrors, handleZodErrors } = useFormErrorSnackbar();
-  const { createUser, spinner } = useRegisterUser();
+  const { open, messages, close, handleErrors, handleZodErrors, handleCustomError } =
+    useFormErrorSnackbar();
+  const { createUser, spinner, setCaptchaToken } = useRegisterUser();
 
   const onSubmit: SubmitHandler<RegisterValues> = async (data) => {
+    if (turnstileRef.current?.isExpired()) {
+      handleCustomError("Verification expired. Please verify again.");
+      turnstileRef.current?.reset();
+      setCaptchaToken("");
+      return;
+    }
+
     const result = registerSchema.safeParse(data);
 
     if (!result.success) return handleZodErrors(result.error);
@@ -24,6 +35,8 @@ export default function Register() {
       await createUser(data);
     } catch (error: any) {
       handleErrors({ err: error.response.data });
+      turnstileRef.current?.reset();
+      setCaptchaToken("");
     }
   };
 
@@ -49,10 +62,30 @@ export default function Register() {
             <input type="password" id="password" {...register("password")} />
           </div>
 
-          <div className="form-group">
+          <div className="form-group m-b">
             <label htmlFor="rePassword">Confirm your password *</label>
             <input type="password" id="rePassword" {...register("rePassword")} />
           </div>
+
+          <Turnstile
+            siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
+            ref={turnstileRef}
+            onSuccess={setCaptchaToken}
+            onError={(error) => {
+              setCaptchaToken("");
+              console.error("Turnstile error:", error);
+            }}
+            onExpire={() => {
+              setCaptchaToken("");
+              console.log("Token expired, resetting widget");
+            }}
+            options={{
+              action: "register-form",
+              theme: "dark",
+              size: "flexible",
+              language: "en",
+            }}
+          />
 
           <div className={styles.button}>
             <button type="submit" className="main-button">

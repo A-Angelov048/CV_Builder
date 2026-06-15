@@ -12,17 +12,25 @@ import {
 export function useLoginUser() {
   const navigate = useNavigate();
   const [spinner, setSpinner] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState("");
 
   const api = useAxiosPrivate();
   const { changeAuthState } = useAuth();
 
   const getUser = async (data: LoginValues) => {
+    if (!captchaToken) {
+      throw new Error("Please verify first.");
+    }
+
     if (spinner) return;
 
     setSpinner(true);
 
     try {
-      const token: AccessTokenBE = await api.post("/auth/login", data);
+      const token: AccessTokenBE = await api.post("/auth/login", {
+        ...data,
+        turnstileToken: captchaToken,
+      });
 
       changeAuthState(token.data);
       localStorage.setItem("isLoggedIn", "true");
@@ -34,23 +42,31 @@ export function useLoginUser() {
     }
   };
 
-  return { getUser, spinner };
+  return { getUser, spinner, setCaptchaToken };
 }
 
 export function useRegisterUser() {
   const navigate = useNavigate();
   const [spinner, setSpinner] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState("");
 
   const api = useAxiosPrivate();
   const { changeAuthState } = useAuth();
 
   const createUser = async (data: RegisterValues) => {
+    if (!captchaToken) {
+      throw new Error("Please verify first.");
+    }
+
     if (spinner) return;
 
     setSpinner(true);
 
     try {
-      const token: AccessTokenBE = await api.post("/auth/register", data);
+      const token: AccessTokenBE = await api.post("/auth/register", {
+        ...data,
+        turnstileToken: captchaToken,
+      });
 
       changeAuthState(token.data);
       localStorage.setItem("isLoggedIn", "true");
@@ -62,7 +78,7 @@ export function useRegisterUser() {
     }
   };
 
-  return { createUser, spinner };
+  return { createUser, spinner, setCaptchaToken };
 }
 
 export function useChangeUserInfo() {
