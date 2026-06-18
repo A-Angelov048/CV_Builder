@@ -34,7 +34,11 @@ export default function Register() {
     try {
       await createUser(data);
     } catch (error: any) {
-      handleErrors({ err: error.response.data });
+      if (error.response) {
+        handleErrors({ err: error.response.data });
+      } else {
+        handleErrors({ err: error });
+      }
       turnstileRef.current?.reset();
       setCaptchaToken("");
     }

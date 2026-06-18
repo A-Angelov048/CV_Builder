@@ -17,17 +17,28 @@ export const createPortfolio = async (userId: string, body: Portfolio) => {
     return portfolioDB;
   }
 
-  if (
-    !!exists?.about.imageBackground?.public_id &&
-    !!exists?.about.imageProfile?.public_id
-  ) {
-    const oldImageProfileId = exists.about.imageProfile.public_id;
-    const oldImageBackgroundId = exists.about.imageBackground.public_id;
+  try {
+    const portfolio = await updatePortfolioSection(userId, "about", body.about);
 
-    await imageDelete(oldImageProfileId, oldImageBackgroundId, body);
+    if (
+      !!exists?.about.imageBackground?.public_id &&
+      !!exists?.about.imageProfile?.public_id
+    ) {
+      const oldImageProfileId = exists.about.imageProfile.public_id;
+      const oldImageBackgroundId = exists.about.imageBackground.public_id;
+
+      await imageDelete(oldImageProfileId, oldImageBackgroundId, body);
+    }
+
+    return portfolio;
+  } catch (err: any) {
+    const imageProfileId = body.about.imageProfile.public_id;
+    const imageBackgroundId = body.about.imageBackground.public_id;
+    if (imageProfileId && imageBackgroundId) {
+      imageDelete(imageProfileId, imageBackgroundId);
+    }
+    throw err;
   }
-
-  return updatePortfolioSection(userId, "about", body.about);
 };
 
 export const getMyPortfolio = async (userId: string) => {
@@ -170,10 +181,10 @@ export const sendContactEmail = async (
   email: string,
   message: string,
 ) => {
-  const findUser = await User.findById(ownerId);
+  const findPortfolio = await PortfolioModel.findOne({ owner: ownerId });
 
-  if (!findUser) {
-    throw new Error("User not found");
+  if (!findPortfolio) {
+    throw new Error("Portfolio not found");
   }
 
   const transporter = nodemailer.createTransport({
@@ -186,9 +197,9 @@ export const sendContactEmail = async (
 
   const mailOptions = {
     from: `"${firstName} ${lastName}" <${email}>`,
-    to: findUser.email,
+    to: findPortfolio.about.email,
     subject: `New Contact Message from ${firstName} ${lastName}`,
-    replyTo: findUser.email,
+    replyTo: findPortfolio.about.email,
     html: `
       <h3>New Message</h3>
       <p><strong>Name:</strong> ${firstName} ${lastName}</p>

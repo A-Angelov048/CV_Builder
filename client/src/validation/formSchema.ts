@@ -236,7 +236,7 @@ export const changeIdentitySchema = z.object({
     .string()
     .trim()
     .min(1, "Username is required.")
-    .min(5, "Username must be at least 5 characters long."),
+    .min(4, "Username must be at least 4 characters long."),
   email: z
     .string()
     .trim()

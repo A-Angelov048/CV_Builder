@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAxiosPrivate } from "./useAxiosPrivate";
 import { AccessTokenBE, useAuth } from "./useAuth";
 import {
@@ -82,10 +82,12 @@ export function useRegisterUser() {
 }
 
 export function useChangeUserInfo() {
+  const { pathname } = useLocation();
+
   const [spinner, setSpinner] = useState(false);
 
   const api = useAxiosPrivate();
-  const { changeAuthState } = useAuth();
+  const { authData, changeAuthState } = useAuth();
 
   const changeIdentity = async (data: ChangeIdentityValues) => {
     if (spinner) return;
@@ -96,7 +98,9 @@ export function useChangeUserInfo() {
       const token: AccessTokenBE = await api.put("/auth/change-identity", data);
       changeAuthState(token.data);
       if (token.data.username && token.data.username !== "") {
-        window.history.pushState(null, "", `/${token.data.username}`);
+        if (pathname === "/" + authData.username) {
+          window.history.pushState(null, "", `/${token.data.username}`);
+        }
       }
     } catch (error: any) {
       throw error;

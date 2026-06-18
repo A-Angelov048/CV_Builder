@@ -30,7 +30,8 @@ export default function ForgotPassword() {
 
   const { register, handleSubmit, reset } = useForm<ForgotPasswordValues>();
 
-  const { open, messages, close, handleZodErrors, handleCustomError } = useFormErrorSnackbar();
+  const { open, messages, close, handleErrors, handleZodErrors, handleCustomError } =
+    useFormErrorSnackbar();
   const { openSuccess, messagesSuccess, closeSuccess, handleSuccess } = useFormSuccessSnackbar();
 
   const onSubmit: SubmitHandler<ForgotPasswordValues> = async (data) => {
@@ -60,7 +61,7 @@ export default function ForgotPassword() {
       handleSuccess(result.data.message);
     } catch (err: any) {
       if (err.response.status !== 200) {
-        handleCustomError(err.response.data.message);
+        handleErrors({ err: err.response.data });
       } else {
         handleSuccess(err.response.data.message);
       }

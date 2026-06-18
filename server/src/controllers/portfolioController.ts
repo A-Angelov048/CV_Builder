@@ -18,12 +18,11 @@ export async function createPortfolioController(req: Request, res: Response) {
     const portfolio = await createPortfolio(userId, body);
     res.status(201).json(portfolio);
   } catch (err: any) {
-    const imageProfileId = body.about.imageProfile.public_id;
-    const imageBackgroundId = body.about.imageBackground.public_id;
-    if (imageProfileId && imageBackgroundId) {
-      imageDelete(imageProfileId, imageBackgroundId);
+    if (err.code === 11000) {
+      res.status(400).json({ message: "Email is taken from another user." });
+    } else {
+      res.status(400).json({ message: err.message });
     }
-    res.status(400).json({ message: "Failed to create portfolio" });
   }
 }
 
@@ -254,7 +253,6 @@ export async function sendContactEmailController(req: Request, res: Response) {
 
     res.json({ message: "Email sent successfully" });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Failed to send email" });
+    res.status(500).json({ message: "Failed to send email, try again later." });
   }
 }

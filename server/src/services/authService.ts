@@ -120,36 +120,35 @@ export const changeUserIdentity = async (
   newUsername: string,
   newEmail: string,
   userId: string,
-  curToken: string,
 ) => {
-  const user = await User.findByIdAndUpdate(
-    userId,
-    { $set: { username: newUsername, email: newEmail } },
-    { new: true, runValidators: true },
-  );
+  const user = await User.findById(userId);
 
   if (!user || user._id.toString() !== userId) {
     throw new Error("User not found.");
   }
 
+  if (newUsername === user.username) {
+    if (newEmail === user.email) {
+      throw new Error(
+        "The new identity details cannot be the same as the current ones.",
+      );
+    }
+  }
+
+  user.username = newUsername;
+  user.email = newEmail;
+
   const accessToken = await createAccessToken(
     user._id.toString(),
     user.username,
   );
-  const refreshToken = await createRefreshToken(
-    user._id.toString(),
-    user.username,
-  );
 
-  await logoutService(curToken);
-  user.refreshToken.push(refreshToken);
   await user.save();
 
   return {
     userId: user._id.toString(),
     username: user.username,
     accessToken,
-    refreshToken,
   };
 };
 
@@ -157,7 +156,6 @@ export const changeUserPassword = async (
   curPassword: string,
   newPassword: string,
   userId: string,
-  curToken: string,
 ) => {
   const user = await User.findById(userId);
 
@@ -177,13 +175,7 @@ export const changeUserPassword = async (
     user._id.toString(),
     user.username,
   );
-  const refreshToken = await createRefreshToken(
-    user._id.toString(),
-    user.username,
-  );
 
-  await logoutService(curToken);
-  user.refreshToken.push(refreshToken);
   user.password = hashed;
   await user.save();
 
@@ -191,7 +183,6 @@ export const changeUserPassword = async (
     userId: user._id.toString(),
     username: user.username,
     accessToken,
-    refreshToken,
   };
 };
 

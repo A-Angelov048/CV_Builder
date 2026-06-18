@@ -2,7 +2,6 @@ import style from "../Profile.module.css";
 
 import { useForm, type SubmitHandler } from "react-hook-form";
 
-import { useAuth } from "../../../hooks/useAuth";
 import { useFormErrorSnackbar } from "../../../hooks/useFormErrorSnackbar";
 import { useFormSuccessSnackbar } from "../../../hooks/useFormSuccessSnackbar";
 import { useChangeUserInfo } from "../../../hooks/useAuthResponse";
@@ -13,19 +12,13 @@ import SuccessSnackbar from "../../successModal/SuccessSnackbar";
 import Spinner from "../../spinner/Spinner";
 
 export default function ChangeIdentity() {
-  const { authData } = useAuth();
-  const { open, messages, close, handleErrors, handleCustomError, handleZodErrors } =
-    useFormErrorSnackbar();
+  const { open, messages, close, handleErrors, handleZodErrors } = useFormErrorSnackbar();
   const { openSuccess, messagesSuccess, closeSuccess, handleSuccess } = useFormSuccessSnackbar();
   const { changeIdentity, spinner } = useChangeUserInfo();
 
   const { register, handleSubmit, reset } = useForm<ChangeIdentityValues>();
 
   const onSubmit: SubmitHandler<ChangeIdentityValues> = async (data) => {
-    if (data.username === authData.username) {
-      return handleCustomError("New username cannot be the same as the current one.");
-    }
-
     const result = changeIdentitySchema.safeParse(data);
 
     if (!result.success) return handleZodErrors(result.error);

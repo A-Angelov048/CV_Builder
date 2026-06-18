@@ -133,25 +133,15 @@ export const refresh = async (req: Request, res: Response) => {
 
 export const changeIdentity = async (req: Request, res: Response) => {
   const reqUserId = req.userId;
-  const reqUsername = req.username;
-  const token: string = req.cookies.refreshToken;
 
   try {
     const body = req.body;
 
-    if (reqUsername === body.username) {
-      throw new Error("New username cannot be the same as the current one.");
-    }
-
-    const { userId, username, accessToken, refreshToken } =
-      await changeUserIdentity(body.username, body.email, reqUserId, token);
-
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    const { userId, username, accessToken } = await changeUserIdentity(
+      body.username,
+      body.email,
+      reqUserId,
+    );
 
     res.json({
       userId,
@@ -171,7 +161,6 @@ export const changeIdentity = async (req: Request, res: Response) => {
 
 export const changePassword = async (req: Request, res: Response) => {
   const reqUserId = req.userId;
-  const token: string = req.cookies.refreshToken;
 
   try {
     const body = req.body;
@@ -180,20 +169,11 @@ export const changePassword = async (req: Request, res: Response) => {
       throw new Error("New password cannot be the same as the current one.");
     }
 
-    const { userId, username, accessToken, refreshToken } =
-      await changeUserPassword(
-        body.curPassword,
-        body.newPassword,
-        reqUserId,
-        token,
-      );
-
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    const { userId, username, accessToken } = await changeUserPassword(
+      body.curPassword,
+      body.newPassword,
+      reqUserId,
+    );
 
     res.json({
       userId,
