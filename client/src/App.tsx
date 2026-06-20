@@ -4,6 +4,7 @@ import { Section } from "./types/generalTypes";
 import { useScroll } from "./hooks/useScroll";
 import { AuthProvider } from "./context/authContext";
 import { PortfolioProvider } from "./context/portfolioContext";
+import { ProfileToggleProvider } from "./context/toggleProfileContext";
 
 import ScrollToTop from "./components/scrollToTop/ScrollToTop";
 import Header from "./components/header/Header";
@@ -30,7 +31,9 @@ export default function App() {
   return (
     <AuthProvider>
       <PortfolioProvider>
-        <Header scrollFunc={scrollToSection} scrollUp={scrollToUp} />
+        <ProfileToggleProvider>
+          <Header scrollFunc={scrollToSection} scrollUp={scrollToUp} />
+        </ProfileToggleProvider>
         <ScrollToTop scrollUp={scrollToUp}>
           <Routes>
             <Route path="/" element={<HomeCv sectionRefs={sectionRefs} />} />

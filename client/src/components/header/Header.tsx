@@ -1,10 +1,11 @@
 import styles from "./Header.module.css";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
 import { useAuth } from "../../hooks/useAuth";
 import { useLogoutUser } from "../../hooks/useAuthResponse";
+import { useProfileToggle } from "../../hooks/useProfileToggle";
 import { HeaderProps } from "../../types/componentsPropsTypes";
 import { Section } from "../../types/generalTypes";
 
@@ -16,7 +17,7 @@ export default function Header({ scrollFunc, scrollUp }: HeaderProps) {
   const { logoutUser, spinner } = useLogoutUser();
 
   const checkboxRef = useRef<HTMLInputElement | null>(null);
-  const [flagProfile, setFlagProfile] = useState(false);
+  const { profileToggle, changePRFToggleState } = useProfileToggle();
 
   const handleScroll = (ref: Section) => {
     scrollFunc(ref);
@@ -26,13 +27,11 @@ export default function Header({ scrollFunc, scrollUp }: HeaderProps) {
     }
   };
 
-  const toggleProfile = () => {
-    setFlagProfile((prev) => !prev);
-
+  useEffect(() => {
     if (checkboxRef.current?.checked) {
       checkboxRef.current.checked = false;
     }
-  };
+  }, [profileToggle]);
 
   return (
     <header className={styles.header}>
@@ -76,7 +75,7 @@ export default function Header({ scrollFunc, scrollUp }: HeaderProps) {
               <span
                 onClick={() => {
                   scrollUp();
-                  setFlagProfile((prev) => !prev);
+                  changePRFToggleState();
                 }}
               >
                 Profile
@@ -85,7 +84,7 @@ export default function Header({ scrollFunc, scrollUp }: HeaderProps) {
           )}
         </ul>
       </nav>
-      {flagProfile && <Profile toggleProfile={toggleProfile} logoutUser={logoutUser} />}
+      {profileToggle && <Profile logoutUser={logoutUser} />}
       {spinner && <Spinner />}
     </header>
   );

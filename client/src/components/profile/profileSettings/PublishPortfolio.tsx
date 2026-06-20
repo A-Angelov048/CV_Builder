@@ -4,6 +4,7 @@ import { useAxiosPrivate } from "../../../hooks/useAxiosPrivate";
 import { useFormErrorSnackbar } from "../../../hooks/useFormErrorSnackbar";
 import { useFormSuccessSnackbar } from "../../../hooks/useFormSuccessSnackbar";
 import { usePortfolio } from "../../../hooks/usePortfolio";
+import { useProfileToggle } from "../../../hooks/useProfileToggle";
 import isPortfolioComplete from "../../../utils/validatePortfolioPublish";
 
 import ErrorSnackbar from "../../errorModal/ErrorSnackbar";
@@ -11,6 +12,7 @@ import SuccessSnackbar from "../../successModal/SuccessSnackbar";
 
 export default function PublishPortfolio() {
   const api = useAxiosPrivate();
+  const { changePRFToggleState } = useProfileToggle();
   const { portfolio, changePortfolioState, changeLoadingState } = usePortfolio();
   const isComplete = isPortfolioComplete(portfolio);
 
@@ -34,7 +36,12 @@ export default function PublishPortfolio() {
 
       handleSuccess(`The portfolio is successfully ${method}ed!`);
     } catch (error: any) {
-      handleCustomError(`Error occurred while ${method}ing the portfolio try again later.`);
+      if (error.response.status === 403) {
+        changePRFToggleState();
+        console.error(`Error occurred while ${method}ing the portfolio try again later.`);
+      } else {
+        handleCustomError(`Error occurred while ${method}ing the portfolio try again later.`);
+      }
     } finally {
       changeLoadingState(false);
     }

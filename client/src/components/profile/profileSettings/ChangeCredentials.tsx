@@ -5,6 +5,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { useFormErrorSnackbar } from "../../../hooks/useFormErrorSnackbar";
 import { useFormSuccessSnackbar } from "../../../hooks/useFormSuccessSnackbar";
 import { useChangeUserInfo } from "../../../hooks/useAuthResponse";
+import { useProfileToggle } from "../../../hooks/useProfileToggle";
 import { changePasswordSchema, type ChangePasswordValues } from "../../../validation/formSchema";
 
 import ErrorSnackbar from "../../errorModal/ErrorSnackbar";
@@ -15,6 +16,7 @@ export default function ChangeCredentials() {
   const { open, messages, close, handleErrors, handleZodErrors } = useFormErrorSnackbar();
   const { openSuccess, messagesSuccess, closeSuccess, handleSuccess } = useFormSuccessSnackbar();
   const { changeCredentials, spinner } = useChangeUserInfo();
+  const { changePRFToggleState } = useProfileToggle();
 
   const { register, handleSubmit, reset } = useForm<ChangePasswordValues>();
 
@@ -28,7 +30,12 @@ export default function ChangeCredentials() {
       handleSuccess("Password updated successfully!");
       reset();
     } catch (error: any) {
-      handleErrors({ err: error.response.data });
+      if (error.response.status === 403) {
+        changePRFToggleState();
+        console.error(error.response.data.message);
+      } else {
+        handleErrors({ err: error.response.data });
+      }
     }
   };
 

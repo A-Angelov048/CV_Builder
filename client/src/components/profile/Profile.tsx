@@ -2,15 +2,12 @@ import style from "./Profile.module.css";
 
 import { useEffect } from "react";
 
+import { useProfileToggle } from "../../hooks/useProfileToggle";
 import ProfileSettings from "./profileSettings/ProfileSettings";
 
-export default function Profile({
-  toggleProfile,
-  logoutUser,
-}: {
-  toggleProfile: () => void;
-  logoutUser: () => void;
-}) {
+export default function Profile({ logoutUser }: { logoutUser: () => void }) {
+  const { changePRFToggleState } = useProfileToggle();
+
   useEffect(() => {
     const handleInteraction = (e: Event) => {
       const target = e.target as HTMLElement;
@@ -36,7 +33,7 @@ export default function Profile({
   }, []);
 
   return (
-    <div onClick={() => toggleProfile()} className={style["mono-modal-overlay"]}>
+    <div onClick={() => changePRFToggleState()} className={style["mono-modal-overlay"]}>
       <div onClick={(e) => e.stopPropagation()} className={style["mono-modal-container"]}>
         <aside className={style["mono-sidebar"]}>
           <div className={style["mono-sidebar-menu"]}>
@@ -44,7 +41,7 @@ export default function Profile({
               <button
                 className={style["mono-icon-btn"]}
                 style={{ marginLeft: "-0.5rem" }}
-                onClick={() => toggleProfile()}
+                onClick={() => changePRFToggleState()}
               >
                 <i className="bx bx-x icon"></i>
               </button>
@@ -62,7 +59,7 @@ export default function Profile({
             <button
               onClick={() => {
                 logoutUser();
-                toggleProfile();
+                changePRFToggleState();
               }}
               className={style["mono-logout-btn"]}
             >
