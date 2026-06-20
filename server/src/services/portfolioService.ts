@@ -188,24 +188,12 @@ export const sendContactEmail = async (
   }
 
   const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
+    service: "gmail",
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
     },
   });
-
-  console.log("EMAIL_USER exists:", !!process.env.EMAIL_USER);
-  console.log("EMAIL_PASS exists:", !!process.env.EMAIL_PASS);
-
-  try {
-    await transporter.verify();
-    console.log("SMTP verified");
-  } catch (error) {
-    console.error("SMTP verify failed:", error);
-  }
 
   const mailOptions = {
     from: `"${firstName} ${lastName}" <${email}>`,
