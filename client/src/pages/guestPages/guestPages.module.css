@@ -3,7 +3,7 @@
 }
 
 .wrapper-guest {
-  max-width: 540px;
+  max-width: 520px;
   background-color: #f1f1f1;
   border: 1px solid #333;
   border-radius: 10px;
@@ -58,5 +58,20 @@
 @media (max-width: 768px) {
   .wrapper-guest {
     padding: 20px 20px;
+  }
+}
+
+@media (max-width: 360px) {
+  .wrapper-guest {
+    padding: 15px 15px;
+  }
+}
+
+@media (max-width: 350px) {
+  .wrapper-guest {
+    padding: 10px 5px;
+  }
+  .guest-page {
+    margin: 60px 5px 0px;
   }
 }

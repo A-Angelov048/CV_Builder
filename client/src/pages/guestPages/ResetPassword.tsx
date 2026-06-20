@@ -74,7 +74,7 @@ export default function ResetPassword() {
         <h2 className="title">RESET PASSWORD</h2>
       </div>
       <div className={styles["wrapper-guest"]}>
-        <form onSubmit={handleSubmit(onSubmit)} className="simple-form">
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="form-group">
             <label htmlFor="newPassword">New Password</label>
             <input id="newPassword" type="password" {...register("newPassword")} />

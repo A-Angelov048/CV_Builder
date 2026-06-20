@@ -65,7 +65,7 @@ export default function Login() {
         <h2 className="title">LOGIN</h2>
       </div>
       <div className={styles["wrapper-guest"]}>
-        <form onSubmit={handleSubmit(onSubmit)} className="simple-form">
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="form-group">
             <label htmlFor="email">Type your email *</label>
             <input type="text" id="email" {...register("email")} autoFocus />

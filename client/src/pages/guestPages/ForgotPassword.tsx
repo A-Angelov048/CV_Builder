@@ -79,7 +79,7 @@ export default function ForgotPassword() {
         <h2 className="title">FORGOT PASSWORD</h2>
       </div>
       <div className={styles["wrapper-guest"]}>
-        <form onSubmit={handleSubmit(onSubmit)} className="simple-form">
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="form-group m-b">
             <label htmlFor="email">Type your email *</label>
             <input type="text" id="email" {...register("email")} autoFocus />

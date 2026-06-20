@@ -50,7 +50,7 @@ export default function Register() {
         <h2 className="title">REGISTER</h2>
       </div>
       <div className={styles["wrapper-guest"]}>
-        <form onSubmit={handleSubmit(onSubmit)} className="simple-form">
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="form-group">
             <label htmlFor="username">Type your username *</label>
             <input id="username" type="text" {...register("username")} autoFocus />
