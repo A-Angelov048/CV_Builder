@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
-import nodemailer from "nodemailer";
 import jwt from "../utils/jwt";
 
+import { Resend } from "resend";
 import { User } from "../models/user";
 import { PortfolioModel } from "../models/portfolio";
 import { jwtData } from "../types/mainTypes";
@@ -198,27 +198,19 @@ export const handleForgottenPassword = async (email: string) => {
   user.passwordToken = resetPasswordToken;
   await user.save();
 
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
+  const resend = new Resend(process.env.RESEND_API_KEY);
 
-  const mailOptions = {
+  resend.emails.send({
+    from: "CV-Builder <noreply@cv-builder.xyz>",
     to: user.email,
     subject: `Password Reset Request`,
-    replyTo: user.email,
     html: `
         <h3>Password Reset Request</h3>
         <p>If you have not requested a password reset, please ignore this email.</p>
         <p>You have requested to reset your password. Please click the link below to proceed:</p>
         <a href="${process.env.CLIENT_URL}/reset-password/${user.passwordToken}">Reset Password</a>
       `,
-  };
-
-  transporter.sendMail(mailOptions);
+  });
 };
 
 export const handleResetPassword = async (

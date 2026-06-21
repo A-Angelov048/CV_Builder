@@ -1,8 +1,8 @@
 import { PortfolioModel } from "../models/portfolio";
 import { User } from "../models/user";
 import { Portfolio, PortfolioKey } from "../types/portfolioTypes";
+import { Resend } from "resend";
 import imageDelete from "../utils/cloudinaryImageDelete";
-import nodemailer from "nodemailer";
 
 export const createPortfolio = async (userId: string, body: Portfolio) => {
   const exists = await PortfolioModel.findOne({ owner: userId });
@@ -187,19 +187,13 @@ export const sendContactEmail = async (
     throw new Error("Portfolio not found");
   }
 
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
+  const resend = new Resend(process.env.RESEND_API_KEY);
 
-  const mailOptions = {
-    from: `"${firstName} ${lastName}" <${email}>`,
+  await resend.emails.send({
+    from: "CV-Builder <noreply@cv-builder.xyz>",
     to: findPortfolio.about.email,
     subject: `New Contact Message from ${firstName} ${lastName}`,
-    replyTo: findPortfolio.about.email,
+    replyTo: `"${firstName} ${lastName}" <${email}>`,
     html: `
       <h3>New Message</h3>
       <p><strong>Name:</strong> ${firstName} ${lastName}</p>
@@ -207,7 +201,5 @@ export const sendContactEmail = async (
       <p><strong>Message:</strong></p>
       <p>${message}</p>
     `,
-  };
-
-  transporter.sendMail(mailOptions);
+  });
 };
