@@ -29,9 +29,13 @@ const UserSchema = new Schema<IUser>(
       type: [String],
       default: [],
     },
-    passwordToken: {
+    verificationToken: {
       type: String,
       default: "",
+    },
+    isEmailVerified: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true },

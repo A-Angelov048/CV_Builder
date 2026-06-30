@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAxiosPrivate } from "./useAxiosPrivate";
 import { AccessTokenBE, useAuth } from "./useAuth";
@@ -51,7 +51,6 @@ export function useRegisterUser() {
   const [captchaToken, setCaptchaToken] = useState("");
 
   const api = useAxiosPrivate();
-  const { changeAuthState } = useAuth();
 
   const createUser = async (data: RegisterValues) => {
     if (!captchaToken) {
@@ -63,14 +62,15 @@ export function useRegisterUser() {
     setSpinner(true);
 
     try {
-      const token: AccessTokenBE = await api.post("/auth/register", {
+      const response = await api.post("/auth/register", {
         ...data,
         turnstileToken: captchaToken,
       });
 
-      changeAuthState(token.data);
-      localStorage.setItem("isLoggedIn", "true");
-      navigate(`/${token.data.username}`, { replace: true });
+      navigate("/verify-email-notice", {
+        state: { email: response.data.email, isFromRegister: false },
+        replace: true,
+      });
     } catch (error: any) {
       throw error;
     } finally {
@@ -156,4 +156,36 @@ export function useLogoutUser() {
   };
 
   return { logoutUser, spinner };
+}
+
+export function useVerifiedEmail(token: string | undefined) {
+  const navigate = useNavigate();
+  const [spinner, setSpinner] = useState(false);
+
+  const api = useAxiosPrivate();
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const fetchVerifiedEmail = async () => {
+      if (spinner) return;
+
+      setSpinner(true);
+
+      try {
+        await api.get(`/auth/verify-email/${token}`, {
+          signal: controller.signal,
+        });
+      } catch (err: any) {
+        console.error(err.response.data.message);
+        navigate("/not-found", { replace: true });
+      } finally {
+        setSpinner(false);
+      }
+    };
+
+    fetchVerifiedEmail();
+  }, []);
+
+  return { spinner };
 }

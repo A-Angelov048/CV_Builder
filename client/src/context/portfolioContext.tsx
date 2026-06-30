@@ -108,7 +108,14 @@ export function PortfolioProvider({ children }: ProfileProviderProps) {
 
   const changePortfolioState = useCallback((state: Portfolio) => {
     setPortfolio((oldState) => {
-      return { ...oldState, ...state };
+      return {
+        ...oldState,
+        ...state,
+        about: {
+          ...oldState.about,
+          ...state.about,
+        },
+      };
     });
   }, []);
 

@@ -54,7 +54,7 @@ export default function ProfileCardDynamic({
 
   return (
     <div className={styles["profile-card"]}>
-      {flagForm && portfolio.about.name !== "" ? (
+      {flagForm && portfolio.about.name !== "" && portfolio.about.name !== undefined ? (
         <>
           <div className={styles["profile-left"]}>
             <img src={portfolio.about.imageProfile.image} alt="Profile Picture" />

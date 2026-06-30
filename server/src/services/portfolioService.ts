@@ -97,7 +97,7 @@ export const updatePortfolioSection = async <T>(
   const portfolio = await PortfolioModel.findOneAndUpdate(
     { owner: userId },
     { [operation]: { [section]: body } },
-    { new: true, runValidators: true },
+    { returnDocument: "after", runValidators: true },
   ).select(section === "about" ? "about owner isPublished" : section);
 
   if (!portfolio) {
@@ -125,7 +125,7 @@ export const togglePublish = async (userId: string, publish: boolean) => {
   const portfolio = await PortfolioModel.findOneAndUpdate(
     { owner: userId },
     { isPublished: publish },
-    { new: true },
+    { returnDocument: "after" },
   ).select("isPublished");
 
   if (!portfolio) {

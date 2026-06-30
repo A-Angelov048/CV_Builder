@@ -10,11 +10,13 @@ import {
   registerUser,
   forgotPassword,
   resetPassword,
+  verifyEmail,
 } from "../controllers/authController";
 
 const router = express.Router();
 
 router.get("/auth/refresh", refresh);
+router.get("/auth/verify-email/:token", verifyEmail);
 
 router.post("/auth/register", verifyHuman, registerUser);
 router.post("/auth/login", verifyHuman, login);

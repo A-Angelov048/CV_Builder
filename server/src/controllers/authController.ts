@@ -8,26 +8,17 @@ import {
   refreshService,
   handleForgottenPassword,
   handleResetPassword,
+  handleEmailVerification,
 } from "../services/authService";
 import { IUser } from "../types/userTypes";
 
 export async function registerUser(req: Request<{}, {}, IUser>, res: Response) {
   try {
     const body = req.body;
-    const { userId, username, accessToken, refreshToken } =
-      await createUser(body);
-
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    const { email } = await createUser(body);
 
     res.json({
-      userId,
-      username,
-      accessToken,
+      email,
     });
   } catch (err: any) {
     res.status(400).json({ message: err.message });
@@ -127,6 +118,22 @@ export const refresh = async (req: Request, res: Response) => {
       sameSite: "none",
     });
 
+    res.status(401).json({ message: err.message });
+  }
+};
+
+export const verifyEmail = async (req: Request, res: Response) => {
+  const token = req.params.token;
+
+  if (!token)
+    return res.status(401).json({ message: "Required a verified token" });
+
+  try {
+    await handleEmailVerification(token);
+    res.json({
+      message: "Email is verified successfully!",
+    });
+  } catch (err: any) {
     res.status(401).json({ message: err.message });
   }
 };

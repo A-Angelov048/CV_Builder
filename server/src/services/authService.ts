@@ -8,49 +8,57 @@ import { jwtData } from "../types/mainTypes";
 import { IUser } from "../types/userTypes";
 
 export const createUser = async (body: IUser) => {
-  const [username, email] = await Promise.all([
+  const [usernameProfile, emailProfile, emailPortfolio] = await Promise.all([
     User.findOne({ username: body.username }),
     User.findOne({ email: body.email }),
+    PortfolioModel.findOne({ "about.email": body.email }),
   ]);
 
-  if (!!username) {
+  if (!!usernameProfile?.username) {
     throw new Error("Username already exists!");
   }
 
-  if (!!email) {
+  if (!!emailProfile?.email || !!emailPortfolio?.about.email) {
     throw new Error("Email already exists!");
   }
+
   const hashed = await bcrypt.hash(body.password, 12);
+
   const createdUser = await User.create({
     username: body.username,
     email: body.email,
     password: hashed,
   });
 
-  const accessToken = await createAccessToken(
-    createdUser._id.toString(),
-    createdUser.username,
-  );
-  const refreshToken = await createRefreshToken(
-    createdUser._id.toString(),
-    createdUser.username,
-  );
+  await PortfolioModel.create({
+    owner: createdUser._id,
+    about: {
+      email: body.email,
+    },
+  });
 
-  createdUser.refreshToken.push(refreshToken);
+  const token = await createVerifyToken(createdUser.email);
 
-  Promise.all([
-    await createdUser.save(),
-    await PortfolioModel.create({
-      owner: createdUser._id,
-      isPublished: false,
-    }),
-  ]);
+  createdUser.verificationToken = token;
+  await createdUser.save();
+
+  const resend = new Resend(process.env.RESEND_API_KEY);
+
+  await resend.emails.send({
+    from: "CV-Builder <noreply@cv-builder.xyz>",
+    to: createdUser.email,
+    subject: `Welcome to CV-Builder!`,
+    html: `
+        <h3>Please verify your email address</h3>
+        <p>Thanks for registering for an account on CV-Builder! Before we get started, we just need
+        to confirm that this is you. Click below to verify your email address</p>
+        <a href="${process.env.CLIENT_URL}/verified-email/${createdUser.verificationToken}">Verify Email</a>
+        <p>If you have any problems with the verification of the email. Contact the support at email cvbuilder2025@gmail.com</p>
+      `,
+  });
 
   return {
-    userId: createdUser._id.toString(),
-    username: createdUser.username,
-    accessToken,
-    refreshToken,
+    email: createdUser.email,
   };
 };
 
@@ -59,6 +67,10 @@ export const getUser = async (email: string, password: string) => {
 
   if (!user) {
     throw new Error("Email or Password invalid.");
+  }
+
+  if (!user.isEmailVerified) {
+    throw new Error("Please verify your email before logging in.");
   }
 
   const validatePassword = await bcrypt.compare(password, user.password);
@@ -193,14 +205,14 @@ export const handleForgottenPassword = async (email: string) => {
     throw new Error("If an account exists, a reset link has been sent.");
   }
 
-  const resetPasswordToken = await createPasswordResetToken(user.email);
+  const token = await createVerifyToken(user.email);
 
-  user.passwordToken = resetPasswordToken;
+  user.verificationToken = token;
   await user.save();
 
   const resend = new Resend(process.env.RESEND_API_KEY);
 
-  resend.emails.send({
+  await resend.emails.send({
     from: "CV-Builder <noreply@cv-builder.xyz>",
     to: user.email,
     subject: `Password Reset Request`,
@@ -208,7 +220,7 @@ export const handleForgottenPassword = async (email: string) => {
         <h3>Password Reset Request</h3>
         <p>If you have not requested a password reset, please ignore this email.</p>
         <p>You have requested to reset your password. Please click the link below to proceed:</p>
-        <a href="${process.env.CLIENT_URL}/reset-password/${user.passwordToken}">Reset Password</a>
+        <a href="${process.env.CLIENT_URL}/reset-password/${user.verificationToken}">Reset Password</a>
       `,
   });
 };
@@ -227,7 +239,7 @@ export const handleResetPassword = async (
   }
 
   const user = await User.findOne({
-    passwordToken: token,
+    verificationToken: token,
     email: decoded.email,
   });
 
@@ -237,7 +249,31 @@ export const handleResetPassword = async (
 
   const hashed = await bcrypt.hash(newPassword, 12);
   user.password = hashed;
-  user.passwordToken = "";
+  user.verificationToken = "";
+  await user.save();
+};
+
+export const handleEmailVerification = async (token: string) => {
+  const decoded = (await jwt.verify({
+    token,
+    secret: process.env.JWT_SECRET as string,
+  })) as jwtData;
+
+  if (!decoded.email) {
+    throw new Error("Email is verification failed!");
+  }
+
+  const user = await User.findOne({
+    verificationToken: token,
+    email: decoded.email,
+    isEmailVerified: false,
+  });
+
+  if (!user) {
+    throw new Error("Email is verification failed!");
+  }
+
+  user.isEmailVerified = true;
   await user.save();
 };
 
@@ -257,10 +293,10 @@ const createRefreshToken = (id: string, username: string) => {
   });
 };
 
-const createPasswordResetToken = (email: string) => {
+const createVerifyToken = (email: string) => {
   return jwt.sign({
     token: { userId: "", username: "", email },
     secret: process.env.JWT_SECRET as string,
-    options: { expiresIn: "15m" },
+    options: { expiresIn: "1h" },
   });
 };

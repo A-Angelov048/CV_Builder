@@ -5,5 +5,6 @@ export interface IUser extends Document {
   email: string;
   password: string;
   refreshToken: string[];
-  passwordToken: string;
+  verificationToken: string;
+  isEmailVerified: boolean;
 }

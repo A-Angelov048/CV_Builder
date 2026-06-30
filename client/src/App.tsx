@@ -17,6 +17,8 @@ import HomeCvUser from "./pages/HomeCvUser";
 import HomeCv from "./pages/guestPages/HomeCv";
 import ForgotPassword from "./pages/guestPages/ForgotPassword";
 import ResetPassword from "./pages/guestPages/ResetPassword";
+import EmailVerificationNotice from "./components/emailVerification/EmailVerificationNotice";
+import VerifiedEmail from "./components/verifiedEmail/VerifiedEmail";
 
 export default function App() {
   const [sectionRefs, scrollToSection, scrollToUp] = useScroll<Section>([
@@ -38,12 +40,16 @@ export default function App() {
           <Routes>
             <Route path="/" element={<HomeCv sectionRefs={sectionRefs} />} />
             <Route path="/:username" element={<HomeCvUser sectionRefs={sectionRefs} />} />
+
             <Route element={<AuthGuard />}>
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password/:token" element={<ResetPassword />} />
+              <Route path="/verify-email-notice" element={<EmailVerificationNotice />} />
+              <Route path="/verified-email/:token" element={<VerifiedEmail />} />
             </Route>
+
             <Route path="/not-found" element={<NotFound />} />
           </Routes>
         </ScrollToTop>
