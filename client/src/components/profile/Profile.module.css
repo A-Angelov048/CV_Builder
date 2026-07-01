@@ -54,7 +54,7 @@ body:has(.mono-modal-overlay) {
     width: 100%;
     border-right: none;
     border-bottom: 1px solid #333;
-    padding: 24px;
+    padding: 14px;
   }
 }
 
@@ -64,10 +64,16 @@ body:has(.mono-modal-overlay) {
   gap: 40px;
 }
 
+@media (max-width: 768px) {
+  .mono-sidebar-menu {
+    gap: 0px;
+  }
+}
+
 .mono-nav {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 
 .mono-nav-item {
@@ -111,6 +117,12 @@ body:has(.mono-modal-overlay) {
 .mono-logout-btn-position {
   padding-top: 32px;
   border-top: 1px solid #333;
+}
+
+@media (max-width: 768px) {
+  .mono-logout-btn-position {
+    padding-top: 12px;
+  }
 }
 
 .mono-logout-btn {
@@ -159,8 +171,20 @@ body:has(.mono-modal-overlay) {
   margin: 0 0 64px 0;
 }
 
+@media (max-width: 768px) {
+  .mono-title {
+    margin: 0 0 40px 0;
+  }
+}
+
 .mono-section {
   margin-bottom: 80px;
+}
+
+@media (max-width: 768px) {
+  .mono-section {
+    margin-bottom: 40px;
+  }
 }
 
 .mono-section-header {

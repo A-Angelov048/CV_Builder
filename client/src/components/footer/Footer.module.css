@@ -3,6 +3,62 @@
   text-align: center;
 }
 
+.footer p:first-child {
+  margin-bottom: 10px;
+}
+
+.support {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.hoverTrigger {
+  position: relative;
+  display: inline-block;
+  color: #004aad;
+}
+
+.popup {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 12px);
+  transform: translateX(-50%);
+
+  width: 220px;
+  padding: 14px;
+
+  background: #fff;
+  border: 2px solid #333;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.2s ease,
+    visibility 0.2s ease;
+
+  z-index: 100;
+}
+
+.hoverTrigger:hover .popup {
+  opacity: 1;
+  visibility: visible;
+}
+
+.popup img {
+  margin: 0 auto;
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+}
+
+.linkRevo {
+  margin: 0;
+  font-size: 12px;
+  color: #004aad;
+}
+
 @media (max-width: 768px) {
   .footer {
     padding: 20px 40px;

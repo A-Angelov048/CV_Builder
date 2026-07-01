@@ -36,9 +36,8 @@ body:has(.spinner-overlay) {
 
 #root {
   display: grid;
-  grid-template-rows: auto 70px;
+  grid-template-rows: auto 100px;
   min-height: 100vh;
-  padding-top: 70px;
 }
 
 img {

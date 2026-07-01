@@ -4,7 +4,7 @@
   background-position: center;
   background-attachment: fixed;
 
-  padding: 80px 10px 10px;
+  padding: 150px 10px 10px;
   margin-bottom: 10px;
 
   display: flex;
@@ -101,10 +101,19 @@
 
 @media (max-width: 768px) {
   .hero {
-    padding: 80px 10px 10px;
+    padding: 150px 10px 10px;
   }
 
   .profile-card {
     flex-direction: column;
+  }
+
+  .profile-right {
+    border-radius: 0 0 6px 6px;
+    border: none;
+  }
+
+  .profile-left img {
+    border-radius: 6px 6px 0 0;
   }
 }
