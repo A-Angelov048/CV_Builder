@@ -36,7 +36,7 @@ body:has(.spinner-overlay) {
 
 #root {
   display: grid;
-  grid-template-rows: auto 100px;
+  grid-template-rows: auto;
   min-height: 100vh;
 }
 
