@@ -93,7 +93,7 @@ const PortfolioSchema = new Schema<Portfolio>(
       shortInfo: {
         type: String,
         minLength: [10, "Short info must be at least 10 characters long."],
-        maxLength: [240, "Short info must be at most 240 characters long."],
+        maxLength: [600, "Short info must be at most 600 characters long."],
       },
     },
 

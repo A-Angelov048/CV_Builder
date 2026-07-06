@@ -154,7 +154,7 @@ export const socialLinkSchema = z.object({
     .trim()
     .min(1, "Short info is required.")
     .min(10, "Short info must be at least 10 characters long.")
-    .max(240, "Short info must be at most 240 characters long."),
+    .max(600, "Short info must be at most 600 characters long."),
 });
 
 export type SocialLinkValues = z.infer<typeof socialLinkSchema>;
@@ -226,7 +226,7 @@ export const contactSchema = z.object({
     .trim()
     .min(1, "Message is required.")
     .min(10, "Message must be at least 10 characters long.")
-    .max(240, "Message must be at most 240 characters long."),
+    .max(600, "Message must be at most 600 characters long."),
 });
 
 export type ContactValues = z.infer<typeof contactSchema>;
