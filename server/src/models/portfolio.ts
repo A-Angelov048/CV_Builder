@@ -135,7 +135,7 @@ const PortfolioSchema = new Schema<Portfolio>(
         yearsExperience: {
           type: String,
           match: [
-            /^\d{4}-\d{4}$/,
+            /^\d{4}-(\d{4}|Till now|Present)$/,
             "Enter a year range in the format YYYY-YYYY (e.g., 2016-2020)",
           ],
         },
@@ -158,7 +158,7 @@ const PortfolioSchema = new Schema<Portfolio>(
         yearsEducation: {
           type: String,
           match: [
-            /^\d{4}-\d{4}$/,
+            /^\d{4}-(\d{4}|Till now|Present)$/,
             "Enter a year range in the format YYYY-YYYY (e.g., 2016-2020)",
           ],
         },

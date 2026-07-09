@@ -37,7 +37,10 @@ export const experienceSchema = z.object({
   yearsExperience: z
     .string()
     .trim()
-    .regex(/^\d{4}-\d{4}$/, "Enter a year range in the format YYYY-YYYY (e.g., 2016-2020)"),
+    .regex(
+      /^\d{4}-(\d{4}|Till now|Present)$/,
+      "Enter a year range in the format YYYY-YYYY (e.g., 2016-2020)"
+    ),
   position: z
     .string()
     .trim()
@@ -62,7 +65,10 @@ export const educationSchema = z.object({
   yearsEducation: z
     .string()
     .trim()
-    .regex(/^\d{4}-\d{4}$/, "Enter a year range in the format YYYY-YYYY (e.g., 2016-2020)"),
+    .regex(
+      /^\d{4}-(\d{4}|Till now|Present)$/,
+      "Enter a year range in the format YYYY-YYYY (e.g., 2016-2020)"
+    ),
   degree: z
     .string()
     .trim()

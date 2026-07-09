@@ -177,8 +177,8 @@ export function useVerifiedEmail(token: string | undefined) {
           signal: controller.signal,
         });
       } catch (err: any) {
-        console.error(err.response.data.message);
         navigate("/not-found", { replace: true });
+        console.error(err.response.data.message);
       } finally {
         setSpinner(false);
       }
