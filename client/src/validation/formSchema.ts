@@ -56,7 +56,7 @@ export const experienceSchema = z.object({
     .trim()
     .min(1, "Activity in the company is required.")
     .min(10, "Activity in the company must be at least 10 characters long.")
-    .max(240, "Activity in the company must be at most 240 characters long."),
+    .max(600, "Activity in the company must be at most 600 characters long."),
 });
 
 export type ExperienceValues = z.infer<typeof experienceSchema>;
@@ -84,7 +84,7 @@ export const educationSchema = z.object({
     .trim()
     .min(1, "Info of the school is required.")
     .min(10, "Info of the school must be at least 10 characters long.")
-    .max(240, "Info of the school must be at most 240 characters long."),
+    .max(600, "Info of the school must be at most 600 characters long."),
 });
 
 export type EducationValues = z.infer<typeof educationSchema>;

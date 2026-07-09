@@ -144,7 +144,7 @@ const PortfolioSchema = new Schema<Portfolio>(
         activity: {
           type: String,
           minLength: 10,
-          maxLength: 240,
+          maxLength: 600,
         },
         createdAt: {
           type: Date,
@@ -167,7 +167,7 @@ const PortfolioSchema = new Schema<Portfolio>(
         infoSchool: {
           type: String,
           minLength: 10,
-          maxLength: 240,
+          maxLength: 600,
         },
         createdAt: {
           type: Date,
