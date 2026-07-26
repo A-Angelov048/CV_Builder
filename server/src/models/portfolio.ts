@@ -32,6 +32,8 @@ const PortfolioSchema = new Schema<Portfolio>(
       },
       address: { type: String, minLength: 5 },
       date: { type: String, minLength: 5 },
+      nativeLanguage: { type: String, minLength: 3 },
+      languages: { type: String, minLength: 3 },
       imageProfile: {
         image: {
           type: String,
@@ -97,9 +99,15 @@ const PortfolioSchema = new Schema<Portfolio>(
       },
     },
 
-    skills: [
+    techSkills: [
       {
-        skill: { type: String, minLength: 5 },
+        techSkill: { type: String, minLength: 5 },
+      },
+    ],
+
+    softSkills: [
+      {
+        softSkill: { type: String, minLength: 5 },
       },
     ],
 

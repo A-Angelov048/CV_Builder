@@ -61,24 +61,36 @@ export default function ProfileCardDynamic({
           </div>
 
           <div className={styles["profile-right"]}>
-            <h2>{portfolio.about.name}</h2>
-            <p className={styles.career}>{portfolio.about.career}</p>
+            <div className={styles["profile-header"]}>
+              <h2>{portfolio.about.name}</h2>
+              <p className={styles.career}>{portfolio.about.career}</p>
+            </div>
 
-            <div className={styles["profile-info"]}>
-              <strong>Phone:</strong>
-              <p>{portfolio.about.phone}</p>
-            </div>
-            <div className={styles["profile-info"]}>
-              <strong>Email:</strong>
-              <p>{portfolio.about.email}</p>
-            </div>
-            <div className={styles["profile-info"]}>
-              <strong>Address:</strong>
-              <p>{portfolio.about.address}</p>
-            </div>
-            <div className={styles["profile-info"]}>
-              <strong>Date of Birth:</strong>
-              <p>{portfolio.about.date}</p>
+            <div className={styles["profile-info-top"]}>
+              <div className={styles["profile-info"]}>
+                <strong>Phone:</strong>
+                <p>{portfolio.about.phone}</p>
+              </div>
+              <div className={styles["profile-info"]}>
+                <strong>Email:</strong>
+                <p>{portfolio.about.email}</p>
+              </div>
+              <div className={styles["profile-info"]}>
+                <strong>Address:</strong>
+                <p>{portfolio.about.address}</p>
+              </div>
+              <div className={styles["profile-info"]}>
+                <strong>Date of Birth:</strong>
+                <p>{portfolio.about.date}</p>
+              </div>
+              <div className={styles["profile-info"]}>
+                <strong>Native Language:</strong>
+                <p>{portfolio.about.nativeLanguage}</p>
+              </div>
+              <div className={styles["profile-info"]}>
+                <strong>Languages:</strong>
+                <p>{portfolio.about.languages}</p>
+              </div>
             </div>
 
             {viewType.isOwner && (
@@ -118,6 +130,14 @@ export default function ProfileCardDynamic({
               <div className="form-group">
                 <label htmlFor="date">Date of Birth *</label>
                 <input type="text" id="date" {...register("date")} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="native-language">Native language *</label>
+                <input type="text" id="native-language" {...register("nativeLanguage")} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="languages">Languages *</label>
+                <input type="text" id="languages" {...register("languages")} />
               </div>
               <div className="form-group">
                 <label htmlFor="image-profile">Profile Image *</label>

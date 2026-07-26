@@ -70,12 +70,25 @@ export async function createLinksController(req: Request, res: Response) {
   }
 }
 
-export async function updateSkillsController(req: Request, res: Response) {
+export async function updateTechSkillsController(req: Request, res: Response) {
   const userId = req.userId;
   const body = req.body;
 
   try {
-    const portfolio = await updatePortfolioSection(userId, "skills", body);
+    const portfolio = await updatePortfolioSection(userId, "techSkills", body);
+
+    res.json(portfolio);
+  } catch (err: any) {
+    res.status(400).json({ message: err.message });
+  }
+}
+
+export async function updateSoftSkillsController(req: Request, res: Response) {
+  const userId = req.userId;
+  const body = req.body;
+
+  try {
+    const portfolio = await updatePortfolioSection(userId, "softSkills", body);
 
     res.json(portfolio);
   } catch (err: any) {
@@ -149,16 +162,41 @@ export async function unpublishPortfolioController(
   }
 }
 
-export async function deleteSkillsController(req: Request, res: Response) {
+export async function deleteTechSkillsController(req: Request, res: Response) {
   const userId = req.userId;
   const skillId = req.params.deleteId;
 
   try {
     if (!skillId) {
-      throw new Error("Skill ID is required");
+      throw new Error("Tech skill ID is required");
     }
 
-    const portfolio = await deletePortfolioSection(userId, "skills", skillId);
+    const portfolio = await deletePortfolioSection(
+      userId,
+      "techSkills",
+      skillId,
+    );
+
+    res.json(portfolio);
+  } catch (err: any) {
+    res.status(400).json({ message: err.message });
+  }
+}
+
+export async function deleteSoftSkillsController(req: Request, res: Response) {
+  const userId = req.userId;
+  const skillId = req.params.deleteId;
+
+  try {
+    if (!skillId) {
+      throw new Error("Soft skill ID is required");
+    }
+
+    const portfolio = await deletePortfolioSection(
+      userId,
+      "softSkills",
+      skillId,
+    );
 
     res.json(portfolio);
   } catch (err: any) {

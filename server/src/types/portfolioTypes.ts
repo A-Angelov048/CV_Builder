@@ -7,6 +7,8 @@ export interface About {
   email: string;
   address: string;
   date: string;
+  nativeLanguage: string;
+  languages: string;
   imageProfile: { image: string; public_id: string };
   imageBackground: { image: string; public_id: string };
 }
@@ -20,9 +22,14 @@ export interface Links {
   shortInfo: string;
 }
 
-export interface Skills {
+export interface TechSkills {
   _id: Types.ObjectId;
-  skill: string;
+  techSkill: string;
+}
+
+export interface SoftSkills {
+  _id: Types.ObjectId;
+  softSkill: string;
 }
 
 export interface Experience {
@@ -56,7 +63,8 @@ export interface Portfolio extends Document {
 
   about: About;
   links: Links;
-  skills: Types.DocumentArray<Skills>;
+  techSkills: Types.DocumentArray<TechSkills>;
+  softSkills: Types.DocumentArray<SoftSkills>;
   projects: Types.DocumentArray<Project>;
   experience: Types.DocumentArray<Experience>;
   education: Types.DocumentArray<Education>;
@@ -64,4 +72,9 @@ export interface Portfolio extends Document {
   isPublished: boolean;
 }
 
-export type PortfolioKey = "skills" | "experience" | "education" | "projects";
+export type PortfolioKey =
+  | "techSkills"
+  | "softSkills"
+  | "experience"
+  | "education"
+  | "projects";

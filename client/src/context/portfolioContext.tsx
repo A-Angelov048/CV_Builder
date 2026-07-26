@@ -9,6 +9,8 @@ export type AboutValues = {
   email: string;
   address: string;
   date: string;
+  nativeLanguage: string;
+  languages: string;
   imageProfile: { image: string; public_id: string };
   imageBackground: { image: string; public_id: string };
 };
@@ -25,9 +27,15 @@ export interface Portfolio {
     instagram: string;
     shortInfo: string;
   };
-  skills?: [
+  techSkills?: [
     {
-      skill: string;
+      techSkill: string;
+      _id: string;
+    },
+  ];
+  softSkills?: [
+    {
+      softSkill: string;
       _id: string;
     },
   ];
@@ -81,6 +89,8 @@ export function PortfolioProvider({ children }: ProfileProviderProps) {
       phone: "",
       address: "",
       date: "",
+      nativeLanguage: "",
+      languages: "",
       imageProfile: { image: "", public_id: "" },
       imageBackground: { image: "", public_id: "" },
     },
@@ -98,6 +108,8 @@ export function PortfolioProvider({ children }: ProfileProviderProps) {
           phone: "",
           address: "",
           date: "",
+          nativeLanguage: "",
+          languages: "",
           imageProfile: { image: "", public_id: "" },
           imageBackground: { image: "", public_id: "" },
         },

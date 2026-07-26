@@ -53,7 +53,17 @@ export type ProjectsDynamicProps = {
   changeStatus: (value: boolean) => void;
 };
 
-export type SkillsDynamicProps = {
+export type TechSkillsDynamicProps = {
+  portfolio: Portfolio;
+  flagForm: boolean;
+  viewType: {
+    isOwner: boolean;
+    canView: boolean;
+  };
+  changeStatus: (value: boolean) => void;
+};
+
+export type SoftSkillsDynamicProps = {
   portfolio: Portfolio;
   flagForm: boolean;
   viewType: {

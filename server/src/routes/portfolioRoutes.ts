@@ -6,17 +6,19 @@ import {
   getMyPortfolioController,
   getPublicPortfolioController,
   createLinksController,
-  updateSkillsController,
   updateExperienceController,
   updateProjectsController,
   updateEducationController,
   publishPortfolioController,
   unpublishPortfolioController,
-  deleteSkillsController,
+  deleteTechSkillsController,
+  deleteSoftSkillsController,
   deleteProjectsController,
   deleteExperienceController,
   deleteEducationController,
   sendContactEmailController,
+  updateSoftSkillsController,
+  updateTechSkillsController,
 } from "../controllers/portfolioController";
 
 const router = express.Router();
@@ -28,7 +30,16 @@ router.post("/portfolio/contact-me", verifyHuman, sendContactEmailController);
 router.post("/portfolio", authMiddleware, createPortfolioController);
 router.post("/portfolio/links", authMiddleware, createLinksController);
 
-router.put("/portfolio/skills", authMiddleware, updateSkillsController);
+router.put(
+  "/portfolio/tech-skills",
+  authMiddleware,
+  updateTechSkillsController,
+);
+router.put(
+  "/portfolio/soft-skills",
+  authMiddleware,
+  updateSoftSkillsController,
+);
 router.put("/portfolio/experience", authMiddleware, updateExperienceController);
 router.put("/portfolio/projects", authMiddleware, updateProjectsController);
 router.put("/portfolio/education", authMiddleware, updateEducationController);
@@ -41,9 +52,15 @@ router.patch(
 );
 
 router.delete(
-  "/portfolio/remove/skills/:deleteId",
+  "/portfolio/remove/tech-skills/:deleteId",
   authMiddleware,
-  deleteSkillsController,
+  deleteTechSkillsController,
+);
+
+router.delete(
+  "/portfolio/remove/soft-skills/:deleteId",
+  authMiddleware,
+  deleteSoftSkillsController,
 );
 
 router.delete(

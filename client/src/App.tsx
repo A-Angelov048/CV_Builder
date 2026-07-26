@@ -23,7 +23,8 @@ import VerifiedEmail from "./components/verifiedEmail/VerifiedEmail";
 export default function App() {
   const [sectionRefs, scrollToSection, scrollToUp] = useScroll<Section>([
     "about",
-    "skills",
+    "techSkills",
+    "softSkills",
     "projects",
     "experience",
     "education",

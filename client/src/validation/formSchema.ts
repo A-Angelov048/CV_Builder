@@ -1,15 +1,25 @@
 import { z } from "zod";
 import imageSchema from "./imageSchema";
 
-export const skillSchema = z.object({
-  skill: z
+export const softSkillSchema = z.object({
+  softSkill: z
     .string()
     .trim()
     .min(1, "Skill is required.")
     .min(5, "Skill must be at least 5 characters long."),
 });
 
-export type SkillValues = z.infer<typeof skillSchema>;
+export type SoftSkillValues = z.infer<typeof softSkillSchema>;
+
+export const techSkillSchema = z.object({
+  techSkill: z
+    .string()
+    .trim()
+    .min(1, "Skill is required.")
+    .min(5, "Skill must be at least 5 characters long."),
+});
+
+export type TechSkillValues = z.infer<typeof techSkillSchema>;
 
 export const projectsSchema = z.object({
   nameProject: z
@@ -199,6 +209,16 @@ export const profileCardSchema = z.object({
     .trim()
     .min(1, "Date of birth is required.")
     .min(5, "Date of birth must be at least 5 characters long."),
+  nativeLanguage: z
+    .string()
+    .trim()
+    .min(1, "Native language is required.")
+    .min(3, "Native language must be at least 3 characters long."),
+  languages: z
+    .string()
+    .trim()
+    .min(1, "Languages are required.")
+    .min(3, "Languages must be at least 3 characters long."),
   imageProfile: imageSchema({
     maxDimensions: { width: 600, height: 600 },
     imageType: "Profile image",

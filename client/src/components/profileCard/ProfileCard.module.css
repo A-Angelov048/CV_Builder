@@ -17,6 +17,7 @@
   background: #fafafa;
   display: flex;
   max-width: 830px;
+  min-height: 400px;
   border-radius: 6px;
 }
 
@@ -38,11 +39,6 @@
 .profile-right {
   flex: 1;
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
   padding: 30px;
   background-color: #f1f1f1;
   border-left: solid 1px #333;
@@ -53,28 +49,30 @@
   animation: slideInRight 1.6s ease forwards;
 }
 
-.profile-right .career {
+.profile-right .profile-header {
+  text-align: center;
+}
+
+.profile-right .profile-header .career {
   margin-bottom: 20px;
   font-weight: bold;
 }
 
-.profile-info {
-  max-width: 200px;
-  width: 100%;
-  margin-bottom: 10px;
+.profile-right .profile-info-top {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: space-evenly;
+  gap: 12px;
 }
 
-.profile-info:last-of-type {
-  margin-bottom: 0px;
+.profile-right .profile-info-top .profile-info {
+  width: 120px;
 }
 
-.profile-info strong {
-  display: inline-block;
-  width: 100px;
-}
-
-.edit-button {
-  align-self: flex-end;
+.profile-right .edit-button {
+  display: block;
+  margin-left: auto;
+  margin-top: 20px;
 }
 
 @keyframes slideInRight {
@@ -100,15 +98,12 @@
 }
 
 @media (max-width: 768px) {
-  .hero {
-    padding: 150px 10px 10px;
-  }
-
   .profile-card {
     flex-direction: column;
   }
 
   .profile-right {
+    padding: 20px;
     border-radius: 0 0 6px 6px;
     border: none;
   }

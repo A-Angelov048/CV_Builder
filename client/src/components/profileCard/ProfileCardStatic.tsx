@@ -14,24 +14,36 @@ export default forwardRef<HTMLDivElement>(function ProfileCardStatic(_, ref) {
         </div>
 
         <div className={styles["profile-right"]}>
-          <h2>Rachel Smith</h2>
-          <p className={styles.career}>Lawyer & Consultant</p>
+          <div className={styles["profile-header"]}>
+            <h2>Rachel Smith</h2>
+            <p className={styles.career}>Lawyer & Consultant</p>
+          </div>
 
-          <div className={styles["profile-info"]}>
-            <strong>Phone:</strong>
-            <p>123-456-7890</p>
-          </div>
-          <div className={styles["profile-info"]}>
-            <strong>Email:</strong>
-            <p>info@mysite.com</p>
-          </div>
-          <div className={styles["profile-info"]}>
-            <strong>Address:</strong>
-            <p>500 Terry Francine Street San Francisco, CA 94158</p>
-          </div>
-          <div className={styles["profile-info"]}>
-            <strong>Date of Birth:</strong>
-            <p>March 14th, 1984</p>
+          <div className={styles["profile-info-top"]}>
+            <div className={styles["profile-info"]}>
+              <strong>Phone:</strong>
+              <p>123-456-7890</p>
+            </div>
+            <div className={styles["profile-info"]}>
+              <strong>Email:</strong>
+              <p>info@mysite.com</p>
+            </div>
+            <div className={styles["profile-info"]}>
+              <strong>Address:</strong>
+              <p>500 Terry Francine Street San Francisco, CA 94158</p>
+            </div>
+            <div className={styles["profile-info"]}>
+              <strong>Date of Birth:</strong>
+              <p>March 14th, 1984</p>
+            </div>
+            <div className={styles["profile-info"]}>
+              <strong>Native Language:</strong>
+              <p>English</p>
+            </div>
+            <div className={styles["profile-info"]}>
+              <strong>Languages:</strong>
+              <p>English, Spanish, French</p>
+            </div>
           </div>
         </div>
       </div>

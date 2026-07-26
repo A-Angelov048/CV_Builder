@@ -1,24 +1,24 @@
-import styles from "./Skills.module.css";
+import styles from "../Skills.module.css";
 
 import { useForm, type SubmitHandler } from "react-hook-form";
 
-import { useInView } from "../../hooks/useInView";
-import { useFormErrorSnackbar } from "../../hooks/useFormErrorSnackbar";
-import { useDeletePortfolioInfo, useUpdatePortfolio } from "../../hooks/usePortfolioResponse";
-import { skillSchema, type SkillValues } from "../../validation/formSchema";
-import { SkillsDynamicProps } from "../../types/componentsPropsTypes";
+import { useInView } from "../../../hooks/useInView";
+import { useFormErrorSnackbar } from "../../../hooks/useFormErrorSnackbar";
+import { useDeletePortfolioInfo, useUpdatePortfolio } from "../../../hooks/usePortfolioResponse";
+import { techSkillSchema, type TechSkillValues } from "../../../validation/formSchema";
+import { TechSkillsDynamicProps } from "../../../types/componentsPropsTypes";
 
-import ErrorSnackbar from "../errorModal/ErrorSnackbar";
+import ErrorSnackbar from "../../errorModal/ErrorSnackbar";
 
-export default function SkillsDynamic({
+export default function TechSkillsDynamic({
   portfolio,
   flagForm,
   viewType,
   changeStatus,
-}: SkillsDynamicProps) {
-  const checkPortfolioSkills = portfolio.skills && portfolio.skills.length > 0;
+}: TechSkillsDynamicProps) {
+  const checkPortfolioSkills = portfolio.techSkills && portfolio.techSkills.length > 0;
 
-  const { updatePortfolio } = useUpdatePortfolio("skills");
+  const { updatePortfolio } = useUpdatePortfolio("tech-skills");
   const { deletePortfolioInfo } = useDeletePortfolioInfo();
   const { refView, isInView } = useInView(
     {
@@ -29,10 +29,10 @@ export default function SkillsDynamic({
 
   const { open, messages, close, handleErrors, handleZodErrors } = useFormErrorSnackbar();
 
-  const { register, handleSubmit } = useForm<SkillValues>();
+  const { register, handleSubmit } = useForm<TechSkillValues>();
 
-  const onSubmit: SubmitHandler<SkillValues> = async (data) => {
-    const result = skillSchema.safeParse(data);
+  const onSubmit: SubmitHandler<TechSkillValues> = async (data) => {
+    const result = techSkillSchema.safeParse(data);
 
     if (!result.success) return handleZodErrors(result.error);
 
@@ -52,15 +52,15 @@ export default function SkillsDynamic({
     <>
       {flagForm && checkPortfolioSkills ? (
         <div ref={refView} className={styles["skills-grid"]}>
-          {portfolio.skills?.map((curSkill) => (
+          {portfolio.techSkills?.map((curSkill) => (
             <div
               key={curSkill._id}
               className={`${styles["skill-box"]} ${isInView ? styles.fadeInUp : styles.fadeOut}`}
             >
-              <p>{curSkill.skill}</p>
+              <p>{curSkill.techSkill}</p>
               {viewType.isOwner && (
                 <i
-                  onClick={() => deletePortfolioInfo(curSkill._id, "skills")}
+                  onClick={() => deletePortfolioInfo(curSkill._id, "tech-skills")}
                   className="bx bx-trash"
                 ></i>
               )}
@@ -72,8 +72,8 @@ export default function SkillsDynamic({
           {viewType.isOwner && (
             <form onSubmit={handleSubmit(onSubmit)} className="simple-form">
               <div className="form-group">
-                <label htmlFor="skill">Add skill *</label>
-                <input type="text" id="skill" {...register("skill")} />
+                <label htmlFor="techSkill">Add skill *</label>
+                <input type="text" id="techSkill" {...register("techSkill")} />
               </div>
               <button className="main-button m-t" type="submit">
                 Submit

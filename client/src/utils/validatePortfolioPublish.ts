@@ -25,8 +25,10 @@ const isPortfolioComplete = (data: Portfolio): boolean | undefined => {
     isNotEmpty(data.about.imageBackground.image) &&
     isNotEmpty(data.about.imageBackground.public_id) &&
     // skills
-    isArrayNotEmpty(data.skills) &&
-    data.skills?.every((s) => isNotEmpty(s.skill)) &&
+    isArrayNotEmpty(data.techSkills) &&
+    data.techSkills?.every((s) => isNotEmpty(s.techSkill)) &&
+    isArrayNotEmpty(data.softSkills) &&
+    data.softSkills?.every((s) => isNotEmpty(s.softSkill)) &&
     // experience
     isArrayNotEmpty(data.experience) &&
     data.experience?.every(
@@ -45,7 +47,7 @@ const isPortfolioComplete = (data: Portfolio): boolean | undefined => {
         isNotEmpty(ed.nameSchool) &&
         isNotEmpty(ed.infoSchool)
     ) &&
-    // links (you can relax this if needed)
+    // links
     isNotEmpty(data.links?.linkedin) &&
     isNotEmpty(data.links?.shortInfo)
   );

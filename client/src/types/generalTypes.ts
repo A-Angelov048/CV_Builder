@@ -4,7 +4,14 @@ declare module "axios" {
   }
 }
 
-export type Section = "about" | "skills" | "projects" | "experience" | "education" | "contact";
+export type Section =
+  | "about"
+  | "techSkills"
+  | "softSkills"
+  | "projects"
+  | "experience"
+  | "education"
+  | "contact";
 
 export type UploadResult = {
   imageProfile?: { image: string; public_id: string };

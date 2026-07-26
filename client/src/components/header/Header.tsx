@@ -56,7 +56,10 @@ export default function Header({ scrollFunc, scrollUp }: HeaderProps) {
             <span onClick={() => handleScroll("about")}>About me</span>
           </li>
           <li>
-            <span onClick={() => handleScroll("skills")}>Skills</span>
+            <span onClick={() => handleScroll("techSkills")}>Tech Skills</span>
+          </li>
+          <li>
+            <span onClick={() => handleScroll("softSkills")}>Soft Skills</span>
           </li>
           <li>
             <span onClick={() => handleScroll("projects")}>Projects</span>
