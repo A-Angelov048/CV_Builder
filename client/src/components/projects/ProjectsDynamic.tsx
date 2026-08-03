@@ -41,6 +41,7 @@ export default function ProjectsDynamic({
       handleErrors({ err: { message: error.response.data.message } });
     }
   };
+  console.log(portfolio.projects);
 
   return (
     <>
@@ -60,14 +61,16 @@ export default function ProjectsDynamic({
                   </div>
                   <p className={styles["project-name"]}>{curProject.nameProject}</p>
                 </Link>
-                <Link
-                  to={curProject.brief}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`${styles["project-name"]} ${styles.brief}`}
-                >
-                  Brief documentation of the project
-                </Link>
+                {curProject.brief !== "" && (
+                  <Link
+                    to={curProject.brief}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`${styles["project-name"]} ${styles.brief}`}
+                  >
+                    Brief documentation of the project
+                  </Link>
+                )}
                 {viewType.isOwner && (
                   <p
                     onClick={() => deletePortfolioInfo(curProject._id, "projects")}
